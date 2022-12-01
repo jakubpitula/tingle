@@ -7,7 +7,7 @@ export const createMeeting = async ({ token }) => {
       authorization: `${token}`,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ region: "sg001" }),
+    body: JSON.stringify({ region: "eu001" }),
   });
 
   const { meetingId } = await res.json();
