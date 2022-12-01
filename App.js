@@ -133,7 +133,7 @@ function ControlsContainer({join, leave, toggleWebcam, toggleMic}) {
 
 function ParticipantView({participantId}) {
   const {webcamStream, webcamOn} = useParticipant(participantId);
-  return webcamOn ? (
+  return webcamOn && webcamStream ? (
     <RTCView
       streamURL={new MediaStream([webcamStream.track]).toURL()}
       objectFit={'cover'}
