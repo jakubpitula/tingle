@@ -184,7 +184,7 @@ function ParticipantList({participants}) {
 function MeetingView() {
   const {join, leave, toggleWebcam, toggleMic, meetingId, participants} =
     useMeeting({});
-  const participantsArrId = [...participants.keys()]; // Add this line
+  const participantsArrId = [...participants.keys()];
 
   return (
     <View style={{flex: 1}}>
