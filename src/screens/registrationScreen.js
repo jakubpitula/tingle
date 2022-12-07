@@ -17,6 +17,8 @@ export default function RegistrationScreen({navigation})  {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [conf_pass, setConf_pass] = useState("");
+  const [age,setAge] = useState("");
+  const [gender, setGender] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const onChangeFirstNameHandler = (first_name) => {
@@ -38,6 +40,14 @@ export default function RegistrationScreen({navigation})  {
   const onChangeConf_PassHandler = (conf_pass) => {
     setConf_pass(conf_pass);
   };
+  
+  const onChangeAgeHandler = (age) => {
+    setAge(age);
+  }
+  
+  const onChangeGenderHandler = (gender) => {
+    setGender(gender);
+  }
 
   const onSubmitFormHandler = async (event) => {
     if (!first_name.trim() || !last_name.trim() || !email.trim() || !conf_pass.trim() ) {
@@ -52,6 +62,9 @@ export default function RegistrationScreen({navigation})  {
         email,
         password,
         conf_pass,
+        age,
+        gender
+
       });
       if (response.status == 200) {
         alert(` You have created: ${JSON.stringify(response.data)}`);
@@ -59,6 +72,9 @@ export default function RegistrationScreen({navigation})  {
         setFirstName('');
         setLastName('');
         setEmail('');
+        setAge('');
+        setGender('');
+        
         navigation.navigate('Preference')
       } else {
         throw new Error("An error has occurred");
@@ -75,7 +91,7 @@ export default function RegistrationScreen({navigation})  {
       
       <><Appbar.Header>
         <Appbar.Action icon='arrow-left-thick' onPress={() => navigation.navigate('Login')} />
-        <Appbar.Content title="Registration" color='#8661f0' titleStyle={{ fontWeight: 'bold' }} />
+        <Appbar.Content title="Registration" color='#FF356B' titleStyle={{ fontWeight: 'bold' }} />
 
       </Appbar.Header>
       <SafeAreaView>
@@ -138,14 +154,36 @@ export default function RegistrationScreen({navigation})  {
                 onChangeText={onChangeConf_PassHandler}
                 />
             </View>
-            <View style={{ paddingLeft: 130, marginBottom: 100 }}>
+            
+            <View style={styles.inputView}>
+              <TextInput
+                style={styles.TextInput}
+                placeholder="Age"
+                placeholderTextColor='color'
+                secureTextEntry 
+                value={age}
+                editable={!isLoading}
+                onChangeText={onChangeAgeHandler}
+                />
+            </View>
+            <View style={styles.inputView}>
+              <TextInput
+                style={styles.TextInput}
+                placeholder="Gender"
+                placeholderTextColor='color'
+                secureTextEntry 
+                value={gender}
+                editable={!isLoading}
+                onChangeText={onChangeGenderHandler}
+                />
+            </View>
+            <View style={{ paddingLeft: 120, marginBottom: 100 }}>
               <ButtonWithBackground
                 text='Register'
                 onPress={onSubmitFormHandler}
                 disabled={isLoading}/>
-
-
             </View>
+            
 
 
 
