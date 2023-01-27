@@ -1,180 +1,159 @@
-import { StyleSheet, Text, View, TextInput} from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, { useState } from 'react'
+import {StyleSheet, Text, View, TextInput, Animated} from 'react-native';
+import React, {useState} from 'react';
 import ButtonWithBackground from '../components/buttonWithBackground';
 import SmallButton from '../components/smallButton';
 import axios from 'axios';
-import { SafeAreaView,ScrollView } from 'react-native';
 
-const baseUrl='https://y2ylvp.deta.dev';
+import {SafeAreaView, ScrollView} from 'react-native';
+
+const baseUrl = 'https://y2ylvp.deta.dev';
 
 export default function LoginScreen({navigation}) {
-
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const onChangePasswordHandler = (password) => {
+  const onChangePasswordHandler = password => {
     setPassword(password);
   };
 
-  const onChangeEmailHandler = (email) => {
+  const onChangeEmailHandler = email => {
     setEmail(email);
   };
 
-  const onSubmitFormHandler = async (event) => {
-    if (!email.trim() || !password.trim() ) {
-      alert("email or passoword is invalid");
+  const onSubmitFormHandler = async event => {
+    if (!email.trim() || !password.trim()) {
+      alert('email or passoword is invalid');
       return;
-    };
+    }
 
-
-  setIsLoading(true);
+    setIsLoading(true);
     try {
       const response = await axios.post(`${baseUrl}/login`, {
-       email,
-       password,
+        email,
+        password,
       });
-       if (response.status == 200) {
-            navigation.navigate('Home');
-          }
-        else {
-          throw new Error("Email or Password incorrect");
-       }
-           
-        
-      }catch(error) {
-          alert("Email or Password incorrect")
-          setIsLoading(false);
-  }};
-    
-    
+      if (response.status == 200) {
+        navigation.navigate('Home');
+      } else {
+        throw new Error('Email or Password incorrect');
+      }
+    } catch (error) {
+      alert('Email or Password incorrect');
+      setIsLoading(false);
+    }
+  };
 
-
-
-
-
-   
-    return (
-      <SafeAreaView>
-        <ScrollView>
-          
+  return (
+    <SafeAreaView>
+      <ScrollView>
         <View style={styles.container}>
-            
-            <Text style={styles.title}>
-              Tingle</Text>
-           
-            <View style={styles.inputView}>
-                <TextInput 
-                style={styles.TextInput}
-                value={email}
-                placeholder="Email or phone number"
-                placeholderTextColor='color'
-                onChangeText={onChangeEmailHandler}
-                editable={!isLoading}
-               
-                />
-            </View>
-        
-              
-    
-            <View style={styles.inputView}>
-                <TextInput 
-                style={styles.TextInput}
-                placeholder="Password"
-                value={password}
-                onChangeText={onChangePasswordHandler}
-                editable={!isLoading}
-                placeholderTextColor="color"
-                secureTextEntry
-                />
-            </View>
-            
-            
-            {/* Login button*/}
-            
+          <Text style={styles.title}>Tingle</Text>
+
+          <View style={styles.inputView}>
+            <TextInput
+              style={styles.TextInput}
+              value={email}
+              placeholder="Email or phone number"
+              placeholderTextColor="color"
+              onChangeText={onChangeEmailHandler}
+              editable={!isLoading}
+            />
+          </View>
+
+          <View style={styles.inputView}>
+            <TextInput
+              style={styles.TextInput}
+              placeholder="Password"
+              value={password}
+              onChangeText={onChangePasswordHandler}
+              editable={!isLoading}
+              placeholderTextColor="color"
+              secureTextEntry
+            />
+          </View>
+
+          <View alignItems="center">
             <ButtonWithBackground
-             text="Login" 
-             color='black' 
-             onPress={onSubmitFormHandler}
-             disabled={isLoading}
-             />
+              text="Login"
+              color="black"
+              onPress={onSubmitFormHandler}
+              disabled={isLoading}
+            />
+          </View>
 
-            {/* Forgot Password Button*/} 
-            <SmallButton text="Forgot Password?"/>
-            
+          <View alignItems="center">
+            <SmallButton text="Forgot Password?" />
+
             <View style={styles.smallText}>
-            <Text stlye={styles.smallText}> Don't have an account yet?</Text>
-            <SmallButton 
-            text="Sign up"
-            
-            onPress={() => navigation.navigate('Registration')}/>
-            
-
+              <Text stlye={styles.smallText}> Don't have an account yet?</Text>
+              <SmallButton 
+                text="Sign up"
+                onPress={() => navigation.navigate('Registration')}
+              />
             </View>
+          </View>
         </View>
-        </ScrollView>
-        </SafeAreaView>
-
-    )
+      </ScrollView>
+    </SafeAreaView>
+  );
 }
 
-
-
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: 'white',
-      alignItems: 'center',
-      justifyContent: 'center',
-      paddingBottom: 200
-      
-      
-    },
-    TextInput: {
-      height:50,
-      flex: 1,
-      padding: 10,
-      marginleft:20,
-      justifyContent: 'center',
-    },
-    
-      
-    inputView:{
-      borderColor: 'grey',
-      borderWidth: 2,
-      borderRadius: 3,
-      width: '70%',
-      marginBottom: 35,
-     justifyContent: 'center',
-  
-    },
-    title:{
-      color: 'black',
-      fontFamily: 'Roboto',
-      fontSize: 50,
-      fontWeight: 'bold', 
-      letterSpacing: 1, 
-      marginBottom: 50,
-      marginTop: 100
-    },
-    
-    smallText: {
-      color: 'black',
-      fontSize: 20,
-      marginTop: 100,
-      marginBottom:20,
-      justifyContent: 'center',
-    
-      
-  
-    },
-    textFailed: {
-      alignSelf: 'center',
-      color: 'red',
-      bottom:33,
-      right:70
+  container: {
+    flex: 1,
+    justifyContent: 'flex-end',
+  },
 
-    },
+  TextInput: {
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 5,
+  },
+
+  inputView: {
+    borderColor: 'grey',
+    borderRadius: 20,
+    borderWidth: 2,
+    marginBottom: 35,
+    marginHorizontal: 20,
+    marginVertical: 10,
+  },
+  title: {
+    color: 'black',
+    fontFamily: 'Roboto',
+    fontSize: 50,
+    fontWeight: '800',
+    letterSpacing: 1,
+    paddingBottom: 100,
+    paddingTop: 150,
+    alignItems: 'center',
+    paddingLeft: 110,
+  },
+  button: {
+    backgroundColor: '#f586d4',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 25,
+    borderColor: 'white',
+    borderWidth: 2,
+    marginHorizontal: 20,
+    marginVertical: 10,
+    height: 55,
+  },
+
+  smallText: {
+    color: 'black',
+    fontSize: 20,
+    fontWeight: '800',
+    letterSpacing: 0.5,
+    fontFamily: 'Roboto',
+  },
+  textFailed: {
+    alignSelf: 'center',
+    color: 'red',
+    bottom: 33,
+    right: 70,
+  },
 });
-  

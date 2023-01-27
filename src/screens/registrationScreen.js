@@ -3,7 +3,6 @@ import ButtonWithBackground from '../components/buttonWithBackground';
 import React, { useState } from "react";
 import { SafeAreaView,ScrollView } from 'react-native';
 import axios from 'axios';
-import Constants from 'expo-constants'
 import {Appbar} from 'react-native-paper'
 
 const baseUrl= 'https://y2ylvp.deta.dev';
