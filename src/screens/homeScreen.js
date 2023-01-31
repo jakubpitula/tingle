@@ -206,9 +206,16 @@ const CallRoute = () => {
   const [meetingId, setMeetingId] = useState(null);
 
   const getMeetingId = async id => {
-    const meetingId = await getMeeting({ id });
-    setMeetingId(meetingId["meetingId"]);
+    if(!id) {
+      const meetingId = await getMeeting({ id });
+      setMeetingId(meetingId);
+    }
+    else{
+      setMeetingId(id);
+    }
   };
+
+  console.log(meetingId);
 
   return meetingId ? (
     <SafeAreaView style={{flex: 1, backgroundColor: '#F6F6FF'}}>
