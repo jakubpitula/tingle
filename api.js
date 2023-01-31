@@ -17,7 +17,6 @@ export const getMeeting = async ({id}) => {
   }).catch(error => {
     return error.response.data;
   });
-  console.log(id);
 
   if (id == null) {
     const res = await fetch(`https://api.videosdk.live/v1/meetings`, {
