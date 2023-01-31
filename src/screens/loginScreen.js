@@ -87,7 +87,7 @@ export default function LoginScreen({navigation}) {
 
             <View style={styles.smallText}>
               <Text stlye={styles.smallText}> Don't have an account yet?</Text>
-              <SmallButton 
+              <SmallButton
                 text="Sign up"
                 onPress={() => navigation.navigate('Registration')}
               />
@@ -148,7 +148,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: '800',
     letterSpacing: 0.5,
-    fontFamily: 'Roboto',
   },
   textFailed: {
     alignSelf: 'center',
