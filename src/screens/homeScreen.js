@@ -11,7 +11,7 @@ import {SafeAreaView, ScrollView} from 'react-native';
 import {Appbar, Avatar} from 'react-native-paper';
 import {Text, BottomNavigation} from 'react-native-paper';
 import ButtonWithBackground from '../components/buttonWithBackground';
-import {createMeeting, token} from '../../api';
+import {getMeeting, token} from '../../api';
 import {
   MediaStream,
   MeetingProvider,
@@ -206,8 +206,8 @@ const CallRoute = () => {
   const [meetingId, setMeetingId] = useState(null);
 
   const getMeetingId = async id => {
-    const meetingId = id == null ? await createMeeting({token}) : id;
-    setMeetingId(meetingId);
+    const meetingId = await getMeeting({ id });
+    setMeetingId(meetingId["meetingId"]);
   };
 
   return meetingId ? (

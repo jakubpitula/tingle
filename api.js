@@ -11,22 +11,26 @@ async function getToken(){
 export let token = "";
 
 // API call to create meeting
-export const createMeeting = async () => {
+export const getMeeting = async ({id}) => {
   token = await getToken().then(token => {
     return token;
   }).catch(error => {
     return error.response.data;
   });
 
-  const res = await fetch(`https://api.videosdk.live/v1/meetings`, {
-    method: "POST",
-    headers: {
-      authorization: token,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ region: "eu001" }),
-  });
+  if (id == null) {
+    const res = await fetch(`https://api.videosdk.live/v1/meetings`, {
+      method: "POST",
+      headers: {
+        authorization: token,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ region: "eu001" }),
+    });
+    id = await res.json();
+  }
 
-  const { meetingId } = await res.json();
+  const meetingId = id;
+
   return meetingId;
 };
