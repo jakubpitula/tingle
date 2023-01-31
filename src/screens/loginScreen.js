@@ -55,7 +55,7 @@ export default function LoginScreen({navigation}) {
               style={styles.TextInput}
               value={email}
               placeholder="Email or phone number"
-              placeholderTextColor="color"
+              placeholderTextColor="black"
               onChangeText={onChangeEmailHandler}
               editable={!isLoading}
             />
@@ -68,7 +68,7 @@ export default function LoginScreen({navigation}) {
               value={password}
               onChangeText={onChangePasswordHandler}
               editable={!isLoading}
-              placeholderTextColor="color"
+              placeholderTextColor="black"
               secureTextEntry
             />
           </View>

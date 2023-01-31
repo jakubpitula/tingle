@@ -102,7 +102,7 @@ export default function RegistrationScreen({navigation})  {
               <TextInput
                 style={styles.TextInput}
                 placeholder="First Name *"
-                placeholderTextColor='color'
+                placeholderTextColor='black'
                 value={first_name}
                 editable={!isLoading}
                 onChangeText={onChangeFirstNameHandler}
@@ -114,7 +114,7 @@ export default function RegistrationScreen({navigation})  {
                 style={styles.TextInput}
                 placeholder="Last Name *"
                 value={last_name}
-                placeholderTextColor='color' 
+                placeholderTextColor='black' 
                 editable={!isLoading}
                 onChangeText={onChangeLastNameHandler}/>
             </View>
@@ -124,7 +124,7 @@ export default function RegistrationScreen({navigation})  {
               <TextInput
                 style={styles.TextInput}
                 placeholder="Email *"
-                placeholderTextColor='color' 
+                placeholderTextColor='black' 
                 value={email}
                 editable={!isLoading}
                 onChangeText={onChangeEmailHandler}
@@ -136,7 +136,7 @@ export default function RegistrationScreen({navigation})  {
               <TextInput
                 style={styles.TextInput}
                 placeholder="Password *"
-                placeholderTextColor='color'
+                placeholderTextColor='black'
                 secureTextEntry 
                 value={password}
                 editable={!isLoading}
@@ -146,7 +146,7 @@ export default function RegistrationScreen({navigation})  {
               <TextInput
                 style={styles.TextInput}
                 placeholder="Confirm Password *"
-                placeholderTextColor='color'
+                placeholderTextColor='black'
                 secureTextEntry 
                 value={conf_pass}
                 editable={!isLoading}
@@ -158,7 +158,7 @@ export default function RegistrationScreen({navigation})  {
               <TextInput
                 style={styles.TextInput}
                 placeholder="Age"
-                placeholderTextColor='color'
+                placeholderTextColor='black'
                 secureTextEntry 
                 value={age}
                 editable={!isLoading}
@@ -169,7 +169,7 @@ export default function RegistrationScreen({navigation})  {
               <TextInput
                 style={styles.TextInput}
                 placeholder="Gender"
-                placeholderTextColor='color'
+                placeholderTextColor='black'
                 secureTextEntry 
                 value={gender}
                 editable={!isLoading}
