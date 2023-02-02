@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View, TextInput, Animated} from 'react-native';
+import {StyleSheet, Text, View, TextInput, Image} from 'react-native';
 import React, {useState} from 'react';
 import ButtonWithBackground from '../components/buttonWithBackground';
 import SmallButton from '../components/smallButton';
@@ -12,6 +12,8 @@ export default function LoginScreen({navigation}) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
+ 
 
   const onChangePasswordHandler = password => {
     setPassword(password);
@@ -48,7 +50,7 @@ export default function LoginScreen({navigation}) {
     <SafeAreaView>
       <ScrollView>
         <View style={styles.container}>
-          <Text style={styles.title}>Tingle</Text>
+         <Text style={styles.title}> Tingle</Text>
 
           <View style={styles.inputView}>
             <TextInput
@@ -87,11 +89,12 @@ export default function LoginScreen({navigation}) {
 
             <View style={styles.smallText}>
               <Text stlye={styles.smallText}> Don't have an account yet?</Text>
-              <SmallButton
+              </View>
+              <SmallButton 
                 text="Sign up"
                 onPress={() => navigation.navigate('Registration')}
               />
-            </View>
+            
           </View>
         </View>
       </ScrollView>
@@ -103,6 +106,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'flex-end',
+    backgroundColor:'#FFF1ED'
   },
 
   TextInput: {
@@ -121,8 +125,8 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   title: {
-    color: 'black',
-    fontFamily: 'Roboto',
+    color: '#374B73',
+    
     fontSize: 50,
     fontWeight: '800',
     letterSpacing: 1,

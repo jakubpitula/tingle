@@ -3,7 +3,8 @@ import ButtonWithBackground from '../components/buttonWithBackground';
 import React, { useState } from "react";
 import { SafeAreaView,ScrollView } from 'react-native';
 import axios from 'axios';
-import {Appbar} from 'react-native-paper'
+import {Appbar} from 'react-native-paper';
+
 
 const baseUrl= 'https://y2ylvp.deta.dev';
 
@@ -95,7 +96,7 @@ export default function RegistrationScreen({navigation})  {
       </Appbar.Header>
       <SafeAreaView>
           <ScrollView style={styles.container}>
-
+          
 
 
             <View style={styles.inputView}>
@@ -176,9 +177,9 @@ export default function RegistrationScreen({navigation})  {
                 onChangeText={onChangeGenderHandler}
                 />
             </View>
-            <View style={{ paddingLeft: 120, marginBottom: 100 }}>
+            <View style={{ paddingLeft: 140, bottom: 20}}>
               <ButtonWithBackground
-                text='Register'
+                text='Confirm'
                 onPress={onSubmitFormHandler}
                 disabled={isLoading}/>
             </View>
@@ -204,10 +205,10 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
     backgroundColor: 'white',
-    paddingLeft: 50,
-    paddingRight: 50,
-    paddingTop:30,
-    paddingBottom:100,
+    paddingLeft: 20,
+    paddingRight: 10,
+    paddingTop:5,
+    paddingBottom:50,
     
   },
     
