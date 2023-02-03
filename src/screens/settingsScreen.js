@@ -4,15 +4,14 @@ import {SafeAreaView, ScrollView} from 'react-native';
 import {Text, Appbar} from 'react-native-paper';
 import {SegmentedButtons, Button, Switch} from 'react-native-paper';
 import React, {useState} from 'react';
-import MultiRangeSlider from '../components/multiRangeSlider';
 
 
 const SettingsScreen = ({navigation}) => {
     const [value, setValue] = React.useState('');
-  
+
     const [isSwitchOn, setIsSwitchOn] = React.useState(false);
     const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
-  
+
     return (
         <SafeAreaView>
             <ScrollView>
@@ -29,7 +28,7 @@ const SettingsScreen = ({navigation}) => {
                 </Appbar.Header>
 
                 <View style={styles.container}>
-                <Text style={styles.bigText}>Account Settings</Text> 
+                <Text style={styles.bigText}>Account Settings</Text>
 // vertical buttons
                 <View style={{paddingLeft: 100, marginBottom: 100}}>
             	<SquareButton
@@ -44,13 +43,13 @@ const SettingsScreen = ({navigation}) => {
                     text="Email address"
                     onPress={() => navigation.navigate('')} // In brackets Email address screen or pop up modal
                 />
-                </View>     
+                </View>
 //end of buttons
 
 //Discovery
-                <Text style={styles.bigText}>Discovery</Text> 
+                <Text style={styles.bigText}>Discovery</Text>
 
-                <Text style={styles.smallerText}>Age range</Text> 
+                <Text style={styles.smallerText}>Age range</Text>
                 <MultiRangeSlider
                     min = {18}
                     max = {99}
@@ -79,7 +78,7 @@ const SettingsScreen = ({navigation}) => {
                 />
 
 
-                </View>          
+                </View>
 
             </ScrollView>
         </SafeAreaView>
@@ -94,15 +93,15 @@ const styles = StyleSheet.create({
       paddingRight: 50,
       paddingTop: 30,
     },
-  
+
     TextInput: {
       height: 50,
       flex: 1,
       padding: 10,
-  
+
       justifyContent: 'center',
     },
-  
+
     title: {
       color: 'black',
       fontFamily: 'Roboto',
@@ -112,7 +111,7 @@ const styles = StyleSheet.create({
       marginBottom: 50,
       marginTop: 100,
     },
-  
+
     bigText: {
       color: 'black',
       fontFamily: 'Roboto',
@@ -123,7 +122,7 @@ const styles = StyleSheet.create({
       marginBottom: 20,
       justifyContent: 'center',
     },
-  
+
     smallerText: {
       color: 'black',
       fontFamily: 'Roboto',
@@ -133,7 +132,7 @@ const styles = StyleSheet.create({
       marginBottom: 20,
       justifyContent: 'center',
     },
-  
+
     inputView: {
       borderColor: 'grey',
       borderWidth: 2,
@@ -143,7 +142,7 @@ const styles = StyleSheet.create({
       alignContent: 'center',
       justifyContent: 'center',
     },
-  
+
     altTitle: {
       fontFamily: 'Roboto',
       fontSize: 20,
@@ -152,6 +151,6 @@ const styles = StyleSheet.create({
       flex: 1,
     },
   });
-  
+
   export default SettingsScreen;
-  
+

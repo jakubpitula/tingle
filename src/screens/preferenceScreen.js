@@ -1,6 +1,5 @@
 import {StyleSheet, View, TextInput} from 'react-native';
 import ButtonWithBackground from '../components/buttonWithBackground';
-import MultiRangeSlider from '../components/multiRangeSlider';       
 import {SafeAreaView, ScrollView} from 'react-native';
 import {Text, Appbar} from 'react-native-paper';
 import {SegmentedButtons, Button, Switch} from 'react-native-paper';
@@ -57,10 +56,6 @@ const PreferenceScreen = ({navigation}) => {
 
           <Text style={styles.smallText}>Age preference</Text>
 
-          <MultiRangeSlider
-            min = {18}
-            max = {99}
-            onChange = {({min, max}) => console.log('min = ${min}, max = ${max}')} />
 
           <Text style={styles.smallerText}>
             Only show people in this range{' '}
