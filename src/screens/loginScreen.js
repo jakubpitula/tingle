@@ -56,7 +56,7 @@ export default function LoginScreen({navigation}) {
             <TextInput
               style={styles.TextInput}
               value={email}
-              placeholder="Email or phone number"
+              placeholder="Email o number"
               placeholderTextColor="black"
               onChangeText={onChangeEmailHandler}
               editable={!isLoading}
