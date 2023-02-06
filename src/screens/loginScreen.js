@@ -13,7 +13,7 @@ export default function LoginScreen({navigation}) {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
- 
+
 
   const onChangePasswordHandler = password => {
     setPassword(password);
@@ -28,13 +28,18 @@ export default function LoginScreen({navigation}) {
       alert('email or passoword is invalid');
       return;
     }
+    const formData = new FormData();
+
+    formData.append("username", email);
+    formData.append("password", password);
 
     setIsLoading(true);
     try {
-      const response = await axios.post(`${baseUrl}/login`, {
-        email,
-        password,
-      });
+      const response = await axios.post(
+        `${baseUrl}/token`,
+        formData,
+        {headers: {'Content-Type': 'multipart/form-data'}}
+        );
       if (response.status == 200) {
         navigation.navigate('Home');
       } else {
@@ -90,11 +95,11 @@ export default function LoginScreen({navigation}) {
             <View style={styles.smallText}>
               <Text stlye={styles.smallText}> Don't have an account yet?</Text>
               </View>
-              <SmallButton 
+              <SmallButton
                 text="Sign up"
                 onPress={() => navigation.navigate('Registration')}
               />
-            
+
           </View>
         </View>
       </ScrollView>
@@ -126,7 +131,7 @@ const styles = StyleSheet.create({
   },
   title: {
     color: '#374B73',
-    
+
     fontSize: 50,
     fontWeight: '800',
     letterSpacing: 1,

@@ -2,10 +2,10 @@ import LoginApiManager from "./loginApiManager";
 
 export const user_Api = async data => {
   try {
-    const result = await LoginApiManager('/login', {
+    const result = await LoginApiManager('/token', {
       method: 'POST',
       headers: {
-        'content-type': 'application/json',
+        'content-type': 'multipart/form-data',
       },
       data: data,
     });
@@ -14,5 +14,5 @@ export const user_Api = async data => {
     return error.response.data;
   }
 };
-  
+
 
