@@ -4,6 +4,7 @@ import ButtonWithBackground from '../components/buttonWithBackground';
 import SmallButton from '../components/smallButton';
 import axios from 'axios';
 
+
 import {SafeAreaView, ScrollView} from 'react-native';
 
 const baseUrl = 'https://y2ylvp.deta.dev';
@@ -88,10 +89,11 @@ export default function LoginScreen({navigation}) {
             <SmallButton text="Forgot Password?" />
 
             <View style={styles.smallText}>
-              <Text stlye={styles.smallText}> Don't have an account yet?</Text>
+              <Text color="black"> Don't have an account yet?</Text>
               </View>
               <SmallButton 
                 text="Sign up"
+                
                 onPress={() => navigation.navigate('Registration')}
               />
             
@@ -106,7 +108,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'flex-end',
-    backgroundColor:'#FFF1ED'
+    backgroundColor:'#FFF1ED',
+    
   },
 
   TextInput: {
@@ -114,10 +117,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginLeft: 5,
+    color:'black'
   },
 
   inputView: {
     borderColor: 'grey',
+
     borderRadius: 20,
     borderWidth: 2,
     marginBottom: 35,

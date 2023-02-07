@@ -97,7 +97,7 @@ const data_smoking = [
 
             
             
-            <Text style={styles.smallText}> Hobies </Text>
+            <Text style={styles.smallText}> Hobbies </Text>
             <MultipleSelectList 
             setSelected={(val) => setSelected(val)} 
             data={data1} 
