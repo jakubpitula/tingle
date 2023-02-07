@@ -27,7 +27,9 @@ const PreferenceScreen = ({navigation}) => {
         </Appbar.Header>
 
         <View style={styles.container}>
-          <Text style={styles.smallText}>Age preference</Text>
+          <Text style={styles.smallText}>Distance preference</Text>
+
+          // Include slider
 
           <Text style={styles.smallerText}>
             Only show people in this range{' '}
@@ -54,24 +56,11 @@ const PreferenceScreen = ({navigation}) => {
 
           <Text style={styles.smallText}>Age preference</Text>
 
-          <View style={styles.inputView}>
-            <TextInput
-              style={styles.TextInput}
-              placeholder="Age range"
-              placeholderTextColor="color"
-            />
-          </View>
+
           <Text style={styles.smallerText}>
             Only show people in this range{' '}
             <Switch value={isSwitchOn} onValueChange={onToggleSwitch} />
           </Text>
-
-          <View style={{paddingLeft: 130, marginBottom: 200, paddingTop: 50}}>
-            <ButtonWithBackground
-              text="Confirm"
-              onPress={() => navigation.navigate('ProfilePicScreen')}
-            />
-          </View>
         </View>
         <View style={{paddingLeft: 100, marginBottom: 100}}>
           <ButtonWithBackground

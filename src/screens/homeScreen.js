@@ -95,7 +95,7 @@ const Button = ({onPress, buttonText, backgroundColor}) => {
   );
 };
 
-function ControlsContainer({join, leave, toggleWebcam, toggleMic}) {
+function ControlsContainer({join, leave, changeWebcam, toggleMic}) {
   return (
     <View
       style={{
@@ -112,7 +112,7 @@ function ControlsContainer({join, leave, toggleWebcam, toggleMic}) {
       />
       <Button
         onPress={() => {
-          toggleWebcam();
+          changeWebcam();
         }}
         buttonText={'Toggle Webcam'}
         backgroundColor={'#1178F8'}
@@ -182,7 +182,7 @@ function ParticipantList({participants}) {
 }
 
 function MeetingView() {
-  const {join, leave, toggleWebcam, toggleMic, meetingId, participants} =
+  const {join, leave, changeWebcam, toggleMic, meetingId, participants} =
     useMeeting({});
   const participantsArrId = [...participants.keys()];
 
@@ -195,7 +195,7 @@ function MeetingView() {
       <ControlsContainer
         join={join}
         leave={leave}
-        toggleWebcam={toggleWebcam}
+        changeWebcam={changeWebcam}
         toggleMic={toggleMic}
       />
     </View>
@@ -244,11 +244,11 @@ const ProfileRoute = () => (
     <Text style={styles.altTitle}>Name, Age</Text>
 
     <View style={{padding: 40}}>
-      <SettingsButton text="Change Photo" style={{borderRadius: 10}} />
+      <SettingsButton text="Settings" onPress={() => navigation.navigate('SettingsScreen')} style={{borderRadius: 10}} />
 
-      <SettingsButton text="Change Preferences" style={{borderRadius: 10}} />
+      <SettingsButton text="Edit profile" onPress={() => navigation.navigate('EditProifleScreen')} style={{borderRadius: 10}} />
 
-      <SettingsButton text="Settings" style={{borderRadius: 10}} />
+      <SettingsButton text="Subscription" style={{borderRadius: 10}} />
 
       <ButtonWithBackground text="Log out" style={{borderRadius: 10}} />
     </View>
