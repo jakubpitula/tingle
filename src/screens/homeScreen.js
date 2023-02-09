@@ -6,12 +6,16 @@ import {
   FlatList,
 } from 'react-native';
 import React, {useState} from 'react';
-import SettingsButton from '../components/settingsButton';
+import SettingsButton from '../components/settingsButton'
 import {SafeAreaView, ScrollView} from 'react-native';
 import {Appbar, Avatar} from 'react-native-paper';
 import {Text, BottomNavigation} from 'react-native-paper';
 import ButtonWithBackground from '../components/buttonWithBackground';
 import {getMeeting, token} from '../../api';
+
+
+
+
 import {
   MediaStream,
   MeetingProvider,
@@ -19,6 +23,10 @@ import {
   useMeeting,
   useParticipant,
 } from '@videosdk.live/react-native-sdk';
+
+
+
+
 
 function JoinScreen(props) {
   const [meetingVal, setMeetingVal] = useState('');
@@ -95,7 +103,7 @@ const Button = ({onPress, buttonText, backgroundColor}) => {
   );
 };
 
-function ControlsContainer({join, leave, changeWebcam, toggleMic}) {
+function ControlsContainer({join, leave, toggleWebcam, toggleMic}) {
   return (
     <View
       style={{
@@ -112,7 +120,7 @@ function ControlsContainer({join, leave, changeWebcam, toggleMic}) {
       />
       <Button
         onPress={() => {
-          changeWebcam();
+          toggleWebcam();
         }}
         buttonText={'Toggle Webcam'}
         backgroundColor={'#1178F8'}
@@ -182,7 +190,7 @@ function ParticipantList({participants}) {
 }
 
 function MeetingView() {
-  const {join, leave, changeWebcam, toggleMic, meetingId, participants} =
+  const {join, leave, toggleWebcam, toggleMic, meetingId, participants} =
     useMeeting({});
   const participantsArrId = [...participants.keys()];
 
@@ -195,7 +203,7 @@ function MeetingView() {
       <ControlsContainer
         join={join}
         leave={leave}
-        changeWebcam={changeWebcam}
+        toggleWebcam={toggleWebcam}
         toggleMic={toggleMic}
       />
     </View>
@@ -232,7 +240,9 @@ const CallRoute = () => {
 const MatchesRoute = () => <Text>Matches</Text>;
 const MessagesRoute = () => <Text>Messages</Text>;
 
-const ProfileRoute = () => (
+
+
+const ProfileRoute = ({navigation}) => (
   <View style={styles.container}>
     <Avatar.Icon
       size={100}
@@ -244,9 +254,12 @@ const ProfileRoute = () => (
     <Text style={styles.altTitle}>Name, Age</Text>
 
     <View style={{padding: 40}}>
-      <SettingsButton text="Settings" onPress={() => navigation.navigate('SettingsScreen')} style={{borderRadius: 10}} />
+    <SettingsButton
+            text="Next"
+            onPress={() => navigation.navigate ('Interest')}
+    />
 
-      <SettingsButton text="Edit profile" onPress={() => navigation.navigate('EditProifleScreen')} style={{borderRadius: 10}} />
+      <SettingsButton text="Edit profile" onPress={() => navigation.navigate('EditProfileScreen')} style={{borderRadius: 10}} />
 
       <SettingsButton text="Subscription" style={{borderRadius: 10}} />
 

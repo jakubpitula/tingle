@@ -1,16 +1,30 @@
-import { StyleSheet, View, TextInput  } from 'react-native';
-import SquareButton from '../components/squareButton';
+import { StyleSheet, View } from 'react-native';
+import SmallButton from '../components/smallButton';
 import {SafeAreaView, ScrollView} from 'react-native';
 import {Text, Appbar} from 'react-native-paper';
 import {SegmentedButtons, Button, Switch} from 'react-native-paper';
 import React, {useState} from 'react';
+import { TouchableOpacity, Image} from 'react-native';
+import {TextInput} from 'react-native-paper';
+import { Modal, Portal, Provider } from 'react-native-paper';
+
+
+
 
 
 const SettingsScreen = ({navigation}) => {
-    const [value, setValue] = React.useState('');
+  const [text, setText] = React.useState("");
+  const [value, setValue] = React.useState('');
 
-    const [isSwitchOn, setIsSwitchOn] = React.useState(false);
-    const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
+  const [visible, setVisible] = React.useState(false);
+
+  const showModal = () => setVisible(true);
+  const hideModal = () => setVisible(false);
+  const containerStyle = {backgroundColor: 'white', padding: 20};
+
+  const [isSwitchOn, setIsSwitchOn] = React.useState(false);
+  const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
+
 
     return (
         <SafeAreaView>
@@ -18,7 +32,7 @@ const SettingsScreen = ({navigation}) => {
                 <Appbar.Header>
                 <Appbar.Action
                     icon="arrow-left-thick"
-                    onPress={() => navigation.navigate('HomeScreen')}
+                    onPress={() => navigation.navigate('Home')}
                 />
                 <Appbar.Content
                     title="Settings"
@@ -29,42 +43,47 @@ const SettingsScreen = ({navigation}) => {
 
                 <View style={styles.container}>
                 <Text style={styles.bigText}>Account Settings</Text>
-// vertical buttons
-                <View style={{paddingLeft: 100, marginBottom: 100}}>
-            	<SquareButton
-                    text="Phone number"
-                    onPress={() => navigation.navigate('')} //In brackets Phone number screen or pop up modal
-                />
-                <SquareButton
-                    text="Connect accounts"
-                    onPress={() => navigation.navigate('')} //In brackets Connect acocunts screen or pop up modal
-                />
-                <SquareButton
-                    text="Email address"
-                    onPress={() => navigation.navigate('')} // In brackets Email address screen or pop up modal
-                />
-                </View>
-//end of buttons
 
-//Discovery
+                <TextInput
+                    style={styles.inputView}
+                    label="Phone number"
+                    placeholderTextColor="black"
+                    value={text}
+                    onChangeText={text => setText(text)}/>
+
+                <TextInput
+                    style={styles.inputView}
+                    label="Email"
+                    placeholderTextColor="black"
+                    value={text}
+                    onChangeText={text => setText(text)}/>
+                
                 <Text style={styles.bigText}>Discovery</Text>
+                
+                <Text style={styles.smallerText}> Location </Text>
 
-                <Text style={styles.smallerText}>Age range</Text>
-                <MultiRangeSlider
-                    min = {18}
-                    max = {99}
-                    onChange = {({min, max}) => console.log('min = ${min}, max = ${max}')} />
+                <Provider>
+                  <Portal>
+                    <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={containerStyle}>
+                      <Text>Option to change location</Text>
+                    </Modal>
+                  </Portal>
+                <SmallButton 
+                onPress={showModal}
+                text = "Change"/>
+                </Provider>
+
                 <Text style={styles.smallerText}>
-              	  Only show people in this range{' '}
+                Only show people in this range{' '}
                 <Switch value={isSwitchOn} onValueChange={onToggleSwitch} />
                 </Text>
 
-//Button for gender
                 <Text style={styles.smallerText}>Sex preference</Text>
+
                 <SegmentedButtons
-                value={value}
-                onValueChange={setValue}
-                buttons={[
+                  value={value}
+                  onValueChange={setValue}
+                  buttons={[
                 {
                   value: 'male',
                   label: 'Male',
@@ -73,25 +92,63 @@ const SettingsScreen = ({navigation}) => {
                   value: 'female',
                   label: 'Female',
                 },
-                ]}
+              ]}
                 style={styles.group}
                 />
 
+              <Text style={styles.smallerText}>Age Preference</Text>
+              <Text style={styles.smallerText}>
+                Only show people in this range{' '}
+                <Switch value={isSwitchOn} onValueChange={onToggleSwitch} />
+                </Text>
+                <Text style={styles.smallerText}>
+                Global{' '}
+                <Switch value={isSwitchOn} onValueChange={onToggleSwitch} />
+                </Text>
+                <Text style={styles.smallerText}>
+                  Going Global will allow you to see people nearby and from around the world.
+                </Text>
+
+
+                <Text style={styles.bigText}>Contact us</Text>
+                <TextInput
+                    style={styles.inputView}
+                    label="Help & Support"
+                    placeholderTextColor="black"
+                    value={text}
+                    onChangeText={text => setText(text)}/>
+
+
+                  <TextInput
+                    style={styles.inputView}
+                    label="Delete account"
+                    placeholderTextColor="black"
+                    value={text}
+                    onChangeText={text => setText(text)}/>
+                
+
+
+
+
+
+
+                
 
                 </View>
-
             </ScrollView>
         </SafeAreaView>
     );
-};
+  };
+
 
 const styles = StyleSheet.create({
     container: {
       flexDirection: 'column',
       backgroundColor: 'white',
-      paddingLeft: 30,
-      paddingRight: 50,
-      paddingTop: 30,
+      paddingLeft: 10,
+      paddingRight: 10,
+      paddingTop: 10,
+      paddingBottom: 10,
     },
 
     TextInput: {
@@ -126,7 +183,7 @@ const styles = StyleSheet.create({
     smallerText: {
       color: 'black',
       fontFamily: 'Roboto',
-      fontSize: 15,
+      fontSize: 17,
       marginTop: 0,
       marginLeft: 0,
       marginBottom: 20,
@@ -134,11 +191,11 @@ const styles = StyleSheet.create({
     },
 
     inputView: {
-      borderColor: 'grey',
-      borderWidth: 2,
-      borderRadius: 3,
-      width: '90%',
-      marginBottom: 35,
+      borderColor: 'white',
+      borderWidth: 1,
+      borderRadius: 2,
+      width: '100%',
+      marginBottom: 0,
       alignContent: 'center',
       justifyContent: 'center',
     },
