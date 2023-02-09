@@ -5,6 +5,7 @@ import {Text, Appbar} from 'react-native-paper';
 import {SegmentedButtons, Button, Switch} from 'react-native-paper';
 import React, {useState} from 'react';
 
+
 const PreferenceScreen = ({navigation}) => {
   const [value, setValue] = React.useState('');
 
@@ -29,14 +30,16 @@ const PreferenceScreen = ({navigation}) => {
         <View style={styles.container}>
           <Text style={styles.smallText}>Distance preference</Text>
 
-          // Include slider
+          
 
           <Text style={styles.smallerText}>
             Only show people in this range{' '}
             <Switch value={isSwitchOn} onValueChange={onToggleSwitch} />
           </Text>
 
+          <View style={{paddingTop: 50,}}>
           <Text style={styles.smallText}>Sex preference</Text>
+          </View>
 
           <SegmentedButtons
             value={value}
@@ -54,20 +57,23 @@ const PreferenceScreen = ({navigation}) => {
             style={styles.group}
           />
 
+          <View style={{paddingTop: 50,}}>
           <Text style={styles.smallText}>Age preference</Text>
+          </View>
 
 
           <Text style={styles.smallerText}>
             Only show people in this range{' '}
             <Switch value={isSwitchOn} onValueChange={onToggleSwitch} />
           </Text>
-        </View>
-        <View style={{paddingLeft: 100, marginBottom: 100}}>
+          <View style={{paddingTop: 200, paddingLeft: 140}}>
           <ButtonWithBackground
             text="Next"
             onPress={() => navigation.navigate('Interest')}
           />
         </View>
+        </View>
+        
       </ScrollView>
     </SafeAreaView>
   );
@@ -80,6 +86,7 @@ const styles = StyleSheet.create({
     paddingLeft: 30,
     paddingRight: 50,
     paddingTop: 30,
+    paddingBottom: 0,
   },
 
   TextInput: {

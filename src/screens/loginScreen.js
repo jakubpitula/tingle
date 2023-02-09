@@ -101,6 +101,11 @@ export default function LoginScreen({navigation}) {
                 
                 onPress={() => navigation.navigate('Registration')}
               />
+<SmallButton
+                text="preferences "
+                
+                onPress={() => navigation.navigate('Preference')}
+              />
 
           </View>
         </View>
