@@ -18,10 +18,10 @@ const styles = StyleSheet.create({
         margin: 10,
         width: 170,
         borderRadius: 10,
-        alignItems: 'center',
+        alignItems: 'right',
     },
     text:{
-        color: 'white',
+        color: 'black',
         fontSize: 15,
         
         

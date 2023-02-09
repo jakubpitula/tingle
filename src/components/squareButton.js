@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 
-const squareButton = props => {
+const SquareButton = props => {
     const content = (
         <View style={styles.button}>
             <Text style={styles.text}>{props.text}</Text>
@@ -31,4 +31,4 @@ const styles = StyleSheet.create({
 
 })
 
-export default squareButton;
+export default SquareButton;
