@@ -212,9 +212,9 @@ export default function RegistrationScreen({navigation}) {
     await storage().ref(filename).putFile(uri);
 
     const profilePicRef = storage().ref(filename);
-    await profilePicRef.getDownloadURL().then((x) => {setProfilePicUrl(x)})
+    const url = await profilePicRef.getDownloadURL();
 
-    setImage(null);
+    setProfilePicUrl(url);
   };
 
   const onSubmitFormHandler = async event => {
