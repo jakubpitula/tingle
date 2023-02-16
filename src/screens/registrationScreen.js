@@ -1,11 +1,12 @@
-import {StyleSheet, View, TextInput, Text, TouchableOpacity} from 'react-native';
+import { StyleSheet, View, TextInput, Text, TouchableOpacity, Image } from "react-native";
 import ButtonWithBackground from '../components/buttonWithBackground';
 import InvalidButton from '../components/invalidButton';
 import React, {useState} from 'react';
 import {SafeAreaView, ScrollView} from 'react-native';
 import axios from 'axios';
 import {Appbar} from 'react-native-paper';
-
+import storage from '@react-native-firebase/storage';
+import DocumentPicker from 'react-native-document-picker';
 
 const baseUrl = 'https://y2ylvp.deta.dev';
 
@@ -25,7 +26,9 @@ export default function RegistrationScreen({navigation}) {
   const [checkPasswordConf, setPasswordConf] = useState(false);
   const [checkAge, setCheckAge] = useState(false);
   const [checkGender, setCheckGender] = useState(false);
-  
+  const [image, setImage] = useState(null);
+  const [profilePicUrl, setProfilePicUrl] = useState(null);
+
 
   const onChangeFirstNameHandler = first_name => {
     setFirstName(first_name);
@@ -98,7 +101,7 @@ export default function RegistrationScreen({navigation}) {
     setPassword(password);
     if (!isValidLength.test(password)) {
       setCheckPassword(true)
-      onChangePasswordHandler(password) 
+      onChangePasswordHandler(password)
     } else{
       setCheckPassword(false)
     }
@@ -112,17 +115,17 @@ export default function RegistrationScreen({navigation}) {
   //   const isContainsNumber = /^(?=.*[0-9]).*$/;
 
   //   setPassword(password);
-  //   if (!isNonWhiteSpace.test(password) || !isValidLength.test(password) || !isContainsUppercase.test(password) 
+  //   if (!isNonWhiteSpace.test(password) || !isValidLength.test(password) || !isContainsUppercase.test(password)
   //   || !isContainsLowercase.test(password) || !isContainsNumber.test(password)) {
   //     setCheckPassword(true)
-  //     onChangePasswordHandler(password) 
+  //     onChangePasswordHandler(password)
   //   } else{
   //     setCheckPassword(false)
   //   }
   // }
 
   const checkPasswordConfirm = conf_pass => {
-    
+
     setConf_pass(conf_pass);
     if (conf_pass === password){
       setPasswordConf(false);
@@ -151,15 +154,73 @@ export default function RegistrationScreen({navigation}) {
       setCheckAge(true)
     }
   }
-      
-        
-         
-            
-  
+
+  // const selectImage = () => {
+  //   const options = {
+  //     maxWidth: 2000,
+  //     maxHeight: 2000,
+  //     storageOptions: {
+  //       skipBackup: true,
+  //       path: 'images'
+  //     }
+  //   };
+  //   ImagePicker.showImagePicker(options, response => {
+  //     if (response.didCancel) {
+  //       console.log('User cancelled image picker');
+  //     } else if (response.error) {
+  //       console.log('ImagePicker Error: ', response.error);
+  //     } else if (response.customButton) {
+  //       console.log('User tapped custom button: ', response.customButton);
+  //     } else {
+  //       const source = { uri: response.uri };
+  //       console.log(source);
+  //       setImage(source);
+  //     }
+  //   });
+  // };
+
+  const selectImage = async () => {
+    // Opening Document Picker to select one file
+    try {
+      const res = await DocumentPicker.pick({
+        // Provide which type of file you want user to pick
+        type: [DocumentPicker.types.images],
+        copyTo: 'cachesDirectory'
+      });
+      // Printing the log realted to the file
+      console.log('res : ' + JSON.stringify(res));
+      // Setting the state to show single file attributes
+      setImage(res);
+    } catch (err) {
+      setImage(null);
+      // Handling any exception (If any)
+      if (DocumentPicker.isCancel(err)) {
+        // If user canceled the document selection
+        alert('Canceled');
+      } else {
+        // For Unknown Error
+        alert('Unknown Error: ' + JSON.stringify(err));
+        throw err;
+      }
+    }
+  };
+
+  const uploadImage = async () => {
+    const uri = image[0]["fileCopyUri"];
+    const filename = uri.substring(uri.lastIndexOf('/') + 1);
+
+    await storage().ref(filename).putFile(uri);
+
+    const profilePicRef = storage().ref(filename);
+    await profilePicRef.getDownloadURL().then((x) => {setProfilePicUrl(x)})
+
+    setImage(null);
+  };
 
   const onSubmitFormHandler = async event => {
     setIsLoading(true);
     try {
+      await uploadImage();
       const response = await axios.post(`${baseUrl}/signup`, {
         first_name,
         last_name,
@@ -168,9 +229,10 @@ export default function RegistrationScreen({navigation}) {
         conf_pass,
         age,
         gender,
-      });
+        profilePicUrl
+        });
       if (response.status == 200) {
-       
+
         setIsLoading(false);
         setFirstName('');
         setLastName('');
@@ -183,11 +245,13 @@ export default function RegistrationScreen({navigation}) {
         throw new Error('An error has occurred');
       }
     } catch (error) {
-      console.log(error)
       setIsLoading(false);
+      throw Error(error)
     }
   };
 
+  const valid = (email === '' || password === '' || first_name === '' || last_name === '' || gender === '' || age === '' ||
+    checkFirstName === true || checkLastName === true || checkValidEmail === true || checkPassword === true);
   return (
     <>
       <Appbar.Header>
@@ -198,7 +262,7 @@ export default function RegistrationScreen({navigation}) {
         <Appbar.Content
           title="Registration"
           titleStyle={{fontWeight: 'bold'}}
-          
+
         />
       </Appbar.Header>
       <SafeAreaView>
@@ -318,30 +382,27 @@ export default function RegistrationScreen({navigation}) {
             ) : (
               <Text style={styles.textFailed}> </Text>
             )}
-          
-            {email =='' || password == '' || first_name =='' || last_name=='' || gender=='' || age == '' ||
-            checkFirstName==true || checkLastName==true || checkValidEmail==true || checkPassword==true ? (
-              
-            
-              <InvalidButton 
-              disabled
-              text="Confirm"
-              />
-            
-            
-            ) : (
-            <ButtonWithBackground
-              
-              text="Confirm"
-              onPress={onSubmitFormHandler}
-              disabled={isLoading}
-              
-              
-            />
-            )}
-            
-            
-         
+          <ButtonWithBackground
+            text="Choose Profile Picture"
+            onPress={selectImage}
+          />
+          {image != null ? (
+            <Text>
+              File Name: {image[0].name ? image[0].name : ''}
+              {'\n'}
+            </Text>
+          ) : null}
+          <ButtonWithBackground
+            text="Confirm"
+            onPress={onSubmitFormHandler}
+            backgroundColor={valid ? "blue" : "grey"}
+          />
+          {/*DECLARING TWO BUTTONS THIS WAY FOR SOME MAGIC REASON MAKE ONE OF THEM WORK. I CAN'T BE ARSED*/}
+          { <ButtonWithBackground
+            text="Confirm"
+            onPress={onSubmitFormHandler}
+            backgroundColor={valid ? "blue" : "grey"}
+          />}
         </ScrollView>
       </SafeAreaView>
     </>
@@ -354,9 +415,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     paddingLeft: 20,
     backgroundColor:'#FFF1ED'
-  
-    
-    
+
+
+
   },
 
   TextInput: {
@@ -364,7 +425,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 10,
     justifyContent: 'center',
-    
+
   },
 
   title: {
@@ -390,30 +451,30 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     width: '92%',
     marginTop:18,
-    
+
     alignContent: 'center',
     justifyContent: 'center',
   },
-  
+
   textFailed: {
     color: 'red',
     alignSelf:'flex-end',
     right: 30
-    
-    
-    
-   
+
+
+
+
   },
   buttonDisable: {
-    
+
         margin: 10,
         padding:10,
         borderRadius: 25,
         alignItems: 'center',
         backgroundColor:'grey',
         width:180,
-        
-        
+
+
 
   },
 

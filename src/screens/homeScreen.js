@@ -25,9 +25,6 @@ import {
 } from '@videosdk.live/react-native-sdk';
 
 
-
-
-
 function JoinScreen(props) {
   const [meetingVal, setMeetingVal] = useState('');
   return (
