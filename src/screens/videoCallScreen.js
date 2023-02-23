@@ -3,7 +3,7 @@ import {
     View,
     TextInput,
     TouchableOpacity,
-    navgation
+    navigation
   } from 'react-native';
   import React, {useEffect, useState} from 'react';
   import SettingsButton from '../components/settingsButton';
@@ -11,7 +11,7 @@ import {
   import {Appbar, Avatar} from 'react-native-paper';
   import {Text, BottomNavigation} from 'react-native-paper';
   import ButtonWithBackground from '../components/buttonWithBackground';
-  
+
   import {getMeeting, token} from '../../api';
   import {
     MediaStream,
@@ -24,10 +24,10 @@ import {
 
 
 function JoinScreen(props) {
-  
+
     const [meetingVal, setMeetingVal] = useState('');
     return (
-      
+
       <SafeAreaView
         style={{
           flex: 1,
@@ -44,7 +44,7 @@ function JoinScreen(props) {
             Create Meeting
           </Text>
         </TouchableOpacity>
-  
+
         <Text
           style={{
             alignSelf: 'center',
@@ -83,7 +83,7 @@ function JoinScreen(props) {
       </SafeAreaView>
     );
   }
-  
+
   const Button = ({onPress, buttonText, backgroundColor}) => {
     return (
       <TouchableOpacity
@@ -99,7 +99,7 @@ function JoinScreen(props) {
       </TouchableOpacity>
     );
   };
-  
+
   function ControlsContainer({join, leave, changeWebcam, toggleMic}) {
     return (
       <View
@@ -139,7 +139,7 @@ function JoinScreen(props) {
       </View>
     );
   }
-  
+
   function ParticipantView({participantId}) {
     const {webcamStream, webcamOn} = useParticipant(participantId);
     return webcamOn && webcamStream ? (
@@ -164,7 +164,7 @@ function JoinScreen(props) {
       </View>
     );
   }
-  
+
   function ParticipantList({participants}) {
     return participants.length > 0 ? (
       <FlatList
@@ -185,12 +185,12 @@ function JoinScreen(props) {
       </View>
     );
   }
-  
+
   function MeetingView() {
     const {join, leave, changeWebcam, toggleMic, meetingId, participants} =
       useMeeting({});
     const participantsArrId = [...participants.keys()];
-  
+
     return (
       <View style={{flex: 1}}>
         {meetingId ? (
@@ -206,11 +206,11 @@ function JoinScreen(props) {
       </View>
     );
   }
-  
-  
-  
-    
-  
+
+
+
+
+
 
   export default function VideoCallScreen(){
   const CallRoute = () => {
@@ -232,17 +232,16 @@ function JoinScreen(props) {
     );
   }
   const [meetingId, setMeetingId] = useState(null);
-  
+
     const getMeetingId = async id => {
       const meetingId = await getMeeting({ id });
       setMeetingId(meetingId);
     };
-    
+
 
     return(
       <CallRoute/>
     )
   }
 
-    
-  
+

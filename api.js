@@ -29,7 +29,6 @@ export const getMeeting = async ({id}) => {
     });
     id = await res.json();
     const meetingId = id;
-    // console.log(meetingId);
 
     return meetingId["meetingId"];
   }
