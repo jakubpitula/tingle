@@ -3,7 +3,7 @@ import React, {useState} from 'react';
 import ButtonWithBackground from '../components/buttonWithBackground';
 import SmallButton from '../components/smallButton';
 import axios from 'axios';
-
+import style from '../css/loginScreen.css';
 
 import {SafeAreaView, ScrollView} from 'react-native';
 
@@ -55,12 +55,12 @@ export default function LoginScreen({navigation}) {
   return (
     <SafeAreaView>
       <ScrollView>
-        <View style={styles.container}>
-         <Text style={styles.title}> Tingle</Text>
+        <View style={style.container}>
+         <Text style={style.title}> Tingle</Text>
 
-          <View style={styles.inputView}>
+          <View style={style.inputView}>
             <TextInput
-              style={styles.TextInput}
+              style={style.TextInput}
               value={email}
               placeholder="Email o number"
               placeholderTextColor="black"
@@ -69,9 +69,9 @@ export default function LoginScreen({navigation}) {
             />
           </View>
 
-          <View style={styles.inputView}>
+          <View style={style.inputView}>
             <TextInput
-              style={styles.TextInput}
+              style={style.TextInput}
               placeholder="Password"
               value={password}
               onChangeText={onChangePasswordHandler}
@@ -93,7 +93,7 @@ export default function LoginScreen({navigation}) {
           <View alignItems="center">
             <SmallButton text="Forgot Password?" />
 
-            <View style={styles.smallText}>
+            <View style={style.smallText}>
               <Text color="black"> Don't have an account yet?</Text>
               </View>
               <SmallButton
@@ -114,64 +114,4 @@ export default function LoginScreen({navigation}) {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    backgroundColor:'#FFF1ED',
-    
-  },
 
-  TextInput: {
-    height: 50,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginLeft: 5,
-    color:'black'
-  },
-
-  inputView: {
-    borderColor: 'grey',
-    color: 'black',
-    borderRadius: 20,
-    borderWidth: 2,
-    marginBottom: 35,
-    marginHorizontal: 20,
-    marginVertical: 10,
-  },
-  title: {
-    color: '#374B73',
-
-    fontSize: 50,
-    fontWeight: '800',
-    letterSpacing: 1,
-    paddingBottom: 100,
-    paddingTop: 150,
-    alignItems: 'center',
-    paddingLeft: 110,
-  },
-  button: {
-    backgroundColor: '#f586d4',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 25,
-    borderColor: 'white',
-    borderWidth: 2,
-    marginHorizontal: 20,
-    marginVertical: 10,
-    height: 55,
-  },
-
-  smallText: {
-    color: 'black',
-    fontSize: 20,
-    fontWeight: '800',
-    letterSpacing: 0.5,
-  },
-  textFailed: {
-    alignSelf: 'center',
-    color: 'red',
-    bottom: 33,
-    right: 70,
-  },
-});

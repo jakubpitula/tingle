@@ -1,0 +1,56 @@
+container {
+    flex: 1;
+    justify-content: 'flex-end';
+    background-color: '#FFF1ED';}
+
+TextInput {
+    height: 50;
+    justify-content: 'center';
+    align-items: 'center';
+    margin-left: 5;
+    color:'black';}
+
+inputView {
+    border-color: 'grey';
+    color: 'black';
+    border-radius: 20;
+    border-width: 2;
+    margin-bottom: 35;
+    margin-inline-start: 20;
+    margin-inline-end: 10;}
+
+title {
+    color: '#374B73';
+    font-size: 50;
+    font-weight: '800';
+    letter-spacing: 1;
+    padding-bottom: 100;
+    padding-top: 150;
+    align-items: 'center';
+    padding-left: 110;}
+
+button {
+    background-color: '#f586d4';
+    align-items: 'center';
+    justify-content: 'center';
+    border-radius: 25;
+    border-color: 'white';
+    border-width: 2;
+    margin-inline-start: 20;
+    margin-inline-end: 10;
+    height: 55;}
+
+smallText {
+    color: 'black';
+    font-size: 20;
+    font-weight: '800';
+    letter-spacing: 0.5;}
+
+textFailed {
+    align-self: 'center';
+    color: 'red';
+    bottom: 33;
+    right: 70;}
+
+
+

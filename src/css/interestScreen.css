@@ -1,0 +1,21 @@
+TextInputAboutMe {
+    height:100;
+    flex: 1;
+    padding: 10;
+    justify-content: 'center';}
+
+inputView {
+    border-color: 'grey';
+    border-width: 2;
+    border-radius: 3;
+    width: '90%';
+    margin-bottom: 35;
+    align-content: 'center';
+    justify-content: 'center';}
+
+  smallText {
+    color: 'black';
+    font-size: 20;
+    margin-top: 10;
+    margin-bottom:10;
+    justify-content: 'center';}

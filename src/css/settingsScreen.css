@@ -1,0 +1,57 @@
+container {
+    flex-direction: 'column';
+    background-color: 'white';
+    padding-left: 10;
+    padding-right: 10;
+    padding-top: 10;
+    padding-bottom: 10;}
+
+TextInput {
+    height: 50;
+    flex: 1;
+    padding: 10;
+    justify-content: 'center';}
+
+title {
+    color: 'black';
+    font-family: 'Roboto';
+    font-size: 50;
+    font-weight: 'bold';
+    letter-spacing: 1;
+    margin-bottom: 50;
+    margin-top: 100;}
+
+bigText {
+    color: 'black';
+    font-family: 'Roboto';
+    font-weight: 'bold';
+    font-size: 20;
+    margin-top: 0;
+    margin-left: 0;
+    margin-bottom: 20;
+    justify-content: 'center';}
+
+smallerText {
+    color: 'black';
+    font-family: 'Roboto';
+    font-size: 17;
+    margin-top: 0;
+    margin-left: 0;
+    margin-bottom: 20;
+    justify-content: 'center';}
+
+inputView {
+    border-color: 'white';
+    border-width: 1;
+    border-radius: 2;
+    width: '100%';
+    margin-bottom: 0;
+    align-content: 'center';
+    justify-content: 'center';}
+
+altTitle {
+    font-family: 'Roboto';
+    font-size: 20;
+    font-weight: 'bold';
+    border-width: 10;
+    flex: 1;}
