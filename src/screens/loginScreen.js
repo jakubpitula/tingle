@@ -3,8 +3,7 @@ import React, {useState} from 'react';
 import ButtonWithBackground from '../components/buttonWithBackground';
 import SmallButton from '../components/smallButton';
 import axios from 'axios';
-import style from '../css/loginScreen.css';
-
+import styles from '../css/loginScreen.css'
 import {SafeAreaView, ScrollView} from 'react-native';
 
 const baseUrl = 'https://y2ylvp.deta.dev';
@@ -55,12 +54,12 @@ export default function LoginScreen({navigation}) {
   return (
     <SafeAreaView>
       <ScrollView>
-        <View style={style.container}>
-         <Text style={style.title}> Tingle</Text>
+        <View style={styles.container}>
+         <Text style={styles.title}> Tingle</Text>
 
-          <View style={style.inputView}>
+          <View style={styles.inputView}>
             <TextInput
-              style={style.TextInput}
+              style={styles.TextInput}
               value={email}
               placeholder="Email o number"
               placeholderTextColor="black"
@@ -69,9 +68,9 @@ export default function LoginScreen({navigation}) {
             />
           </View>
 
-          <View style={style.inputView}>
+          <View style={styles.inputView}>
             <TextInput
-              style={style.TextInput}
+              style={styles.TextInput}
               placeholder="Password"
               value={password}
               onChangeText={onChangePasswordHandler}
@@ -93,17 +92,17 @@ export default function LoginScreen({navigation}) {
           <View alignItems="center">
             <SmallButton text="Forgot Password?" />
 
-            <View style={style.smallText}>
+            <View style={styles.smallText}>
               <Text color="black"> Don't have an account yet?</Text>
               </View>
               <SmallButton
                 text="Sign up"
-                
+
                 onPress={() => navigation.navigate('Registration')}
               />
 <SmallButton
                 text="preferences "
-                
+
                 onPress={() => navigation.navigate('Preference')}
               />
 

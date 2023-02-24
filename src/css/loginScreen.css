@@ -8,7 +8,8 @@ TextInput {
     justify-content: 'center';
     align-items: 'center';
     margin-left: 5;
-    color:'black';}
+    color:"black";
+}
 
 inputView {
     border-color: 'grey';
@@ -51,6 +52,3 @@ textFailed {
     color: 'red';
     bottom: 33;
     right: 70;}
-
-
-

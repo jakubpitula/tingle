@@ -13,9 +13,9 @@ inputView {
     align-content: 'center';
     justify-content: 'center';}
 
-  smallText {
+smallText {
     color: 'black';
     font-size: 20;
     margin-top: 10;
     margin-bottom:10;
-    justify-content: 'center';}
+    justify-content: 'center';} 

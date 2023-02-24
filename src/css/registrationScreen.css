@@ -25,7 +25,7 @@ smallText {
     margin-top: 100;
     margin-bottom: 20;
     justify-content: 'center';}
-  
+
 inputView {
     border-color: 'grey';
     border-width: 2;
@@ -41,12 +41,12 @@ textFailed {
     right: 30;}
 
 buttonDisable {
-        margin: 10;
-        padding:10;
-        border-radius: 25;
-        align-items: 'center';
-        background-color:'grey';
-        width:180;}
+    margin: 10;
+    padding:10;
+    border-radius: 25;
+    align-items: 'center';
+    background-color:'grey';
+    width:180;}
 
 altTitle {
     font-family: 'Roboto';
@@ -54,4 +54,3 @@ altTitle {
     font-weight: 'bold';
     border-width: 10;
     flex: 1;}
-

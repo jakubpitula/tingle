@@ -41,43 +41,7 @@ function JoinScreen(props) {
           }}
           style={{backgroundColor: '#FF356B', padding: 12, borderRadius: 6}}>
           <Text style={{color: 'white', alignSelf: 'center', fontSize: 18}}>
-            Create Meeting
-          </Text>
-        </TouchableOpacity>
-
-        <Text
-          style={{
-            alignSelf: 'center',
-            fontSize: 22,
-            marginVertical: 16,
-            fontStyle: 'italic',
-            color: 'grey',
-          }}>
-          ---------- OR ----------
-        </Text>
-        <TextInput
-          value={meetingVal}
-          onChangeText={setMeetingVal}
-          placeholder={'XXXX-XXXX-XXXX'}
-          style={{
-            padding: 12,
-            borderWidth: 1,
-            borderRadius: 6,
-            fontStyle: 'italic',
-          }}
-        />
-        <TouchableOpacity
-          style={{
-            backgroundColor: '#FF356B',
-            padding: 12,
-            marginTop: 14,
-            borderRadius: 6,
-          }}
-          onPress={() => {
-            props.getMeetingId(meetingVal);
-          }}>
-          <Text style={{color: 'white', alignSelf: 'center', fontSize: 18}}>
-            Join Meeting
+            Call!
           </Text>
         </TouchableOpacity>
       </SafeAreaView>
