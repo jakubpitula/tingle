@@ -49,7 +49,7 @@ function Notifications() {
 function Messeges() {
   return (
     <Text>Messages</Text>
- 
+
   )
 }
 
@@ -94,7 +94,7 @@ export default function HomeScreen() {
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="bell" color={color} size={size} />
           ),
-          tabBarBadge: 3,
+          tabBarBadge: 69,
         }}
       />
       <Tab.Screen
@@ -105,18 +105,18 @@ export default function HomeScreen() {
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="account" color={color} size={size} />
           ),
-        }} 
+        }}
       />
 
 
-     
+
     </Tab.Navigator>
   );
 }
 
 
 
-  
+
 
 const styles = StyleSheet.create({
   container: {

@@ -5,7 +5,7 @@ TextInputAboutMe {
     justify-content: 'center';}
 
 inputView {
-    border-color: 'grey';
+    border-color: "grey";
     border-width: 2;
     border-radius: 3;
     width: '90%';
@@ -18,4 +18,4 @@ smallText {
     font-size: 20;
     margin-top: 10;
     margin-bottom:10;
-    justify-content: 'center';} 
+    justify-content: 'center';}

@@ -11,8 +11,9 @@ import {
   import {Appbar, Avatar} from 'react-native-paper';
   import {Text, BottomNavigation} from 'react-native-paper';
   import ButtonWithBackground from '../components/buttonWithBackground';
+  import AsyncStorage from '@react-native-async-storage/async-storage';
 
-  import {getMeeting, token} from '../../api';
+  import {getMeeting, readPool, token} from '../../api';
   import {
     MediaStream,
     MeetingProvider,
@@ -22,12 +23,9 @@ import {
   } from '@videosdk.live/react-native-sdk';
 
 
-
 function JoinScreen(props) {
-
-    const [meetingVal, setMeetingVal] = useState('');
+  const [meetingVal, setMeetingVal] = useState('');
     return (
-
       <SafeAreaView
         style={{
           flex: 1,
@@ -36,8 +34,12 @@ function JoinScreen(props) {
           paddingHorizontal: 6 * 10,
         }}>
         <TouchableOpacity
-          onPress={() => {
-            props.getMeetingId();
+          onPress={async()=>{
+            const mid = await props.readPool().catch(err=>console.log(err));
+            if (mid) {
+              // console.log(mid)
+              props.setMeetingId(mid);
+            }
           }}
           style={{backgroundColor: '#FF356B', padding: 12, borderRadius: 6}}>
           <Text style={{color: 'white', alignSelf: 'center', fontSize: 18}}>
@@ -177,7 +179,9 @@ function JoinScreen(props) {
 
 
   export default function VideoCallScreen(){
-  const CallRoute = () => {
+    const [meetingId, setMeetingId] = useState(null);
+
+    const CallRoute = () => {
     return meetingId ? (
       <SafeAreaView style={{flex: 1, backgroundColor: '#F6F6FF'}}>
         <MeetingProvider
@@ -192,17 +196,9 @@ function JoinScreen(props) {
         </MeetingProvider>
       </SafeAreaView>
     ) : (
-      <JoinScreen getMeetingId={getMeetingId} />
+      <JoinScreen readPool={readPool} meetingId = {meetingId} setMeetingId = {setMeetingId}/>
     );
   }
-  const [meetingId, setMeetingId] = useState(null);
-
-    const getMeetingId = async id => {
-      const meetingId = await getMeeting({ id });
-      setMeetingId(meetingId);
-    };
-
-
     return(
       <CallRoute/>
     )
