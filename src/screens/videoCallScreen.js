@@ -3,15 +3,15 @@ import {
     View,
     TextInput,
     TouchableOpacity,
-    navigation
   } from 'react-native';
-  import React, { useEffect, useState } from "react";
-  import SettingsButton from '../components/settingsButton';
-  import {SafeAreaView, ScrollView,ActivityIndicator, FlatList} from 'react-native';
-  import {Appbar, Avatar} from 'react-native-paper';
-  import {Text, BottomNavigation} from 'react-native-paper';
-  import ButtonWithBackground from '../components/buttonWithBackground';
-  import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useEffect, useState } from "react";
+import SettingsButton from '../components/settingsButton';
+import {SafeAreaView, ScrollView,ActivityIndicator, FlatList} from 'react-native';
+import {Appbar, Avatar} from 'react-native-paper';
+import {Text, BottomNavigation} from 'react-native-paper';
+import ButtonWithBackground from '../components/buttonWithBackground';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
 
   import {getMeeting, readPool, token} from '../../api';
   import {
@@ -87,19 +87,24 @@ function JoinScreen(props) {
           buttonText={'Mute/unmute'}
           backgroundColor={'#1178F8'}
         />
-        <Button
-          onPress={() => {
-            leave();
-          }}
-          buttonText={'Leave'}
-          backgroundColor={'#FF0000'}
-        />
+        {/*<Button*/}
+        {/*  onPress={() => {*/}
+        {/*    leave();*/}
+        {/*  }}*/}
+        {/*  buttonText={'Leave'}*/}
+        {/*  backgroundColor={'#FF0000'}*/}
+        {/*/>*/}
       </View>
     );
   }
 
   function ParticipantView({participantId}) {
-    const {webcamStream, webcamOn} = useParticipant(participantId);
+    const {webcamStream, webcamOn, setQuality} = useParticipant(participantId);
+
+    useEffect(() => {
+      setQuality('high');
+    }, [])
+
     return webcamOn && webcamStream ? (
       <RTCView
         streamURL={new MediaStream([webcamStream.track]).toURL()}
@@ -150,12 +155,10 @@ function JoinScreen(props) {
     const participantsArrId = [...participants.keys()];
     useEffect(() => {
       join();
+
     }, [])
     return (
       <View style={{flex: 1}}>
-        {meetingId ? (
-          <Text style={{fontSize: 18, padding: 12}}>Meeting Id :{meetingId}</Text>
-        ) : null}
         <ParticipantList participants={participantsArrId} />
         <ControlsContainer
           leave={leave}

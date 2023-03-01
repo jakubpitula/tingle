@@ -10,6 +10,7 @@ import InterestScreen from './src/screens/interestScreen';
 import SettingsScreen from './src/screens/settingsScreen';
 import EditProfileScreen from './src/screens/editProfileScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
+import VideoCallScreen from "./src/screens/videoCallScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -77,7 +78,11 @@ export default class App extends Component{
             name="EditProfile"
             component={EditProfileScreen}
           />
-          
+          <Stack.Screen
+            options={{headerShown: false}}
+            name="video"
+            component={VideoCallScreen}
+          />
         </Stack.Navigator>
         <StatusBar style="auto" />
       </NavigationContainer>
