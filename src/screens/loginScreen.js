@@ -59,13 +59,14 @@ export default function LoginScreen({navigation}) {
     <SafeAreaView>
       <ScrollView>
         <View style={styles.container}>
-         <Text style={styles.title}> Tingle</Text>
+        <Image source={require('../assets/Tingle_logo_example.jpg')}
+          style={{width:300, height: 180, left:43, top:100, marginBottom:170}}></Image>
 
           <View style={styles.inputView}>
             <TextInput
               style={styles.TextInput}
               value={email}
-              placeholder="Email o number"
+              placeholder="Email"
               placeholderTextColor="black"
               onChangeText={onChangeEmailHandler}
               editable={!isLoading}
@@ -101,7 +102,6 @@ export default function LoginScreen({navigation}) {
               </View>
               <SmallButton
                 text="Sign up"
-
                 onPress={() => navigation.navigate('Registration')}
               />
 

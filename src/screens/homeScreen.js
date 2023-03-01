@@ -1,78 +1,70 @@
-import {
-  StyleSheet,
-  View,
-  TextInput,
-  TouchableOpacity
-} from 'react-native';
+import {StyleSheet, View, TextInput, TouchableOpacity} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import SettingsButton from '../components/settingsButton';
-import {SafeAreaView, ScrollView,ActivityIndicator, FlatList} from 'react-native';
+import {
+  SafeAreaView,
+  ScrollView,
+  ActivityIndicator,
+  FlatList,
+} from 'react-native';
 import {Appbar, Avatar} from 'react-native-paper';
 import {Text, BottomNavigation} from 'react-native-paper';
 import ButtonWithBackground from '../components/buttonWithBackground';
 
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import LoginScreen, {Login} from './loginScreen';
 import {Preference} from './preferenceScreen';
 import {Interest} from './interestScreen';
-import VideoCallScreen, { videoCallScreen } from './videoCallScreen'
-import ProfileScreen from './ProfileScreen'
-
-
-
-
-
-
+import VideoCallScreen, {videoCallScreen} from './videoCallScreen';
+import ProfileScreen from './ProfileScreen';
 
 ///////////////////////////////////////////////////////////VIDEOSDK/////
 function Call() {
-  return (
-    <VideoCallScreen />
-  );
+  return <VideoCallScreen />;
 }
 
 function Profile() {
-  return (
-   <ProfileScreen />
-  );
+  return <ProfileScreen />;
 }
 
 function Notifications() {
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
       <Text>Notifications!</Text>
     </View>
   );
 }
 function Messeges() {
-  return (
-    <Text>Messages</Text>
-
-  )
+  return <Text>Messages</Text>;
 }
 
 ///////////////////////////////////////////////////////////VIDEOSDK/////
 
-
 const Tab = createBottomTabNavigator();
 
 export default function HomeScreen() {
-
   return (
     <Tab.Navigator
       initialRouteName="Call"
       screenOptions={{
         tabBarActiveTintColor: '#e91e63',
-      }}
-    >
+
+        headerStyle: {
+          backgroundColor: 'White',
+        },
+        headerTintColor: '#e91e63',
+        headerTintStyle: {
+          fontWeight: 'bold',
+        },
+      }}>
       <Tab.Screen
         name="Call"
         component={Call}
         options={{
           tabBarLabel: 'Call',
-          tabBarIcon: ({ color, size }) => (
+          tabBarIcon: ({color, size}) => (
             <MaterialCommunityIcons name="phone" color={color} size={size} />
           ),
         }}
@@ -82,16 +74,17 @@ export default function HomeScreen() {
         component={Messeges}
         options={{
           tabBarLabel: 'Messeges',
-          tabBarIcon: ({ color, size }) => (
+          tabBarIcon: ({color, size}) => (
             <MaterialCommunityIcons name="inbox" color={color} size={size} />
           ),
-        }}  />
+        }}
+      />
       <Tab.Screen
         name="Notifications"
         component={Notifications}
         options={{
           tabBarLabel: 'Updates',
-          tabBarIcon: ({ color, size }) => (
+          tabBarIcon: ({color, size}) => (
             <MaterialCommunityIcons name="bell" color={color} size={size} />
           ),
           tabBarBadge: 69,
@@ -102,21 +95,14 @@ export default function HomeScreen() {
         component={Profile}
         options={{
           tabBarLabel: 'Profile',
-          tabBarIcon: ({ color, size }) => (
+          tabBarIcon: ({color, size}) => (
             <MaterialCommunityIcons name="account" color={color} size={size} />
           ),
         }}
       />
-
-
-
     </Tab.Navigator>
   );
 }
-
-
-
-
 
 const styles = StyleSheet.create({
   container: {
