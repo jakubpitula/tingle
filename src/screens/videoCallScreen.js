@@ -5,7 +5,7 @@ import {
     TouchableOpacity,
     navigation
   } from 'react-native';
-  import React, {useEffect, useState} from 'react';
+  import React, { useEffect, useState } from "react";
   import SettingsButton from '../components/settingsButton';
   import {SafeAreaView, ScrollView,ActivityIndicator, FlatList} from 'react-native';
   import {Appbar, Avatar} from 'react-native-paper';
@@ -21,7 +21,6 @@ import {
     useMeeting,
     useParticipant,
   } from '@videosdk.live/react-native-sdk';
-
 
 function JoinScreen(props) {
   const [meetingVal, setMeetingVal] = useState('');
@@ -66,7 +65,7 @@ function JoinScreen(props) {
     );
   };
 
-  function ControlsContainer({join, leave, changeWebcam, toggleMic}) {
+  function ControlsContainer({leave, changeWebcam, toggleMic}) {
     return (
       <View
         style={{
@@ -76,23 +75,16 @@ function JoinScreen(props) {
         }}>
         <Button
           onPress={() => {
-            join();
-          }}
-          buttonText={'Join'}
-          backgroundColor={'#1178F8'}
-        />
-        <Button
-          onPress={() => {
             changeWebcam();
           }}
-          buttonText={'Toggle Webcam'}
+          buttonText={'Change camera'}
           backgroundColor={'#1178F8'}
         />
         <Button
           onPress={() => {
             toggleMic();
           }}
-          buttonText={'Toggle Mic'}
+          buttonText={'Mute/unmute'}
           backgroundColor={'#1178F8'}
         />
         <Button
@@ -154,9 +146,11 @@ function JoinScreen(props) {
 
   function MeetingView() {
     const {join, leave, changeWebcam, toggleMic, meetingId, participants} =
-      useMeeting({});
+      useMeeting();
     const participantsArrId = [...participants.keys()];
-
+    useEffect(() => {
+      join();
+    }, [])
     return (
       <View style={{flex: 1}}>
         {meetingId ? (
@@ -164,7 +158,6 @@ function JoinScreen(props) {
         ) : null}
         <ParticipantList participants={participantsArrId} />
         <ControlsContainer
-          join={join}
           leave={leave}
           changeWebcam={changeWebcam}
           toggleMic={toggleMic}
