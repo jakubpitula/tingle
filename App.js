@@ -80,7 +80,7 @@ export default class App extends Component{
           />
           <Stack.Screen
             options={{headerShown: false}}
-            name="video"
+            name="Video"
             component={VideoCallScreen}
           />
         </Stack.Navigator>

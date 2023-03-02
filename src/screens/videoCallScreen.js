@@ -65,7 +65,8 @@ function JoinScreen(props) {
     );
   };
 
-  function ControlsContainer({leave, changeWebcam, toggleMic}) {
+  function ControlsContainer({leave, end, changeWebcam, toggleMic, setMeetingId}) {
+    const navigation = useNavigation();
     return (
       <View
         style={{
@@ -87,13 +88,17 @@ function JoinScreen(props) {
           buttonText={'Mute/unmute'}
           backgroundColor={'#1178F8'}
         />
-        {/*<Button*/}
-        {/*  onPress={() => {*/}
-        {/*    leave();*/}
-        {/*  }}*/}
-        {/*  buttonText={'Leave'}*/}
-        {/*  backgroundColor={'#FF0000'}*/}
-        {/*/>*/}
+        <Button
+          onPress={() => {
+
+            leave();
+            end();
+            setMeetingId(null);
+            navigation.navigate('Home');
+          }}
+          buttonText={'End call'}
+          backgroundColor={'#FF0000'}
+        />
       </View>
     );
   }
@@ -149,8 +154,8 @@ function JoinScreen(props) {
     );
   }
 
-  function MeetingView() {
-    const {join, leave, changeWebcam, toggleMic, meetingId, participants} =
+  function MeetingView(props) {
+    const {join, end, leave, changeWebcam, toggleMic, meetingId, participants} =
       useMeeting();
     const participantsArrId = [...participants.keys()];
     useEffect(() => {
@@ -162,8 +167,10 @@ function JoinScreen(props) {
         <ParticipantList participants={participantsArrId} />
         <ControlsContainer
           leave={leave}
+          end={end}
           changeWebcam={changeWebcam}
           toggleMic={toggleMic}
+          setMeetingId={props.setMeetingId}
         />
       </View>
     );
@@ -188,7 +195,7 @@ function JoinScreen(props) {
             name: 'Test User',
           }}
           token={token}>
-          <MeetingView />
+          <MeetingView setMeetingId={setMeetingId}/>
         </MeetingProvider>
       </SafeAreaView>
     ) : (
