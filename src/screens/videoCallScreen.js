@@ -90,7 +90,6 @@ function JoinScreen(props) {
         />
         <Button
           onPress={() => {
-
             leave();
             end();
             setMeetingId(null);
@@ -160,10 +159,12 @@ function JoinScreen(props) {
     const participantsArrId = [...participants.keys()];
     useEffect(() => {
       join();
-
     }, [])
     return (
       <View style={{flex: 1}}>
+        {meetingId ? (
+          <Text style={{fontSize: 18, padding: 12}}>Meeting Id :{meetingId}</Text>
+        ) : null}
         <ParticipantList participants={participantsArrId} />
         <ControlsContainer
           leave={leave}
