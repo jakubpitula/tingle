@@ -1,5 +1,4 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
 async function getToken(){
   return await fetch('https://y2ylvp.deta.dev/generate_token')
     .then(response => response.json())

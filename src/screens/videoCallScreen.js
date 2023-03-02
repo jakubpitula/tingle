@@ -153,9 +153,20 @@ function JoinScreen(props) {
     );
   }
 
+  async function onMeetingLeft(){
+    const token = await AsyncStorage.getItem("id_token");
+    await fetch(`https://y2ylvp.deta.dev/delete_from_pool`, {
+      method: "POST",
+      headers: {
+        'Authorization': 'Bearer ' + token,
+        "Content-Type": "application/json",
+      },
+    });
+  }
+
   function MeetingView(props) {
     const {join, end, leave, changeWebcam, toggleMic, meetingId, participants} =
-      useMeeting();
+      useMeeting({onMeetingLeft});
     const participantsArrId = [...participants.keys()];
     useEffect(() => {
       join();
@@ -176,11 +187,6 @@ function JoinScreen(props) {
       </View>
     );
   }
-
-
-
-
-
 
   export default function VideoCallScreen(){
     const [meetingId, setMeetingId] = useState(null);
