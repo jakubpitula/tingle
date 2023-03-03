@@ -7,8 +7,7 @@ import React, {useState} from 'react';
 import { TouchableOpacity, Image} from 'react-native';
 import {TextInput} from 'react-native-paper';
 import { Modal, Portal, Provider } from 'react-native-paper';
-
-
+import styles from '../css/main.css'
 
 
 
@@ -42,25 +41,25 @@ const SettingsScreen = ({navigation}) => {
                 </Appbar.Header>
 
                 <View style={styles.container}>
-                <Text style={styles.bigText}>Account Settings</Text>
+                <Text style={styles.bigText_settings}>Account Settings</Text>
 
                 <TextInput
-                    style={styles.inputView}
+                    style={styles.inputView_settings}
                     label="Phone number"
                     placeholderTextColor="black"
                     value={text}
                     onChangeText={text => setText(text)}/>
 
                 <TextInput
-                    style={styles.inputView}
+                    style={styles.inputView_settings}
                     label="Email"
                     placeholderTextColor="black"
                     value={text}
                     onChangeText={text => setText(text)}/>
                 
-                <Text style={styles.bigText}>Discovery</Text>
+                <Text style={styles.bigText_settings}>Discovery</Text>
                 
-                <Text style={styles.smallerText}> Location </Text>
+                <Text style={styles.smallerText_settings}> Location </Text>
 
                 <Provider>
                   <Portal>
@@ -73,12 +72,12 @@ const SettingsScreen = ({navigation}) => {
                 text = "Change"/>
                 </Provider>
 
-                <Text style={styles.smallerText}>
+                <Text style={styles.smallerText_settings}>
                 Only show people in this range{' '}
                 <Switch value={isSwitchOn} onValueChange={onToggleSwitch} />
                 </Text>
 
-                <Text style={styles.smallerText}>Sex preference</Text>
+                <Text style={styles.smallerText_settings}>Sex preference</Text>
 
                 <SegmentedButtons
                   value={value}
@@ -96,23 +95,23 @@ const SettingsScreen = ({navigation}) => {
                 style={styles.group}
                 />
 
-              <Text style={styles.smallerText}>Age Preference</Text>
-              <Text style={styles.smallerText}>
+              <Text style={styles.smallerText_settings}>Age Preference</Text>
+              <Text style={styles.smallerText_settings}>
                 Only show people in this range{' '}
                 <Switch value={isSwitchOn} onValueChange={onToggleSwitch} />
                 </Text>
-                <Text style={styles.smallerText}>
+                <Text style={styles.smallerText_settings}>
                 Global{' '}
                 <Switch value={isSwitchOn} onValueChange={onToggleSwitch} />
                 </Text>
-                <Text style={styles.smallerText}>
+                <Text style={styles.smallerText_settings}>
                   Going Global will allow you to see people nearby and from around the world.
                 </Text>
 
 
-                <Text style={styles.bigText}>Contact us</Text>
+                <Text style={styles.bigText_settings}>Contact us</Text>
                 <TextInput
-                    style={styles.inputView}
+                    style={styles.inputView_settings}
                     label="Help & Support"
                     placeholderTextColor="black"
                     value={text}
@@ -120,7 +119,7 @@ const SettingsScreen = ({navigation}) => {
 
 
                   <TextInput
-                    style={styles.inputView}
+                    style={styles.inputView_settings}
                     label="Delete account"
                     placeholderTextColor="black"
                     value={text}
@@ -141,73 +140,7 @@ const SettingsScreen = ({navigation}) => {
   };
 
 
-const styles = StyleSheet.create({
-    container: {
-      flexDirection: 'column',
-      backgroundColor: 'white',
-      paddingLeft: 10,
-      paddingRight: 10,
-      paddingTop: 10,
-      paddingBottom: 10,
-    },
 
-    TextInput: {
-      height: 50,
-      flex: 1,
-      padding: 10,
-
-      justifyContent: 'center',
-    },
-
-    title: {
-      color: 'black',
-      fontFamily: 'Roboto',
-      fontSize: 50,
-      fontWeight: 'bold',
-      letterSpacing: 1,
-      marginBottom: 50,
-      marginTop: 100,
-    },
-
-    bigText: {
-      color: 'black',
-      fontFamily: 'Roboto',
-      fontWeight: 'bold',
-      fontSize: 20,
-      marginTop: 0,
-      marginLeft: 0,
-      marginBottom: 20,
-      justifyContent: 'center',
-    },
-
-    smallerText: {
-      color: 'black',
-      fontFamily: 'Roboto',
-      fontSize: 17,
-      marginTop: 0,
-      marginLeft: 0,
-      marginBottom: 20,
-      justifyContent: 'center',
-    },
-
-    inputView: {
-      borderColor: 'white',
-      borderWidth: 1,
-      borderRadius: 2,
-      width: '100%',
-      marginBottom: 0,
-      alignContent: 'center',
-      justifyContent: 'center',
-    },
-
-    altTitle: {
-      fontFamily: 'Roboto',
-      fontSize: 20,
-      fontWeight: 'bold',
-      borderWidth: 10,
-      flex: 1,
-    },
-  });
 
   export default SettingsScreen;
 

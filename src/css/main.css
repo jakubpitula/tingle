@@ -1,0 +1,215 @@
+/*haven't done the profileScreen */
+
+.container_login {
+    flex: 1;
+    justify-content: 'flex-end';
+    background-color: '#FFF1ED';}
+
+.container_edit {
+    flex-direction: 'column';
+    background-color: 'white';
+    padding-left: 30;
+    padding-right: 50;
+    padding-top: 30;}
+
+.container_home {
+    flex-direction: 'column';
+    background-color: 'white';
+    align-self: 'center';
+    justify-content: 'center';}
+
+.container_registration {
+    flex-direction: 'column';
+    background-color: 'white';
+    padding-left: 20;
+    background-color:'#FFF1ED';}
+
+.container_preference {
+    flex-direction: 'column';
+    background-color: 'white';
+    padding-left: 30;
+    padding-right: 50;
+    padding-top: 30;
+    padding-bottom: 0;}
+
+.container_settings {
+    flex-direction: 'column';
+    background-color: 'white';
+    padding-left: 10;
+    padding-right: 10;
+    padding-top: 10;
+    padding-bottom: 10;}
+
+.TextInput_login {
+    height: 50;
+    justify-content: 'center';
+    align-items: 'center';
+    margin-left: 5;
+    color:"black";}
+
+   /*preference , settings, edit, home*/ 
+.TextInput_registration {
+    height: 50;
+    flex: 1;
+    padding: 10;
+    justify-content: 'center';}
+
+.TextInputAboutMe {
+    height:100;
+    flex: 1;
+    padding: 10;
+    justify-content: 'center';}
+    
+
+.inputView_login {
+    border-color: 'grey';
+    color: 'black';
+    border-radius: 20;
+    border-width: 2;
+    margin-bottom: 35;
+    margin-inline-start: 20;
+    margin-inline-end: 10;}
+
+    /*preference , edit, home*/
+.inputView_interest {
+    border-color: 'grey';
+    border-width: 2;
+    border-radius: 3;
+    width: '90%';
+    margin-bottom: 35;
+    align-content: 'center';
+    justify-content: 'center';}
+
+.inputView_registration {
+    border-color: 'grey';
+    border-width: 2;
+    border-radius: 20;
+    width: '92%';
+    margin-top:18;
+    align-content: 'center';
+    justify-content: 'center';}
+
+.inputView_settings {
+    border-color: 'white';
+    border-width: 1;
+    border-radius: 2;
+    width: '100%';
+    margin-bottom: 0;
+    align-content: 'center';
+    justify-content: 'center';}
+
+.title_login {
+    color: '#374B73';
+    font-size: 50;
+    font-weight: '800';
+    letter-spacing: 1;
+    padding-bottom: 100;
+    padding-top: 150;
+    align-items: 'center';
+    padding-left: 110;}
+
+    /*preference , settings, edit, home*/
+.title_registration{
+    color: 'black';
+    font-family: 'Roboto';
+    font-size: 50;
+    font-weight: 'bold';
+    letter-spacing: 1;
+    margin-bottom: 50;
+    margin-top: 100;}
+
+    /*preference , settings , edit*/
+.altTitle_registration {
+    font-family: 'Roboto';
+    font-size: 20;
+    font-weight: 'bold';
+    border-width: 10;
+    flex: 1;}
+
+.altTitle_home {
+    font-family: 'Roboto';
+    font-size: 20;
+    font-weight: 'bold';
+    align-self: 'center';
+    padding-top: 10;}
+
+.button_login {
+    background-color: '#f586d4';
+    align-items: 'center';
+    justify-content: 'center';
+    border-radius: 25;
+    border-color: 'white';
+    border-width: 2;
+    margin-inline-start: 20;
+    margin-inline-end: 10;
+    height: 55;}
+
+.buttonDisable_registartion {
+    margin: 10;
+    padding:10;
+    border-radius: 25;
+    align-items: 'center';
+    background-color:'grey';
+    width:180}
+
+.smallText_login {
+    color: 'black';
+    font-size: 20;
+    font-weight: '800';
+    letter-spacing: 0.5;}
+
+.smallText_interest {
+    color: 'black';
+    font-size: 20;
+    margin-top: 10;
+    margin-bottom:10;
+    justify-content: 'center';}
+
+    /*home*/
+.smallText_registration {
+    color: 'black';
+    font-size: 20;
+    margin-top: 100;
+    margin-bottom: 20;
+    justify-content: 'center';}
+
+    /*edit*/
+.smallerText_preference {
+    color: 'black';
+    font-family: 'Roboto';
+    font-size: 15;
+    margin-top: 0;
+    margin-left: 0;
+    margin-bottom: 20;
+    justify-content: 'center';}
+
+.smallerText_settings {
+    color: 'black';
+    font-family: 'Roboto';
+    font-size: 17;
+    margin-top: 0;
+    margin-left: 0;
+    margin-bottom: 20;
+    justify-content: 'center';}
+
+/* EditProfile has this style as smallText*/
+.bigText_settings {
+    color: 'black';
+    font-family: 'Roboto';
+    font-weight: 'bold';
+    font-size: 20;
+    margin-top: 0;
+    margin-left: 0;
+    margin-bottom: 20;
+    justify-content: 'center';}
+
+.textFailed_registration {
+    color: 'red';
+    align-self:'flex-end';
+    right: 30;}
+
+.textFailed {
+    align-self: 'center';
+    color: 'red';
+    bottom: 33;
+    right: 70;}

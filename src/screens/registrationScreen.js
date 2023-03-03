@@ -7,6 +7,7 @@ import axios from 'axios';
 import {Appbar} from 'react-native-paper';
 import storage from '@react-native-firebase/storage';
 import DocumentPicker from 'react-native-document-picker';
+import styles from '../css/main.css'
 
 const baseUrl = 'https://y2ylvp.deta.dev';
 
@@ -266,10 +267,10 @@ export default function RegistrationScreen({navigation}) {
         />
       </Appbar.Header>
       <SafeAreaView>
-        <ScrollView style={styles.container}>
-          <View style={styles.inputView}>
+        <ScrollView style={styles.container_registration}>
+          <View style={styles.inputView_registration}>
             <TextInput
-              style={styles.TextInput}
+              style={styles.TextInput_registration}
               placeholder="First Name *"
               placeholderTextColor="black"
               value={first_name}
@@ -278,14 +279,14 @@ export default function RegistrationScreen({navigation}) {
             />
           </View>
           {checkFirstName ? (
-              <Text style={styles.textFailed}>First name required</Text>
+              <Text style={styles.textFailed_registration}>First name required</Text>
             ) : (
-              <Text style={styles.textFailed}> </Text>
+              <Text style={styles.textFailed_registration}> </Text>
             )}
 
-          <View style={styles.inputView}>
+          <View style={styles.inputView_registration}>
             <TextInput
-              style={styles.TextInput}
+              style={styles.TextInput_registration}
               placeholder="Last Name *"
               value={last_name}
               placeholderTextColor="black"
@@ -294,14 +295,14 @@ export default function RegistrationScreen({navigation}) {
             />
           </View>
           {checkLastName ? (
-              <Text style={styles.textFailed}>Last name required</Text>
+              <Text style={styles.textFailed_registration}>Last name required</Text>
             ) : (
-              <Text style={styles.textFailed}> </Text>
+              <Text style={styles.textFailed_registration}> </Text>
             )}
 
-          <View style={styles.inputView}>
+          <View style={styles.inputView_registration}>
             <TextInput
-              style={styles.TextInput}
+              style={styles.TextInput_registration}
               placeholder="Email *"
               placeholderTextColor="black"
               value={email}
@@ -311,14 +312,14 @@ export default function RegistrationScreen({navigation}) {
            </View>
 
           {checkValidEmail ? (
-              <Text style={styles.textFailed}>Not a valid email</Text>
+              <Text style={styles.textFailed_registration}>Not a valid email</Text>
             ) : (
-              <Text style={styles.textFailed}> </Text>
+              <Text style={styles.textFailed_registration}> </Text>
             )}
 
-          <View style={styles.inputView}>
+          <View style={styles.inputView_registration}>
             <TextInput
-              style={styles.TextInput}
+              style={styles.TextInput_registration}
               placeholder="Password *"
               placeholderTextColor="black"
               secureTextEntry
@@ -328,13 +329,13 @@ export default function RegistrationScreen({navigation}) {
             />
           </View>
           {checkPassword ? (
-              <Text style={styles.textFailed}>Not a valid password</Text>
+              <Text style={styles.textFailed_registration}>Not a valid password</Text>
             ) : (
-              <Text style={styles.textFailed}> </Text>
+              <Text style={styles.textFailed_registration}> </Text>
             )}
-          <View style={styles.inputView}>
+          <View style={styles.inputView_registration}>
             <TextInput
-              style={styles.TextInput}
+              style={styles.TextInput_registration}
               placeholder="Confirm Password *"
               placeholderTextColor="black"
               secureTextEntry
@@ -344,14 +345,14 @@ export default function RegistrationScreen({navigation}) {
             />
           </View>
           {checkPasswordConf ? (
-              <Text style={styles.textFailed}> Password does not match </Text>
+              <Text style={styles.textFailed_registration}> Password does not match </Text>
             ) : (
-              <Text style={styles.textFailed}> </Text>
+              <Text style={styles.textFailed_registration}> </Text>
             )}
 
-          <View style={styles.inputView}>
+          <View style={styles.inputView_registration}>
             <TextInput
-              style={styles.TextInput}
+              style={styles.TextInput_registration}
               placeholder="Age"
               placeholderTextColor="black"
               secureTextEntry
@@ -361,14 +362,14 @@ export default function RegistrationScreen({navigation}) {
             />
           </View>
           {checkAge? (
-              <Text style={styles.textFailed}>Must be over 18  </Text>
+              <Text style={styles.textFailed_registration}>Must be over 18  </Text>
             ) : (
-              <Text style={styles.textFailed}> </Text>
+              <Text style={styles.textFailed_registration}> </Text>
             )}
 
-          <View style={styles.inputView}>
+          <View style={styles.inputView_registration}>
             <TextInput
-              style={styles.TextInput}
+              style={styles.TextInput_registration}
               placeholder="Gender"
               placeholderTextColor="black"
               secureTextEntry
@@ -378,9 +379,9 @@ export default function RegistrationScreen({navigation}) {
             />
           </View>
           {checkGender? (
-              <Text style={styles.textFailed}>please input "m" or "f" </Text>
+              <Text style={styles.textFailed_registration}>please input "m" or "f" </Text>
             ) : (
-              <Text style={styles.textFailed}> </Text>
+              <Text style={styles.textFailed_registration}> </Text>
             )}
           <ButtonWithBackground
             text="Choose Profile Picture"
@@ -409,80 +410,3 @@ export default function RegistrationScreen({navigation}) {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'column',
-    backgroundColor: 'white',
-    paddingLeft: 20,
-    backgroundColor:'#FFF1ED'
-
-
-
-  },
-
-  TextInput: {
-    height: 50,
-    flex: 1,
-    padding: 10,
-    justifyContent: 'center',
-
-  },
-
-  title: {
-    color: 'black',
-    fontFamily: 'Roboto',
-    fontSize: 50,
-    fontWeight: 'bold',
-    constterSpacing: 1,
-    marginBottom: 50,
-    marginTop: 100,
-  },
-
-  smallText: {
-    color: 'black',
-    fontSize: 20,
-    marginTop: 100,
-    marginBottom: 20,
-    justifyContent: 'center',
-  },
-  inputView: {
-    borderColor: 'grey',
-    borderWidth: 2,
-    borderRadius: 20,
-    width: '92%',
-    marginTop:18,
-
-    alignContent: 'center',
-    justifyContent: 'center',
-  },
-
-  textFailed: {
-    color: 'red',
-    alignSelf:'flex-end',
-    right: 30
-
-
-
-
-  },
-  buttonDisable: {
-
-        margin: 10,
-        padding:10,
-        borderRadius: 25,
-        alignItems: 'center',
-        backgroundColor:'grey',
-        width:180,
-
-
-
-  },
-
-  altTitle: {
-    fontFamily: 'Roboto',
-    fontSize: 20,
-    fontWeight: 'bold',
-    borderWidth: 10,
-    flex: 1,
-  },
-});

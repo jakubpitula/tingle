@@ -8,7 +8,7 @@ import { SafeAreaView,ScrollView } from 'react-native';
 import {Text,Appbar} from 'react-native-paper';
 import { List } from 'react-native-paper';
 import { MultipleSelectList } from 'react-native-dropdown-select-list'
-
+import styles from '../css/main.css'
 
  
 
@@ -97,7 +97,7 @@ const data_smoking = [
 
             
             
-            <Text style={styles.smallText}> Hobbies </Text>
+            <Text style={styles.smallText_interest}> Hobbies </Text>
             <MultipleSelectList 
             setSelected={(val) => setSelected(val)} 
             data={data1} 
@@ -106,8 +106,8 @@ const data_smoking = [
             label="Categories"/>
         
 
-            <Text style={styles.smallText}> About me </Text>
-            <View style={styles.inputView}>
+            <Text style={styles.smallText_interest}> About me </Text>
+            <View style={styles.inputView_interest}>
               <TextInput 
               style={styles.TextInputAboutMe}
               placeholder="50000"
@@ -115,7 +115,7 @@ const data_smoking = [
               secureTextEntry/>
             </View>
 
-            <Text style={styles.smallText}> Lifestyle </Text>
+            <Text style={styles.smallText_interest}> Lifestyle </Text>
 
             <Text style={styles.smallerText}> Zodiac Sign </Text>
             <MultipleSelectList 
@@ -166,34 +166,7 @@ const data_smoking = [
     )
 }
 
-const styles = StyleSheet.create({
-TextInputAboutMe: {
-    height:100,
-    flex: 1,
-    padding: 10,
-    justifyContent: 'center',
-  },
 
-  inputView:{
-    borderColor: 'grey',
-    borderWidth: 2,
-    borderRadius: 3,
-    width: '90%',
-    marginBottom: 35,
-    alignContent: 'center',
-    justifyContent: 'center',
-  },
-
-  smallText: {
-    color: 'black',
-    fontSize: 20,
-    marginTop: 10,
-    marginBottom:10,
-    justifyContent: 'center',
-    
-  },
-
-});
 
 
 export default InterestScreen;

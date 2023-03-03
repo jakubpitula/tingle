@@ -5,7 +5,7 @@ import {Text, Appbar} from 'react-native-paper';
 import {SegmentedButtons, Button, Switch} from 'react-native-paper';
 import React, {useState} from 'react';
 import { MultipleSelectList } from 'react-native-dropdown-select-list'
-
+import styles from '../css/main.css'
 
 
 const EditProfileScreen = ({navigation}) => {
@@ -76,13 +76,13 @@ const data_smoking = [
                 />
                 </Appbar.Header>
 
-                <View style={styles.container}>
-                <Text style={styles.smallText}>Account Info</Text>      
+                <View style={styles.container_edit}>
+                <Text style={styles.bigText_settings}>Account Info</Text>      
 
 
-                <Text style={styles.smallText}> Lifestyle </Text>
+                <Text style={styles.bigText_settings}> Lifestyle </Text>
 
-            <Text style={styles.smallerText}> Zodiac Sign </Text>
+            <Text style={styles.bigText_settings}> Zodiac Sign </Text>
             <MultipleSelectList 
             setSelected={(val) => setSelected(val)} 
             data={data_zodiac} 
@@ -90,7 +90,7 @@ const data_smoking = [
             label="Selected"
             />
 
-          <Text style={styles.smallerText}> Communication style</Text>
+          <Text style={styles.bigText_settings}> Communication style</Text>
           <MultipleSelectList 
           setSelected={(val) => setSelected(val)} 
           data={data_communication} 
@@ -98,7 +98,7 @@ const data_smoking = [
           label="Selected"
           />
 
-          <Text style={styles.smallerText}> Workout</Text>
+          <Text style={styles.bigText_settings}> Workout</Text>
           <MultipleSelectList 
           setSelected={(val) => setSelected(val)} 
           data={data_workout} 
@@ -106,7 +106,7 @@ const data_smoking = [
           label="Selected"
           />
 
-          <Text style={styles.smallerText}> Drinking</Text>
+          <Text style={styles.bigText_settings}> Drinking</Text>
           <MultipleSelectList 
           setSelected={(val) => setSelected(val)} 
           data={data_drinking} 
@@ -114,7 +114,7 @@ const data_smoking = [
           label="Selected"
           />
 
-          <Text style={styles.smallerText}> Smoking</Text>
+          <Text style={styles.bigText_settings}> Smoking</Text>
           <MultipleSelectList 
           setSelected={(val) => setSelected(val)} 
           data={data_smoking} 
@@ -129,71 +129,7 @@ const data_smoking = [
     );
 };
 
-const styles = StyleSheet.create({
-    container: {
-      flexDirection: 'column',
-      backgroundColor: 'white',
-      paddingLeft: 30,
-      paddingRight: 50,
-      paddingTop: 30,
-    },
-  
-    TextInput: {
-      height: 50,
-      flex: 1,
-      padding: 10,
-  
-      justifyContent: 'center',
-    },
-  
-    title: {
-      color: 'black',
-      fontFamily: 'Roboto',
-      fontSize: 50,
-      fontWeight: 'bold',
-      letterSpacing: 1,
-      marginBottom: 50,
-      marginTop: 100,
-    },
-  
-    smallText: {
-      color: 'black',
-      fontFamily: 'Roboto',
-      fontSize: 20,
-      marginTop: 0,
-      marginLeft: 0,
-      marginBottom: 20,
-      justifyContent: 'center',
-    },
-  
-    smallerText: {
-      color: 'black',
-      fontFamily: 'Roboto',
-      fontSize: 15,
-      marginTop: 0,
-      marginLeft: 0,
-      marginBottom: 20,
-      justifyContent: 'center',
-    },
-  
-    inputView: {
-      borderColor: 'grey',
-      borderWidth: 2,
-      borderRadius: 3,
-      width: '90%',
-      marginBottom: 35,
-      alignContent: 'center',
-      justifyContent: 'center',
-    },
-  
-    altTitle: {
-      fontFamily: 'Roboto',
-      fontSize: 20,
-      fontWeight: 'bold',
-      borderWidth: 10,
-      flex: 1,
-    },
-  });
+
   
   export default EditProfileScreen;
   

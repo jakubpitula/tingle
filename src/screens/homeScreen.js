@@ -10,6 +10,7 @@ import {SafeAreaView, ScrollView,ActivityIndicator, FlatList} from 'react-native
 import {Appbar, Avatar} from 'react-native-paper';
 import {Text, BottomNavigation} from 'react-native-paper';
 import ButtonWithBackground from '../components/buttonWithBackground';
+import styles from '../css/main.css'
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -116,55 +117,4 @@ export default function HomeScreen() {
 
 
 
-  
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'column',
-    backgroundColor: 'white',
-    alignSelf: 'center',
-    justifyContent: 'center',
-  },
-
-  TextInput: {
-    height: 50,
-    flex: 1,
-    padding: 10,
-    justifyContent: 'center',
-  },
-
-  title: {
-    color: 'black',
-    fontFamily: 'Roboto',
-    fontSize: 50,
-    fontWeight: 'bold',
-    letterSpacing: 1,
-    marginBottom: 50,
-    marginTop: 100,
-  },
-
-  smallText: {
-    color: 'black',
-    fontSize: 20,
-    marginTop: 100,
-    marginBottom: 20,
-    justifyContent: 'center',
-  },
-  inputView: {
-    borderColor: 'grey',
-    borderWidth: 2,
-    borderRadius: 3,
-    width: '90%',
-    marginBottom: 35,
-    alignContent: 'center',
-    justifyContent: 'center',
-  },
-
-  altTitle: {
-    fontFamily: 'Roboto',
-    fontSize: 20,
-    fontWeight: 'bold',
-    alignSelf: 'center',
-    paddingTop: 10,
-  },
-});

@@ -2,7 +2,7 @@ import {StyleSheet, Text, View, TextInput, Image} from 'react-native';
 import React, {useState} from 'react';
 import ButtonWithBackground from '../components/buttonWithBackground';
 import SmallButton from '../components/smallButton';
-
+import styles from '../css/main.css'
 
 import {SafeAreaView, ScrollView} from 'react-native';
 

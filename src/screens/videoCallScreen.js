@@ -11,7 +11,8 @@ import {
   import {Appbar, Avatar} from 'react-native-paper';
   import {Text, BottomNavigation} from 'react-native-paper';
   import ButtonWithBackground from '../components/buttonWithBackground';
-
+  import styles from '../css/main.css'
+  
   import {getMeeting, token} from '../../api';
   import {
     MediaStream,

@@ -3,7 +3,7 @@ import React, {useState} from 'react';
 import ButtonWithBackground from '../components/buttonWithBackground';
 import SmallButton from '../components/smallButton';
 import axios from 'axios';
-import styles from '../css/loginScreen.css'
+import styles from '../css/main.css'
 import {SafeAreaView, ScrollView} from 'react-native';
 
 const baseUrl = 'https://y2ylvp.deta.dev';
