@@ -3,7 +3,6 @@ import React, {useState} from 'react';
 import ButtonWithBackground from '../components/buttonWithBackground';
 import SmallButton from '../components/smallButton';
 import axios from 'axios';
-import style from '../css/loginScreen.css'
 import {SafeAreaView, ScrollView} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -60,7 +59,7 @@ export default function LoginScreen({navigation}) {
       <ScrollView>
         <View style={styles.container}>
         <Image source={require('../assets/Tingle_logo_example.jpg')}
-          style={{width:300, height: 180, left:43, top:100, marginBottom:170}}></Image>
+          style={{width:300, height: 150, left:43, top:100, marginBottom:150}}></Image>
 
           <View style={styles.inputView}>
             <TextInput
@@ -94,12 +93,9 @@ export default function LoginScreen({navigation}) {
             />
           </View>
 
-          <View alignItems="center">
+          <View alignItems="center" style={{marginBottom:110,justifyContent: 'flex-end', marginTop:30}} >
             <SmallButton text="Forgot Password?" />
-
-            <View style={styles.smallText}>
-              <Text color="black"> Don't have an account yet?</Text>
-              </View>
+              <Text style={styles.smallText}> Don't have an account yet?</Text>
               <SmallButton
                 text="Sign up"
                 onPress={() => navigation.navigate('Registration')}
@@ -126,21 +122,23 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginLeft: 5,
-    color:'black'
+    color:'black',
+    flex: 1,
+    padding: 5,
   },
 
   inputView: {
     borderColor: 'grey',
     color: 'black',
-    borderRadius: 20,
+    borderRadius: 15,
     borderWidth: 2,
-    marginBottom: 35,
+    marginBottom: 10,
     marginHorizontal: 20,
-    marginVertical: 10,
+    marginVertical: 5,
   },
+
   title: {
     color: '#374B73',
-
     fontSize: 50,
     fontWeight: '800',
     letterSpacing: 1,
@@ -149,24 +147,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingLeft: 110,
   },
-  button: {
-    backgroundColor: '#f586d4',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 25,
-    borderColor: 'white',
-    borderWidth: 2,
-    marginHorizontal: 20,
-    marginVertical: 10,
-    height: 55,
-  },
 
   smallText: {
-    color: 'black',
-    fontSize: 20,
-    fontWeight: '800',
-    letterSpacing: 0.5,
+    color: 'grey',
+    fontSize: 14,
+    letterSpacing: 0,
+    
   },
+
   textFailed: {
     alignSelf: 'center',
     color: 'red',

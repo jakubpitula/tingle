@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 
-const buttonWithBackground = props => {
+const buttonWithBackground1 = props => {
     const content = (
         
         <View style={[styles.button, {backgroundColor: '#fe8196'}]}>
@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
 
     button:{
         padding:13,
-        margin: 10,
+        margin: 0,
         width: 180,
         borderRadius: 25,
         alignItems: 'center',
@@ -29,4 +29,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default buttonWithBackground;
+export default buttonWithBackground1;

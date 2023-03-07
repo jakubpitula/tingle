@@ -1,5 +1,6 @@
 import { StyleSheet, View, TextInput, Text, TouchableOpacity, Image } from "react-native";
 import ButtonWithBackground from '../components/buttonWithBackground';
+import ButtonWithBackground1 from '../components/buttonWithBackground1';
 import InvalidButton from '../components/invalidButton';
 import React, {useState} from 'react';
 import {SafeAreaView, ScrollView} from 'react-native';
@@ -382,7 +383,8 @@ export default function RegistrationScreen({navigation}) {
             ) : (
               <Text style={styles.textFailed}> </Text>
             )}
-          <ButtonWithBackground
+          <View style={{paddingLeft: 90}}>
+          <ButtonWithBackground1
             text="Choose Profile Picture"
             onPress={selectImage}
           />
@@ -392,6 +394,9 @@ export default function RegistrationScreen({navigation}) {
               {'\n'}
             </Text>
           ) : null}
+          </View>
+
+          <View style={{paddingLeft: 180}}>
           <ButtonWithBackground
             text="Confirm"
             onPress={onSubmitFormHandler}
@@ -403,6 +408,7 @@ export default function RegistrationScreen({navigation}) {
             onPress={onSubmitFormHandler}
             backgroundColor={valid ? "blue" : "grey"}
           />}
+          </View>
         </ScrollView>
       </SafeAreaView>
     </>
@@ -412,20 +418,30 @@ export default function RegistrationScreen({navigation}) {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
-    backgroundColor: 'white',
-    paddingLeft: 20,
-    backgroundColor:'#FFF1ED'
-
-
+    paddingLeft: 10,
+    backgroundColor:'#FFF1ED',
+    paddingTop: 15,
 
   },
 
   TextInput: {
     height: 50,
     flex: 1,
-    padding: 10,
+    padding: 5,
     justifyContent: 'center',
+    marginLeft: 5,
 
+  },
+
+  inputView: {
+    borderColor: 'grey',
+    color: 'black',
+    borderRadius: 15,
+    borderWidth: 2,
+    marginBottom: 3,
+    marginHorizontal: 10,
+    marginLeft: 0,
+    marginTop: 5,
   },
 
   title: {
@@ -438,23 +454,14 @@ const styles = StyleSheet.create({
     marginTop: 100,
   },
 
-  smallText: {
+  regularText: {
     color: 'black',
     fontSize: 20,
     marginTop: 100,
     marginBottom: 20,
     justifyContent: 'center',
   },
-  inputView: {
-    borderColor: 'grey',
-    borderWidth: 2,
-    borderRadius: 20,
-    width: '92%',
-    marginTop:18,
-
-    alignContent: 'center',
-    justifyContent: 'center',
-  },
+ 
 
   textFailed: {
     color: 'red',

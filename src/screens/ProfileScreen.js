@@ -16,12 +16,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {SafeAreaView, ScrollView, TouchableOpacity, Image} from 'react-native';
 import {useEffect} from 'react';
 import {Avatar} from 'react-native-paper';
-import ButtonWithBackground from '../components/buttonWithBackground';
-import SettingsScreen from './settingsScreen';
+import ButtonWithBackground2 from '../components/buttonWithBackground2';
 
+const ProfileScreen = ({navigation}) => {
 const baseUrl = 'https://y2ylvp.deta.dev/users/me';
 
-export default function ProfileScreen({navigation}) {
+
   const [age, setAge] = useState([]);
   const [name, setName] = useState([]);
   const [email, setEmail] = useState([]);
@@ -58,6 +58,7 @@ export default function ProfileScreen({navigation}) {
     }
   };
 
+
   return (
     <View style={styles.container1}>
       <ScrollView>
@@ -86,17 +87,41 @@ export default function ProfileScreen({navigation}) {
               fontSize: 20,
               fontWeight: 'bold',
               color: 'grey',
+              paddingBottom:5,
             }}>
             {' '}
             {age}, {gender}
           </Text>
         </View>
 
-        <TouchableOpacity
-          style={styles.button}
-          title="Settings"
-          onPress={() => navigation.navigate('settingsScreen')}
-        />
+        <View style={{paddingLeft: 110, paddingTop:0,}}>
+            <ButtonWithBackground2
+              text="Change Photo"
+              onPress={() => navigation.navigate('Settings')}
+            />
+          </View>
+
+          <View style={{paddingLeft: 110,paddingTop:10,}}>
+            <ButtonWithBackground2
+              text="Preference"
+              onPress={() => navigation.navigate('Settings')}
+            />
+          </View>
+
+          <View style={{paddingLeft: 110,paddingTop:10,}}>
+            <ButtonWithBackground2
+              text="Interests"
+              onPress={() => navigation.navigate('Settings')}
+            />
+          </View>
+
+          <View style={{paddingLeft: 110,paddingTop:10,}}>
+            <ButtonWithBackground2
+              text="Settings"
+              onPress={() => navigation.navigate('Settings')}
+            />
+          </View>
+
       </ScrollView>
     </View>
   );
@@ -106,11 +131,10 @@ const styles = StyleSheet.create({
   topContainer: {
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: '#e91e63',
+    backgroundColor: '#fe8196',
     height: 150,
     width: '100%',
     padding: 10,
-    //backgroundColor:'#FFF1ED',
   },
   circle: {
     width: 150,
@@ -124,6 +148,7 @@ const styles = StyleSheet.create({
   container1: {
     backgroundColor: 'white',
     flex: 1,
+    justifyContent: 'center',
   },
 
   TextInput: {
@@ -162,6 +187,7 @@ const styles = StyleSheet.create({
     elevation: 15,
     shadowOpacity: 80,
     width: '70%',
+    color:'black',
   },
 
   smallText: {
@@ -176,4 +202,7 @@ const styles = StyleSheet.create({
     bottom: 33,
     right: 70,
   },
+
 });
+
+export default ProfileScreen;

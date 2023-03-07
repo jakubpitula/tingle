@@ -6,11 +6,14 @@ import {SegmentedButtons, Button, Switch} from 'react-native-paper';
 import React, {useState} from 'react';
 
 
+
 const PreferenceScreen = ({navigation}) => {
   const [value, setValue] = React.useState('');
 
   const [isSwitchOn, setIsSwitchOn] = React.useState(false);
   const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
+
+ 
 
   return (
     <SafeAreaView>
@@ -30,14 +33,17 @@ const PreferenceScreen = ({navigation}) => {
         <View style={styles.container}>
           <Text style={styles.smallText}>Distance preference</Text>
 
-          
+         
+          <View style={styles.inputView}>
+          <TextInput
+              style={styles.TextInput}
+              placeholder="Distance"/></View>
 
           <Text style={styles.smallerText}>
-            Only show people in this range{' '}
-            <Switch value={isSwitchOn} onValueChange={onToggleSwitch} />
-          </Text>
+            Only show people in this range {' '} 
+            <Switch value={isSwitchOn} onValueChange={onToggleSwitch} /></Text>
 
-          <View style={{paddingTop: 50,}}>
+          <View style={{paddingTop: 20,}}>
           <Text style={styles.smallText}>Sex preference</Text>
           </View>
 
@@ -57,16 +63,21 @@ const PreferenceScreen = ({navigation}) => {
             style={styles.group}
           />
 
-          <View style={{paddingTop: 50,}}>
+          <View style={{paddingTop: 20,}}>
           <Text style={styles.smallText}>Age preference</Text>
           </View>
+
+          <View style={styles.inputView}>
+          <TextInput
+              style={styles.TextInput}
+              placeholder="Age"/></View>
 
 
           <Text style={styles.smallerText}>
             Only show people in this range{' '}
             <Switch value={isSwitchOn} onValueChange={onToggleSwitch} />
           </Text>
-          <View style={{paddingTop: 200, paddingLeft: 140}}>
+          <View style={{paddingTop: 200, paddingLeft: 180}}>
           <ButtonWithBackground
             text="Next"
             onPress={() => navigation.navigate('Interest')}
@@ -82,20 +93,21 @@ const PreferenceScreen = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
-    backgroundColor: 'white',
-    paddingLeft: 30,
-    paddingRight: 50,
-    paddingTop: 30,
-    paddingBottom: 0,
-  },
+    
+    paddingLeft: 10,
+    paddingRight:10,
+    backgroundColor:'#FFF1ED',
+    paddingTop: 15,
 
+  },
   TextInput: {
     height: 50,
     flex: 1,
-    padding: 10,
-
+    padding: 5,
     justifyContent: 'center',
+    marginLeft: 5,
   },
+
 
   title: {
     color: 'black',
@@ -108,12 +120,12 @@ const styles = StyleSheet.create({
   },
 
   smallText: {
+    fontWeight: 'bold',
     color: 'black',
-    fontFamily: 'Roboto',
     fontSize: 20,
     marginTop: 0,
     marginLeft: 0,
-    marginBottom: 20,
+    marginBottom: 10,
     justifyContent: 'center',
   },
 
@@ -123,19 +135,21 @@ const styles = StyleSheet.create({
     fontSize: 15,
     marginTop: 0,
     marginLeft: 0,
-    marginBottom: 20,
     justifyContent: 'center',
   },
 
+  
   inputView: {
     borderColor: 'grey',
+    color: 'black',
+    borderRadius: 15,
     borderWidth: 2,
-    borderRadius: 3,
-    width: '90%',
-    marginBottom: 35,
-    alignContent: 'center',
-    justifyContent: 'center',
+    marginBottom: 3,
+    marginHorizontal: 10,
+    marginLeft: 0,
+    marginTop: 5,
   },
+ 
 
   altTitle: {
     fontFamily: 'Roboto',

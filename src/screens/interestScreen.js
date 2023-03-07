@@ -1,7 +1,7 @@
 import { StyleSheet, View, TextInput  } from 'react-native';
 import React, { useState } from 'react'
-import ButtonWithBackground from '../components/buttonWithBackground';
-import SmallButton from '../components/smallButton';
+import ButtonWithBackground1 from '../components/buttonWithBackground';
+
 
 import { SafeAreaView,ScrollView } from 'react-native';
 
@@ -96,7 +96,7 @@ const data_smoking = [
             </Appbar.Header>
 
             
-            
+            <View style={styles.container}>
             <Text style={styles.smallText}> Hobbies </Text>
             <MultipleSelectList 
             setSelected={(val) => setSelected(val)} 
@@ -157,9 +157,14 @@ const data_smoking = [
           label="Selected"
           />
 
+          <View style={{paddingLeft: 180}}>
+            <ButtonWithBackground1
+              text="Next"
+              onPress={() => navigation.navigate('Home')}
+            />
+          </View>
 
-
-
+              </View>
             </ScrollView>
         </SafeAreaView>
        
@@ -167,30 +172,52 @@ const data_smoking = [
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'column',
+    paddingLeft: 10,
+    paddingRight: 10,
+    backgroundColor:'#FFF1ED',
+    paddingTop: 15,
+    justifyContent: 'flex-end',
+  },
+
 TextInputAboutMe: {
-    height:100,
+    height:70,
+    width: '100%',
     flex: 1,
-    padding: 10,
+    paddingBottom: 40,
+    marginBottom:0,
     justifyContent: 'center',
+    borderColor: 'grey',
   },
 
   inputView:{
     borderColor: 'grey',
     borderWidth: 2,
-    borderRadius: 3,
-    width: '90%',
-    marginBottom: 35,
+    borderRadius: 15,
+    width: '100%',
+    marginBottom: 15,
     alignContent: 'center',
     justifyContent: 'center',
   },
 
   smallText: {
+    fontWeight:'bold',
     color: 'black',
     fontSize: 20,
-    marginTop: 10,
-    marginBottom:10,
+    marginTop: 0,
+    marginLeft: 0,
+    marginBottom: 10,
     justifyContent: 'center',
-    
+  },
+
+  smallerText: {
+    color: 'black',
+    fontFamily: 'Roboto',
+    fontSize: 15,
+    marginTop: 0,
+    marginLeft: 0,
+    justifyContent: 'center',
   },
 
 });

@@ -13,9 +13,10 @@ const SmallButton = props => {
 const styles = StyleSheet.create({
     button:{
         padding:10,
-        marginTop: 10,
+        marginTop: 5,
         width: 150,
         alignItems: 'center',
+        marginBottom: 0,
     },
     text: {
         color: 'black',
