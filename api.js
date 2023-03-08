@@ -38,6 +38,7 @@ export const getMeeting = async ({id}) => {
 export const readPool = async () => {
   const token = await AsyncStorage.getItem("id_token");
   let meetingId = ""
+  let userId = ""
   const res = await fetch(`https://y2ylvp.deta.dev/read_pool`, {
     method: "POST",
     headers: {
@@ -64,6 +65,7 @@ export const readPool = async () => {
 
   else{
     meetingId = status["meetingId"];
+    userId = status["userId"];
     await getMeeting({ meetingId });
 
     const resp_joining = await fetch(`https://y2ylvp.deta.dev/read_pool`, {
@@ -77,5 +79,5 @@ export const readPool = async () => {
     // const res = await resp_joining.json()
     // console.log(res);
   }
-  return meetingId;
+  return {"mId": meetingId, "uId": userId};
 }

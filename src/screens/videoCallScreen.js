@@ -1,19 +1,14 @@
 import {
-    StyleSheet,
     View,
-    TextInput,
     TouchableOpacity,
   } from 'react-native';
 import React, { useEffect, useState } from "react";
-import SettingsButton from '../components/settingsButton';
-import {SafeAreaView, ScrollView,ActivityIndicator, FlatList} from 'react-native';
-import {Appbar, Avatar} from 'react-native-paper';
-import {Text, BottomNavigation} from 'react-native-paper';
-import ButtonWithBackground from '../components/buttonWithBackground';
+import {SafeAreaView, FlatList, BackHandler} from 'react-native';
+import {Text} from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 
-  import {getMeeting, readPool, token} from '../../api';
+  import {readPool, token} from '../../api';
   import {
     MediaStream,
     MeetingProvider,
@@ -23,7 +18,7 @@ import { useNavigation } from '@react-navigation/native';
   } from '@videosdk.live/react-native-sdk';
 
 function JoinScreen(props) {
-  const [meetingVal, setMeetingVal] = useState('');
+  const [disabled, setDisabled] = useState(false);
     return (
       <SafeAreaView
         style={{
@@ -33,11 +28,15 @@ function JoinScreen(props) {
           paddingHorizontal: 6 * 10,
         }}>
         <TouchableOpacity
+          disabled={disabled}
           onPress={async()=>{
-            const mid = await props.readPool().catch(err=>console.log(err));
+            setDisabled(true);
+            const pool = await props.readPool().catch(err=>console.log(err));
+            const mid = pool["mId"];
+            const uid = pool["uId"];
             if (mid) {
-              // console.log(mid)
               props.setMeetingId(mid);
+              props.setUserId(uid);
             }
           }}
           style={{backgroundColor: '#FF356B', padding: 12, borderRadius: 6}}>
@@ -65,8 +64,7 @@ function JoinScreen(props) {
     );
   };
 
-  function ControlsContainer({leave, end, changeWebcam, toggleMic, setMeetingId}) {
-    const navigation = useNavigation();
+ function ControlsContainer({leave, changeWebcam, toggleMic}) {
     return (
       <View
         style={{
@@ -90,10 +88,13 @@ function JoinScreen(props) {
         />
         <Button
           onPress={() => {
-            leave();
-            end();
-            setMeetingId(null);
-            navigation.navigate('Home');
+            if(joinedFlag) {
+              try {
+                leave();
+              } catch (e) {
+                console.log(e)
+              }
+            }
           }}
           buttonText={'End call'}
           backgroundColor={'#FF0000'}
@@ -132,6 +133,8 @@ function JoinScreen(props) {
     );
   }
 
+let joinedFlag = false
+
   function ParticipantList({participants}) {
     return participants.length > 0 ? (
       <FlatList
@@ -140,37 +143,56 @@ function JoinScreen(props) {
           return <ParticipantView participantId={item} />;
         }}
       />
-    ) : (
-      <View
-        style={{
-          flex: 1,
-          backgroundColor: '#F6F6FF',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}>
-        <Text style={{fontSize: 20}}>Press Join button to enter meeting.</Text>
-      </View>
-    );
-  }
-
-  async function onMeetingLeft(){
-    const token = await AsyncStorage.getItem("id_token");
-    await fetch(`https://y2ylvp.deta.dev/delete_from_pool`, {
-      method: "POST",
-      headers: {
-        'Authorization': 'Bearer ' + token,
-        "Content-Type": "application/json",
-      },
-    });
+    ) : <JoinScreen />
   }
 
   function MeetingView(props) {
+    const navigation = useNavigation();
     const {join, end, leave, changeWebcam, toggleMic, meetingId, participants} =
-      useMeeting({onMeetingLeft});
+      useMeeting({
+        onParticipantLeft: async() => {
+          console.log('Participant left ');
+          leave();
+          const res = await fetch(`https://y2ylvp.deta.dev/users/${props.userId}`, {
+            method: "GET"
+          });
+          const user = await res.json()
+          alert(user["name"] + ' ended the call.')
+        },
+        onMeetingLeft: async() =>{
+            console.log('Meeting left')
+            joinedFlag = false
+            props.setMeetingId(null);
+            const token = await AsyncStorage.getItem("id_token");
+            await fetch(`https://y2ylvp.deta.dev/delete_from_pool`, {
+              method: "POST",
+              headers: {
+                'Authorization': 'Bearer ' + token,
+                "Content-Type": "application/json",
+              },
+            });
+            navigation.navigate('Home')
+        },
+        onMeetingJoined: () =>{
+          console.log('joined')
+          joinedFlag = true
+        }});
+
+    BackHandler.addEventListener('hardwareBackPress', function(){
+        try {
+          leave();
+        } catch (e) {
+          console.log(e)
+        }
+      })
+
     const participantsArrId = [...participants.keys()];
+
     useEffect(() => {
       join();
     }, [])
+    console.log('participants: ' + participants.size)
+
     return (
       <View style={{flex: 1}}>
         {meetingId ? (
@@ -183,6 +205,7 @@ function JoinScreen(props) {
           changeWebcam={changeWebcam}
           toggleMic={toggleMic}
           setMeetingId={props.setMeetingId}
+          participants={participants}
         />
       </View>
     );
@@ -190,7 +213,7 @@ function JoinScreen(props) {
 
   export default function VideoCallScreen(){
     const [meetingId, setMeetingId] = useState(null);
-
+    const [userId, setUserId] = useState(null);
     const CallRoute = () => {
     return meetingId ? (
       <SafeAreaView style={{flex: 1, backgroundColor: '#F6F6FF'}}>
@@ -202,11 +225,11 @@ function JoinScreen(props) {
             name: 'Test User',
           }}
           token={token}>
-          <MeetingView setMeetingId={setMeetingId}/>
+          <MeetingView setMeetingId={setMeetingId} userId={userId}/>
         </MeetingProvider>
       </SafeAreaView>
     ) : (
-      <JoinScreen readPool={readPool} meetingId = {meetingId} setMeetingId = {setMeetingId}/>
+      <JoinScreen readPool={readPool} meetingId = {meetingId} setMeetingId = {setMeetingId} setUserId={setUserId}/>
     );
   }
     return(
