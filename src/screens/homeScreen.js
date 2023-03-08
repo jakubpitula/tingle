@@ -17,6 +17,7 @@ import {Preference} from './preferenceScreen';
 import {Interest} from './interestScreen';
 import VideoCallScreen, {videoCallScreen} from './videoCallScreen';
 import ProfileScreen from './ProfileScreen';
+import ChattingScreen from './ChattingScreen'
 
 ///////////////////////////////////////////////////////////VIDEOSDK/////
 function Call() {
@@ -35,7 +36,7 @@ function Notifications() {
   );
 }
 function Messeges() {
-  return <Text>Messages</Text>;
+  return <ChattingScreen />;
 }
 
 ///////////////////////////////////////////////////////////VIDEOSDK/////
