@@ -10,10 +10,8 @@ import {
 import {Appbar, Avatar} from 'react-native-paper';
 import {Text, BottomNavigation} from 'react-native-paper';
 import ButtonWithBackground from '../components/buttonWithBackground';
-
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-
+import Icon from 'react-native-vector-icons/FontAwesome'
 import LoginScreen, {Login} from './loginScreen';
 import {Preference} from './preferenceScreen';
 import {Interest} from './interestScreen';
@@ -50,6 +48,16 @@ export default function HomeScreen() {
       initialRouteName="Call"
       screenOptions={{
         tabBarActiveTintColor: '#e91e63',
+        tabBarStyle: {            
+          position: "absolute",
+          bottom: 5,
+          left: 20,
+          right: 20,
+          elevation: 3,
+          backgroundColor: "white",
+          borderRadius: 15,
+          height: 50,
+        },
 
         headerStyle: {
           backgroundColor: 'White',
@@ -65,7 +73,7 @@ export default function HomeScreen() {
         options={{
           tabBarLabel: 'Call',
           tabBarIcon: ({color, size}) => (
-            <MaterialCommunityIcons name="phone" color={color} size={size} />
+            <Icon name="phone" color={color} size={size} />
           ),
         }}
       />
@@ -73,9 +81,9 @@ export default function HomeScreen() {
         name="Messages"
         component={Messeges}
         options={{
-          tabBarLabel: 'Messeges',
+          tabBarLabel: 'Messages',
           tabBarIcon: ({color, size}) => (
-            <MaterialCommunityIcons name="inbox" color={color} size={size} />
+            <Icon name="comment" color={color} size={size} />
           ),
         }}
       />
@@ -85,7 +93,7 @@ export default function HomeScreen() {
         options={{
           tabBarLabel: 'Updates',
           tabBarIcon: ({color, size}) => (
-            <MaterialCommunityIcons name="bell" color={color} size={size} />
+            <Icon name="bell" color={color} size={size} />
           ),
           tabBarBadge: 69,
         }}
@@ -96,7 +104,7 @@ export default function HomeScreen() {
         options={{
           tabBarLabel: 'Profile',
           tabBarIcon: ({color, size}) => (
-            <MaterialCommunityIcons name="account" color={color} size={size} />
+            <Icon name="user" color={color} size={size} />
           ),
         }}
       />

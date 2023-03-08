@@ -44,6 +44,8 @@ export default function LoginScreen({navigation}) {
         ).then((response) => {
           if (response.status === 200) {
             AsyncStorage.setItem("id_token", response.data.access_token);
+            this.textInput_email.clear()
+            this.textInput_pass.clear()
             navigation.navigate('Home');
           } else {
             throw new Error('Email or Password incorrect');
@@ -70,6 +72,7 @@ export default function LoginScreen({navigation}) {
               placeholder="Email"
               placeholderTextColor="black"
               onChangeText={onChangeEmailHandler}
+              ref={input => { this.textInput_email = input }}
               editable={!isLoading}
             />
           </View>
@@ -81,6 +84,7 @@ export default function LoginScreen({navigation}) {
               value={password}
               onChangeText={onChangePasswordHandler}
               editable={!isLoading}
+              ref={input => { this.textInput_pass = input }}
               placeholderTextColor="black"
               secureTextEntry
             />
