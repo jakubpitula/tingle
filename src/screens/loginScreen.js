@@ -1,5 +1,5 @@
 import {StyleSheet, Text, View, TextInput, Image} from 'react-native';
-import React, {useState} from 'react';
+import React, { useEffect, useState } from "react";
 import ButtonWithBackground from '../components/buttonWithBackground';
 import SmallButton from '../components/smallButton';
 import axios from 'axios';
@@ -13,7 +13,9 @@ export default function LoginScreen({navigation}) {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-
+  useEffect(()=>{
+    setIsLoading(false);
+  })
 
   const onChangePasswordHandler = password => {
     setPassword(password);
@@ -152,7 +154,7 @@ const styles = StyleSheet.create({
     color: 'grey',
     fontSize: 14,
     letterSpacing: 0,
-    
+
   },
 
   textFailed: {

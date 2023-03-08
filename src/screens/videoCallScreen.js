@@ -8,14 +8,16 @@ import {Text} from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 
-  import {readPool, token} from '../../api';
-  import {
-    MediaStream,
-    MeetingProvider,
-    RTCView,
-    useMeeting,
-    useParticipant,
-  } from '@videosdk.live/react-native-sdk';
+import {readPool, token} from '../../api';
+import {
+  MediaStream,
+  MeetingProvider,
+  RTCView,
+  useMeeting,
+  useParticipant,
+} from '@videosdk.live/react-native-sdk';
+
+let joinedFlag = false;
 
 function JoinScreen(props) {
   const [disabled, setDisabled] = useState(false);
@@ -133,8 +135,6 @@ function JoinScreen(props) {
     );
   }
 
-let joinedFlag = false
-
   function ParticipantList({participants}) {
     return participants.length > 0 ? (
       <FlatList
@@ -148,6 +148,7 @@ let joinedFlag = false
 
   function MeetingView(props) {
     const navigation = useNavigation();
+
     const {join, end, leave, changeWebcam, toggleMic, meetingId, participants} =
       useMeeting({
         onParticipantLeft: async() => {

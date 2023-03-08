@@ -57,9 +57,9 @@ const SettingsScreen = ({navigation}) => {
                     placeholderTextColor="black"
                     value={text}
                     onChangeText={text => setText(text)}/>
-                
+
                 <Text style={styles.bigText}>Discovery</Text>
-                
+
                 <Text style={styles.smallerText}> Location </Text>
 
                 <Provider>
@@ -68,7 +68,7 @@ const SettingsScreen = ({navigation}) => {
                       <Text>Option to change location</Text>
                     </Modal>
                   </Portal>
-                <SmallButton 
+                <SmallButton
                 onPress={showModal}
                 text = "Change"/>
                 </Provider>
@@ -125,15 +125,6 @@ const SettingsScreen = ({navigation}) => {
                     placeholderTextColor="black"
                     value={text}
                     onChangeText={text => setText(text)}/>
-                
-
-
-
-
-
-
-                
-
                 </View>
             </ScrollView>
         </SafeAreaView>

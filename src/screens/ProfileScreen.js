@@ -17,9 +17,12 @@ import {SafeAreaView, ScrollView, TouchableOpacity, Image} from 'react-native';
 import {useEffect} from 'react';
 import {Avatar} from 'react-native-paper';
 import ButtonWithBackground2 from '../components/buttonWithBackground2';
+import { useNavigation } from "@react-navigation/native";
 
-const ProfileScreen = ({navigation}) => {
+const ProfileScreen = () => {
 const baseUrl = 'https://y2ylvp.deta.dev/users/me';
+
+const navigation=useNavigation()
 
 
   const [age, setAge] = useState([]);
@@ -119,6 +122,16 @@ const baseUrl = 'https://y2ylvp.deta.dev/users/me';
             <ButtonWithBackground2
               text="Settings"
               onPress={() => navigation.navigate('Settings')}
+            />
+          </View>
+
+          <View style={{paddingLeft: 110,paddingTop:10}}>
+            <ButtonWithBackground2
+              text="Log out"
+              onPress={async() => {
+                await AsyncStorage.setItem('id_token', '');
+                navigation.navigate('Login')
+              }}
             />
           </View>
 
