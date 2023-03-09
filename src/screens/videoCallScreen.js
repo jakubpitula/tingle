@@ -18,6 +18,7 @@ import {
 } from '@videosdk.live/react-native-sdk';
 
 let joinedFlag = false;
+let leftBeforeJoinFlag = false;
 
 function JoinScreen(props) {
   const [disabled, setDisabled] = useState(false);
@@ -75,6 +76,7 @@ function JoinScreen(props) {
           justifyContent: 'space-between',
         }}>
         <Button
+          disabled={!joinedFlag}
           onPress={() => {
             changeWebcam();
           }}
@@ -82,6 +84,7 @@ function JoinScreen(props) {
           backgroundColor={'#1178F8'}
         />
         <Button
+          disabled={!joinedFlag}
           onPress={() => {
             toggleMic();
           }}
@@ -89,6 +92,7 @@ function JoinScreen(props) {
           backgroundColor={'#1178F8'}
         />
         <Button
+          disabled={!joinedFlag}
           onPress={() => {
             if(joinedFlag) {
               try {
@@ -171,21 +175,59 @@ function JoinScreen(props) {
                 'Authorization': 'Bearer ' + token,
                 "Content-Type": "application/json",
               },
+              body: JSON.stringify({
+                'uId': props.userId,
+                'mId': meetingId
+              })
             });
             navigation.navigate('Home')
         },
         onMeetingJoined: () =>{
+          // console.log('left before? '+ leftBeforeJoinFlag)
+          // if(!leftBeforeJoinFlag){
+          //   console.log('joined')
+          //   joinedFlag = true
+          // }
+          // else{
+          //   joinedFlag = false;
+          //   leftBeforeJoinFlag = false;
+          //   leave();
+          // }
+
           console.log('joined')
           joinedFlag = true
         }});
 
-    BackHandler.addEventListener('hardwareBackPress', function(){
-        try {
-          leave();
-        } catch (e) {
-          console.log(e)
-        }
-      })
+    BackHandler.addEventListener('hardwareBackPress', async function(){
+      try {
+        leave();
+      } catch (e) {
+        console.log(e)
+      }      // if(joinedFlag) {
+      //   leave();
+      // }
+      // else{
+      //     const token = await AsyncStorage.getItem("id_token");
+      //     leftBeforeJoinFlag = true;
+      //
+      //     console.log('uid = ', props.userId)
+      //
+      //     await fetch(`https://y2ylvp.deta.dev/delete_from_pool`, {
+      //       method: "POST",
+      //       headers: {
+      //         'Authorization': 'Bearer ' + token,
+      //         "Content-Type": "application/json",
+      //       },
+      //       body: JSON.stringify({
+      //         'uId': props.userId,
+      //         'mId': meetingId
+      //       })
+      //     });
+      //     props.setMeetingId(null);
+      //
+      //     navigation.navigate('Home');
+      // }
+    });
 
     const participantsArrId = [...participants.keys()];
 

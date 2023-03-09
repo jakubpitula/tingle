@@ -214,37 +214,41 @@ export default function RegistrationScreen({navigation}) {
 
     const profilePicRef = storage().ref(filename);
     const url = await profilePicRef.getDownloadURL();
+    console.log(url)
 
     setProfilePicUrl(url);
+    console.log('set '+ profilePicUrl)
+    return profilePicUrl;
   };
 
   const onSubmitFormHandler = async event => {
     setIsLoading(true);
     try {
-      await uploadImage();
-      const response = await axios.post(`${baseUrl}/signup`, {
-        first_name,
-        last_name,
-        email,
-        password,
-        conf_pass,
-        age,
-        gender,
-        profilePicUrl
-        });
-      if (response.status == 200) {
+     uploadImage().then(async(profilePicUrl)=>{
+       const response = await axios.post(`${baseUrl}/signup`, {
+         first_name,
+         last_name,
+         email,
+         password,
+         conf_pass,
+         age,
+         gender,
+         profilePicUrl
+       });
+       if (response.status == 200) {
 
-        setIsLoading(false);
-        setFirstName('');
-        setLastName('');
-        setEmail('');
-        setAge('');
-        setGender('');
+         setIsLoading(false);
+         setFirstName('');
+         setLastName('');
+         setEmail('');
+         setAge('');
+         setGender('');
 
-        navigation.navigate('Preference');
-      } else {
-        throw new Error('An error has occurred');
-      }
+         navigation.navigate('Preference');
+       } else {
+         throw new Error('An error has occurred');
+       }
+     });
     } catch (error) {
       setIsLoading(false);
       throw Error(error)
@@ -461,7 +465,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     justifyContent: 'center',
   },
- 
+
 
   textFailed: {
     color: 'red',

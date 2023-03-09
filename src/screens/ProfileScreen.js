@@ -22,7 +22,7 @@ import { useNavigation } from "@react-navigation/native";
 const ProfileScreen = () => {
 const baseUrl = 'https://y2ylvp.deta.dev/users/me';
 
-const navigation=useNavigation()
+const navigation = useNavigation()
 
 
   const [age, setAge] = useState([]);
@@ -129,6 +129,14 @@ const navigation=useNavigation()
             <ButtonWithBackground2
               text="Log out"
               onPress={async() => {
+                const token = await AsyncStorage.getItem("id_token");
+                await fetch(`https://y2ylvp.deta.dev/delete_from_pool`, {
+                  method: "POST",
+                  headers: {
+                    'Authorization': 'Bearer ' + token,
+                    "Content-Type": "application/json",
+                  },
+                });
                 await AsyncStorage.setItem('id_token', '');
                 navigation.navigate('Login')
               }}
