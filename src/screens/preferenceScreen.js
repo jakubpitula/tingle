@@ -5,6 +5,7 @@ import {Text, Appbar} from 'react-native-paper';
 import {SegmentedButtons, Button, Switch} from 'react-native-paper';
 import React, {useState} from 'react';
 
+const baseUrl = 'https://y2ylvp.deta.dev';
 
 
 const PreferenceScreen = ({navigation}) => {
@@ -13,7 +14,6 @@ const PreferenceScreen = ({navigation}) => {
   const [isSwitchOn, setIsSwitchOn] = React.useState(false);
   const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
 
- 
 
   return (
     <SafeAreaView>
@@ -70,14 +70,19 @@ const PreferenceScreen = ({navigation}) => {
           <View style={styles.inputView}>
           <TextInput
               style={styles.TextInput}
-              placeholder="Age"/></View>
+              placeholder="Min Age"/></View>
+          
+          <View style={styles.inputView}>
+          <TextInput
+              style={styles.TextInput}
+              placeholder="Max Age"/></View>
 
 
           <Text style={styles.smallerText}>
             Only show people in this range{' '}
             <Switch value={isSwitchOn} onValueChange={onToggleSwitch} />
           </Text>
-          <View style={{paddingTop: 200, paddingLeft: 180}}>
+          <View style={{paddingTop: 150, paddingLeft: 180}}>
           <ButtonWithBackground
             text="Next"
             onPress={() => navigation.navigate('Interest')}
