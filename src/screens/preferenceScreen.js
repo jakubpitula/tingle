@@ -70,7 +70,12 @@ const PreferenceScreen = ({navigation}) => {
           <View style={styles.inputView}>
           <TextInput
               style={styles.TextInput}
-              placeholder="Age"/></View>
+              placeholder="Min Age"/></View>
+          
+          <View style={styles.inputView}>
+          <TextInput
+              style={styles.TextInput}
+              placeholder="Max Age"/></View>
 
 
           <Text style={styles.smallerText}>
