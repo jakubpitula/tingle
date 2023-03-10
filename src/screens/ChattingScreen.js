@@ -12,7 +12,8 @@ import {
     widthPercentageToDP as wp,
     heightPercentageToDP as hp,
   } from 'react-native-responsive-screen';
-  import AsyncStorage from '@react-native-async-storage/async-storage';
+  // import AsyncStorage from '@react-native-async-storage/async-storage';
+  import EncryptedStorage from 'react-native-encrypted-storage';
   import {SafeAreaView, ScrollView, TouchableOpacity, Image} from 'react-native';
   import {useEffect} from 'react';
   import {Avatar} from 'react-native-paper';
@@ -23,21 +24,21 @@ import {
 
   const ChattingScreen = () => {
     const baseUrl = 'https://y2ylvp.deta.dev/users/me';
-    
+
     const navigation=useNavigation()
-    
-    
+
+
       const [age, setAge] = useState([]);
       const [name, setName] = useState([]);
       const [email, setEmail] = useState([]);
       const [gender, setGender] = useState([]);
-    
+
       useEffect(() => {
         fetchData();
       }, []);
-    
+
       const fetchData = async () => {
-        const token = await AsyncStorage.getItem('id_token');
+        const token = await EncryptedStorage.getItem('id_token');
         try {
           const response = await fetch(baseUrl, {
             method: 'GET',
@@ -47,7 +48,7 @@ import {
             },
           });
           const res = await response.json();
-    
+
           setName(res['name']);
           setEmail(res['email']);
 
@@ -61,7 +62,7 @@ import {
         <View style={styles.container1}>
           <ScrollView>
             <View style={styles.topContainer}>
-              
+
               <View style={[styles.circle,
                 {alignItems: 'flex-start'},
                 {position: 'absolute', top: 7, left: 5 },
@@ -72,9 +73,9 @@ import {
                 text="Add Friends"
                 />
               </View>
-              
+
            </View>
-            
+
            <View style={{ marginLeft: 60 }}>
             <Text
                 style={{
@@ -87,14 +88,14 @@ import {
                 {name}
             </Text>
 
-   
-            </View>     
+
+            </View>
           </ScrollView>
         </View>
       );
     }
 
-    
+
 const styles = StyleSheet.create({
   topContainer: {
     flex: 1,

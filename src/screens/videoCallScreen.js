@@ -5,7 +5,8 @@ import {
 import React, { useEffect, useState } from "react";
 import {SafeAreaView, FlatList, BackHandler} from 'react-native';
 import {Text} from 'react-native-paper';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
+import EncryptedStorage from 'react-native-encrypted-storage';
 import { useNavigation } from '@react-navigation/native';
 
 import {readPool, token} from '../../api';
@@ -168,7 +169,7 @@ function JoinScreen(props) {
             console.log('Meeting left')
             joinedFlag = false
             props.setMeetingId(null);
-            const token = await AsyncStorage.getItem("id_token");
+            const token = await EncryptedStorage.getItem("id_token");
             await fetch(`https://y2ylvp.deta.dev/delete_from_pool`, {
               method: "POST",
               headers: {

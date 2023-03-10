@@ -1,4 +1,4 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import EncryptedStorage from 'react-native-encrypted-storage';
 async function getToken(){
   return await fetch('https://y2ylvp.deta.dev/generate_token')
     .then(response => response.json())
@@ -36,7 +36,7 @@ export const getMeeting = async ({id}) => {
 };
 
 export const readPool = async () => {
-  const token = await AsyncStorage.getItem("id_token");
+  const token = await EncryptedStorage.getItem("id_token");
   let meetingId = ""
   let userId = ""
   const res = await fetch(`https://y2ylvp.deta.dev/read_pool`, {

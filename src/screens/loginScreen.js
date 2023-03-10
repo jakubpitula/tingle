@@ -4,7 +4,8 @@ import ButtonWithBackground from '../components/buttonWithBackground';
 import SmallButton from '../components/smallButton';
 import axios from 'axios';
 import {SafeAreaView, ScrollView} from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
+import EncryptedStorage from 'react-native-encrypted-storage';
 
 const baseUrl = 'https://y2ylvp.deta.dev';
 
@@ -43,7 +44,7 @@ export default function LoginScreen({navigation}) {
         {headers: {'Content-Type': 'multipart/form-data'}}
         ).then((response) => {
           if (response.status === 200) {
-            AsyncStorage.setItem("id_token", response.data.access_token);
+            EncryptedStorage.setItem("id_token", response.data.access_token);
             this.textInput_email.clear()
             this.textInput_pass.clear()
             navigation.navigate('Home');

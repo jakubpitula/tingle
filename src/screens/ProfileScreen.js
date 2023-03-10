@@ -12,7 +12,9 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
+import EncryptedStorage from 'react-native-encrypted-storage';
+
 import {SafeAreaView, ScrollView, TouchableOpacity, Image} from 'react-native';
 import {useEffect} from 'react';
 import {Avatar} from 'react-native-paper';
@@ -76,11 +78,11 @@ const ProfileScreen = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [profile]);
 
   const fetchData = async () => {
     try {
-      const token = await AsyncStorage.getItem('id_token');
+      const token = await EncryptedStorage.getItem('id_token');
 
       const response = await fetch(`${baseUrl}/me`, {
         method: 'GET',
@@ -97,7 +99,7 @@ const ProfileScreen = () => {
       setProfile(res['profilePicUrl']);
 
       console.log(profile)
-      
+
 
       if (res['gender'] === 'm') {
         setGender('Male');
@@ -122,7 +124,7 @@ const ProfileScreen = () => {
         </View>
         <View style={{alignItems: 'center'}}>
           <Text style={styles.title}>{name}</Text>
-          
+
           <Text
             style={{
               bottom: 55,
@@ -135,13 +137,13 @@ const ProfileScreen = () => {
             {age}, {gender}
           </Text>
         </View>
-       
+
 
         <View style={{paddingLeft: 110, paddingTop:0,}}>
             <ButtonWithBackground2
               text="Change Photo"
               onPress={async()=>{
-                const token = await AsyncStorage.getItem('id_token');
+                const token = await EncryptedStorage.getItem('id_token');
                 selectImage().then(()=>{
                   if(image) {
                     try {
@@ -156,6 +158,7 @@ const ProfileScreen = () => {
                             },
                           });
                         if (response.status == 200) {
+                          setProfile(response.data["profilePicUrl"])
                           alert('Profile picture changed successfully.')
                         } else {
                           throw new Error('An error has occurred');
@@ -199,7 +202,7 @@ const ProfileScreen = () => {
             <ButtonWithBackground2
               text="Log out"
               onPress={async() => {
-                const token = await AsyncStorage.getItem("id_token");
+                const token = await EncryptedStorage.getItem("id_token");
                 await fetch(`https://y2ylvp.deta.dev/delete_from_pool`, {
                   method: "POST",
                   headers: {
@@ -207,7 +210,7 @@ const ProfileScreen = () => {
                     "Content-Type": "application/json",
                   },
                 });
-                await AsyncStorage.setItem('id_token', '');
+                await EncryptedStorage.removeItem('id_token');
                 navigation.navigate('Login')
               }}
             />
