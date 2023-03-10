@@ -18,26 +18,70 @@ import {useEffect} from 'react';
 import {Avatar} from 'react-native-paper';
 import ButtonWithBackground2 from '../components/buttonWithBackground2';
 import { useNavigation } from "@react-navigation/native";
+import storage from "@react-native-firebase/storage";
+import DocumentPicker from "react-native-document-picker";
 
 const ProfileScreen = () => {
-const baseUrl = 'https://y2ylvp.deta.dev/users/me';
+  const baseUrl = 'https://y2ylvp.deta.dev/users';
 
-const navigation = useNavigation()
+  const navigation = useNavigation()
 
 
   const [age, setAge] = useState([]);
   const [name, setName] = useState([]);
   const [email, setEmail] = useState([]);
   const [gender, setGender] = useState([]);
+  const [image, setImage] = useState(null);
+
+
+  const selectImage = async () => {
+    // Opening Document Picker to select one file
+    try {
+      const res = await DocumentPicker.pick({
+        // Provide which type of file you want user to pick
+        type: [DocumentPicker.types.images],
+        copyTo: 'cachesDirectory'
+      });
+      // Printing the log realted to the file
+      console.log('res : ' + JSON.stringify(res));
+      // Setting the state to show single file attributes
+      setImage(res);
+    } catch (err) {
+      setImage(null);
+      // Handling any exception (If any)
+      if (DocumentPicker.isCancel(err)) {
+        // If user canceled the document selection
+        alert('Canceled');
+      } else {
+        // For Unknown Error
+        alert('Unknown Error: ' + JSON.stringify(err));
+        throw err;
+      }
+    }
+  };
+
+  const uploadImage = async () => {
+    const uri = image[0]["fileCopyUri"];
+    const filename = uri.substring(uri.lastIndexOf('/') + 1);
+
+    await storage().ref(filename).putFile(uri);
+
+    const profilePicRef = storage().ref(filename);
+    const url = await profilePicRef.getDownloadURL()
+
+    console.log(url)
+    return url;
+  };
 
   useEffect(() => {
     fetchData();
   }, []);
 
   const fetchData = async () => {
-    const token = await AsyncStorage.getItem('id_token');
     try {
-      const response = await fetch(baseUrl, {
+      const token = await AsyncStorage.getItem('id_token');
+
+      const response = await fetch(`${baseUrl}/me`, {
         method: 'GET',
         headers: {
           Authorization: 'Bearer ' + token,
@@ -100,7 +144,33 @@ const navigation = useNavigation()
         <View style={{paddingLeft: 110, paddingTop:0,}}>
             <ButtonWithBackground2
               text="Change Photo"
-              onPress={() => navigation.navigate('Settings')}
+              onPress={async()=>{
+                const token = await AsyncStorage.getItem('id_token');
+                selectImage().then(()=>{
+                  if(image) {
+                    try {
+                      uploadImage().then(async (profilePicUrl) => {
+                        const response = await axios.put(`${baseUrl}/update`, {
+                            profilePicUrl
+                          },
+                          {
+                            headers: {
+                              Authorization: 'Bearer ' + token,
+                              'Content-Type': 'application/json',
+                            },
+                          });
+                        if (response.status == 200) {
+                          alert('Profile picture changed successfully.')
+                        } else {
+                          throw new Error('An error has occurred');
+                        }
+                      });
+                    } catch (error) {
+                      throw Error(error)
+                    }
+                  }
+                })
+              }}
             />
           </View>
 

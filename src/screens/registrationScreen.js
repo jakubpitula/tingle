@@ -156,30 +156,6 @@ export default function RegistrationScreen({navigation}) {
     }
   }
 
-  // const selectImage = () => {
-  //   const options = {
-  //     maxWidth: 2000,
-  //     maxHeight: 2000,
-  //     storageOptions: {
-  //       skipBackup: true,
-  //       path: 'images'
-  //     }
-  //   };
-  //   ImagePicker.showImagePicker(options, response => {
-  //     if (response.didCancel) {
-  //       console.log('User cancelled image picker');
-  //     } else if (response.error) {
-  //       console.log('ImagePicker Error: ', response.error);
-  //     } else if (response.customButton) {
-  //       console.log('User tapped custom button: ', response.customButton);
-  //     } else {
-  //       const source = { uri: response.uri };
-  //       console.log(source);
-  //       setImage(source);
-  //     }
-  //   });
-  // };
-
   const selectImage = async () => {
     // Opening Document Picker to select one file
     try {
