@@ -166,8 +166,12 @@ const ProfileScreen = () => {
                         }
                       });
                     } catch (error) {
+                      alert('Something went wrong uploading the image.')
                       throw Error(error)
                     }
+                  }
+                  else{
+                    alert('Something went wrong selecting the image.')
                   }
                 })
               }}
