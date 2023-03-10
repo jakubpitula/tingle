@@ -32,6 +32,7 @@ const ProfileScreen = () => {
   const [email, setEmail] = useState([]);
   const [gender, setGender] = useState([]);
   const [image, setImage] = useState(null);
+  const [profile, setProfile] = useState(null);
 
 
   const selectImage = async () => {
@@ -93,6 +94,10 @@ const ProfileScreen = () => {
       setName(res['name']);
       setEmail(res['email']);
       setAge(res['age']);
+      setProfile(res['profilePicUrl']);
+
+      console.log(profile)
+      
 
       if (res['gender'] === 'm') {
         setGender('Male');
@@ -112,22 +117,12 @@ const ProfileScreen = () => {
         <View style={styles.topContainer}></View>
         <View style={{alignItems: 'center'}}>
           <View style={styles.circle}>
-            <Avatar.Icon
-              size={100}
-              icon={'account'}
-              backgroundColor={'black'}
-              style={{
-                width: 130,
-                height: 130,
-                left: 10,
-                top: 80,
-                borderRadius: 100,
-                marginTop: -70,
-              }}></Avatar.Icon>
+          <Image style={styles.image} source={{ uri: profile }}/>
           </View>
         </View>
         <View style={{alignItems: 'center'}}>
           <Text style={styles.title}>{name}</Text>
+          
           <Text
             style={{
               bottom: 55,
@@ -140,6 +135,7 @@ const ProfileScreen = () => {
             {age}, {gender}
           </Text>
         </View>
+       
 
         <View style={{paddingLeft: 110, paddingTop:0,}}>
             <ButtonWithBackground2
@@ -231,6 +227,16 @@ const styles = StyleSheet.create({
     width: '100%',
     padding: 10,
   },
+  imageContainer: {
+    width: 200,
+    height: 200,
+    borderRadius: 100, // half of the width and height to make it circular
+    overflow: 'hidden', // clip the image to the container
+  },
+  image: {
+    width: 200,
+    height: 200,
+  },
   circle: {
     width: 150,
     height: 150,
@@ -239,6 +245,8 @@ const styles = StyleSheet.create({
     bottom: 80,
     elevation: 15,
     shadowOpacity: 80,
+    borderRadius: 100, // half of the width and height to make it circular
+    overflow: 'hidden',
   },
   container1: {
     backgroundColor: 'white',

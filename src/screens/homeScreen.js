@@ -84,21 +84,13 @@ export default function HomeScreen() {
         options={{
           tabBarLabel: 'Messages',
           tabBarIcon: ({color, size}) => (
+            
             <Icon name="comment" color={color} size={size} />
           ),
+          tabBarBadge:69
         }}
       />
-      <Tab.Screen
-        name="Notifications"
-        component={Notifications}
-        options={{
-          tabBarLabel: 'Updates',
-          tabBarIcon: ({color, size}) => (
-            <Icon name="bell" color={color} size={size} />
-          ),
-          tabBarBadge: 69,
-        }}
-      />
+      
       <Tab.Screen
         name="Profile"
         component={Profile}
@@ -107,6 +99,7 @@ export default function HomeScreen() {
           tabBarIcon: ({color, size}) => (
             <Icon name="user" color={color} size={size} />
           ),
+          
         }}
       />
     </Tab.Navigator>
