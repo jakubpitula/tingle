@@ -18,11 +18,26 @@ import {
   useParticipant,
 } from '@videosdk.live/react-native-sdk';
 
+
+
+
+
 let joinedFlag = false;
 let leftBeforeJoinFlag = false;
 
+let activeDisplayNav = 'flex';
+
+
+
+
+
 function JoinScreen(props) {
+
+  
+  
+
   const [disabled, setDisabled] = useState(false);
+  
     return (
       <SafeAreaView
         style={{
@@ -34,6 +49,8 @@ function JoinScreen(props) {
         <TouchableOpacity
           disabled={disabled}
           onPress={async()=>{
+            activeDisplayNav = 'none';
+            console.log(activeDisplayNav)
             setDisabled(true);
             const pool = await props.readPool().catch(err=>console.log(err));
             const mid = pool["mId"];
@@ -49,6 +66,7 @@ function JoinScreen(props) {
           </Text>
         </TouchableOpacity>
       </SafeAreaView>
+      
     );
   }
 
@@ -181,6 +199,7 @@ function JoinScreen(props) {
                 'mId': meetingId
               })
             });
+            activeDisplayNav = 'flex'
             navigation.navigate('Home')
         },
         onMeetingJoined: () =>{
@@ -256,6 +275,7 @@ function JoinScreen(props) {
   }
 
   export default function VideoCallScreen(){
+    
     const [meetingId, setMeetingId] = useState(null);
     const [userId, setUserId] = useState(null);
     const CallRoute = () => {
@@ -281,4 +301,7 @@ function JoinScreen(props) {
     )
   }
 
+  
 
+
+export {activeDisplayNav};
