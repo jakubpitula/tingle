@@ -1,5 +1,5 @@
 import {StyleSheet, Text, View, TextInput, StatusBar} from 'react-native';
-import React, {useState, Component, Fragment} from 'react';
+import React, {useState, Component, Fragment, createContext} from 'react';
 import LoginScreen from './src/screens/loginScreen';
 import RegistrationScreen from './src/screens/registrationScreen';
 import PreferenceScreen from './src/screens/preferenceScreen';
@@ -11,10 +11,12 @@ import SettingsScreen from './src/screens/settingsScreen';
 import EditProfileScreen from './src/screens/editProfileScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
 import VideoCallScreen from "./src/screens/videoCallScreen";
+import MatchScreen from './src/screens/matchScreen';
 
 const Stack = createNativeStackNavigator();
 
 export default class App extends Component{
+
   constructor() {
     super();
     this.state = {
@@ -26,7 +28,8 @@ export default class App extends Component{
     // this.deleteJWT = deviceStorage.deleteJWT.bind(this);
     // this.loadJWT = deviceStorage.loadJWT.bind(this);
     // this.loadJWT();
-  }
+  };
+
 
   // newJWT(jwt){
   //   this.setState({
@@ -82,6 +85,11 @@ export default class App extends Component{
             options={{headerShown: false}}
             name="Video"
             component={VideoCallScreen}
+          />
+          <Stack.Screen
+            options={{headerShown: false}}
+            name="Match"
+            component={MatchScreen}
           />
         </Stack.Navigator>
         <StatusBar style="auto" />

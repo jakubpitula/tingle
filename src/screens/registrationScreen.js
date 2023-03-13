@@ -231,6 +231,8 @@ export default function RegistrationScreen({navigation}) {
     }
   };
 
+  
+
   const valid = (email === '' || password === '' || first_name === '' || last_name === '' || gender === '' || age === '' ||
     checkFirstName === true || checkLastName === true || checkValidEmail === true || checkPassword === true);
   return (

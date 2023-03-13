@@ -14,7 +14,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome'
 import ProfileScreen from './ProfileScreen';
 import ChattingScreen from './ChattingScreen'
-
+import MatchScreen from './matchScreen';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import { useNavigation } from '@react-navigation/native';
 
@@ -207,7 +207,7 @@ function JoinScreen(props) {
               })
             });
             
-            navigation.navigate('Home')
+            navigation.navigate('Match')
         },
         onMeetingJoined: () =>{
           // console.log('left before? '+ leftBeforeJoinFlag)
