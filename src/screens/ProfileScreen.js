@@ -14,10 +14,9 @@ import {
 } from 'react-native-responsive-screen';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 import EncryptedStorage from 'react-native-encrypted-storage';
-
+import {ActivityIndicator} from 'react-native-paper';
 import {SafeAreaView, ScrollView, TouchableOpacity, Image} from 'react-native';
 import {useEffect} from 'react';
-import {Avatar} from 'react-native-paper';
 import ButtonWithBackground2 from '../components/buttonWithBackground2';
 import { useNavigation } from "@react-navigation/native";
 import storage from "@react-native-firebase/storage";
@@ -35,6 +34,7 @@ const ProfileScreen = () => {
   const [gender, setGender] = useState([]);
   const [image, setImage] = useState(null);
   const [profile, setProfile] = useState(null);
+  const [isLoading, setIsLoading] = useState(false)
 
 
   const selectImage = async () => {
@@ -77,9 +77,15 @@ const ProfileScreen = () => {
   };
 
   useEffect(() => {
+    setIsLoading(true);
     fetchData();
+    setTimeout(()=> {
+      setIsLoading(false);
+    }, 1500);
+
   }, [profile]);
 
+  
   const fetchData = async () => {
     try {
       const token = await EncryptedStorage.getItem('id_token');
@@ -116,13 +122,21 @@ const ProfileScreen = () => {
   return (
     <View style={styles.container1}>
       <ScrollView>
+        <SafeAreaView>
         <View style={styles.topContainer}></View>
         <View style={{alignItems: 'center'}}>
           <View style={styles.circle}>
           <Image style={styles.image} source={{ uri: profile }}/>
           </View>
         </View>
+        {isLoading? (
+          <View style={styles.loaderContainer}>
+            <ActivityIndicator animating={true} color={'#fe8196'} size={30} bottom={40}/>
+          </View>
+
+        ):(
         <View style={{alignItems: 'center'}}>
+          
           <Text style={styles.title}>{name}</Text>
 
           <Text
@@ -131,15 +145,15 @@ const ProfileScreen = () => {
               fontSize: 20,
               fontWeight: 'bold',
               color: 'grey',
-              paddingBottom:5,
+              
             }}>
             {' '}
             {age}, {gender}
           </Text>
         </View>
-
-
-        <View style={{paddingLeft: 110, paddingTop:0,}}>
+        )}
+<View style={{alignItems: 'center', bottom: 15, paddingBottom: 30}}>
+        <View style={{ paddingTop:0}}>
             <ButtonWithBackground2
               text="Change Photo"
               onPress={async()=>{
@@ -176,31 +190,32 @@ const ProfileScreen = () => {
               }}
             />
           </View>
-
-          <View style={{paddingLeft: 110,paddingTop:10,}}>
+          
+          <View style={{paddingTop:10,}}>
             <ButtonWithBackground2
               text="Preference"
               onPress={() => navigation.navigate('Settings')}
             />
           </View>
 
-          <View style={{paddingLeft: 110,paddingTop:10,}}>
+          <View style={{paddingTop:10,}}>
             <ButtonWithBackground2
               text="Interests"
               onPress={() => navigation.navigate('Settings')}
             />
           </View>
 
-          <View style={{paddingLeft: 110,paddingTop:10,}}>
+          <View style={{paddingTop:10,}}>
             <ButtonWithBackground2
               text="Settings"
               onPress={() => navigation.navigate('Settings')}
             />
           </View>
 
-          <View style={{paddingLeft: 110,paddingTop:10}}>
+          <View style={{paddingTop:10, }}>
             <ButtonWithBackground2
               text="Log out"
+              
               onPress={async() => {
                 const token = await EncryptedStorage.getItem("id_token");
                 await fetch(`https://y2ylvp.deta.dev/delete_from_pool`, {
@@ -214,8 +229,10 @@ const ProfileScreen = () => {
                 navigation.navigate('Login')
               }}
             />
+           
           </View>
-
+          </View>
+          </SafeAreaView>
       </ScrollView>
     </View>
   );
@@ -251,6 +268,13 @@ const styles = StyleSheet.create({
     borderRadius: 100, // half of the width and height to make it circular
     overflow: 'hidden',
   },
+
+  loaderContainer: {
+    width: '100%',
+    justifycontent: 'center',
+    alignItems: 'center',
+    
+},
   container1: {
     backgroundColor: 'white',
     flex: 1,

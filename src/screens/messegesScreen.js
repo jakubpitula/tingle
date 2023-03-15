@@ -5,13 +5,10 @@ import {
     TextInput,
     TouchableHighlight,
     Button,
+    FlatList,
   } from 'react-native';
   import React, {useState} from 'react';
-  import axios from 'axios';
-  import {
-    widthPercentageToDP as wp,
-    heightPercentageToDP as hp,
-  } from 'react-native-responsive-screen';
+  
   // import AsyncStorage from '@react-native-async-storage/async-storage';
   import EncryptedStorage from 'react-native-encrypted-storage';
   import {SafeAreaView, ScrollView, TouchableOpacity, Image} from 'react-native';
@@ -19,10 +16,11 @@ import {
   import {Avatar} from 'react-native-paper';
   import ButtonWithBackground2 from '../components/buttonWithBackground2';
   import SmallButton from '../components/smallButton';
+ 
   import { useNavigation } from "@react-navigation/native";
 
 
-  const ChattingScreen = () => {
+  const MessegesScreen = () => {
     const baseUrl = 'https://y2ylvp.deta.dev/users/me';
 
     const navigation=useNavigation()
@@ -60,40 +58,36 @@ import {
 
       return (
         <View style={styles.container1}>
-          <ScrollView>
-            <View style={styles.topContainer}>
 
-              <View style={[styles.circle,
-                {alignItems: 'flex-start'},
-                {position: 'absolute', top: 7, left: 5 },
-                {width: 50, height: 50 }]}>
+          <FlatList>
+            <View>
+              <Text>{name}</Text>
               </View>
-              <View style={{paddingLeft: 250,}}>
-                <SmallButton
-                text="Add Friends"
-                />
-              </View>
-
-           </View>
-
-           <View style={{ marginLeft: 60 }}>
-            <Text
-                style={{
-                  bottom: 45,
-                  fontSize: 20,
-                  fontWeight: 'bold',
-                  color: 'black',
-                }}>
-                {' '}
-                {name}
-            </Text>
+          
+          
+          </FlatList>
 
 
-            </View>
-          </ScrollView>
         </View>
-      );
-    }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+       )}
 
 
 const styles = StyleSheet.create({
@@ -174,5 +168,5 @@ const styles = StyleSheet.create({
 
 });
 
-export default ChattingScreen;
+export default MessegesScreen;
 

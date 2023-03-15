@@ -12,6 +12,9 @@ import EditProfileScreen from './src/screens/editProfileScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
 import VideoCallScreen from "./src/screens/videoCallScreen";
 import MatchScreen from './src/screens/matchScreen';
+import MessegesScreen from './src/screens/messegesScreen';
+import ChatScreen from './src/screens/chatScreen';
+
 
 const Stack = createNativeStackNavigator();
 
@@ -62,6 +65,12 @@ export default class App extends Component{
             component={HomeScreen}
           />
           <Stack.Screen
+            options={{headerShown: false}}
+            name="Messege"
+            component={MessegesScreen}
+          />
+          
+          <Stack.Screen
           options={{headerShown: false}}
           name="Profile"
           component={ProfileScreen}
@@ -91,6 +100,7 @@ export default class App extends Component{
             name="Match"
             component={MatchScreen}
           />
+           
         </Stack.Navigator>
         <StatusBar style="auto" />
       </NavigationContainer>

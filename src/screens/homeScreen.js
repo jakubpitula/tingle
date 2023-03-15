@@ -13,10 +13,12 @@ import {Text, BottomNavigation} from 'react-native-paper';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome'
 import ProfileScreen from './ProfileScreen';
-import ChattingScreen from './ChattingScreen'
+import MessegesScreen from './messegesScreen';
 import MatchScreen from './matchScreen';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import { useNavigation } from '@react-navigation/native';
+
+
 
 import {readPool, token} from '../../api';
 import {
@@ -31,6 +33,7 @@ let joinedFlag = false;
 let leftBeforeJoinFlag = false;
 
 let activeDisplayNav = 'flex';
+let activeDisplayHead = true
 
 
 
@@ -55,6 +58,7 @@ function JoinScreen(props) {
           disabled={disabled}
           onPress={async()=>{
             activeDisplayNav = 'none';
+            activeDisplayHead = false
             console.log(activeDisplayNav)
             setDisabled(true);
             const pool = await props.readPool().catch(err=>console.log(err));
@@ -95,28 +99,42 @@ function JoinScreen(props) {
     return (
       <View
         style={{
-          padding: 24,
+          padding: 30,
+          top: 30,
           flexDirection: 'row',
           justifyContent: 'space-between',
         }}>
-        <Button
+          <View style={styles.smallCirlce}>
+          
+        <TouchableOpacity
           disabled={!joinedFlag}
           onPress={() => {
             changeWebcam();
-          }}
-          buttonText={'Change camera'}
-          backgroundColor={'#1178F8'}
-        />
-        <Button
+          }}>
+            <View style={{alignItems: 'center', top: 12}}>
+            <Icon name={'camera'} size={40}/>
+          </View>
+          </TouchableOpacity> 
+          
+          
+        
+        </View>
+        <View style={styles.smallCirlce}>
+        <TouchableOpacity
           disabled={!joinedFlag}
           onPress={() => {
             toggleMic();
-          }}
-          buttonText={'Mute/unmute'}
-          backgroundColor={'#1178F8'}
-        />
-        <Button
+          }}>
+          <View style={{alignItems: 'center', top: 12}}>
+          <Icon name={'microphone'} size={40}/>
+        </View>
+          
+        </TouchableOpacity>
+        </View>
+        <View style={styles.smallCirlceRed}>
+        <TouchableOpacity
           disabled={!joinedFlag}
+          
           onPress={() => {
             if(joinedFlag) {
               try {
@@ -125,10 +143,13 @@ function JoinScreen(props) {
                 console.log(e)
               }
             }
-          }}
-          buttonText={'End call'}
-          backgroundColor={'#FF0000'}
-        />
+          }}>
+             <View style={{alignItems: 'center', top: 12}}>
+            <Icon name={'times'} size={40}/>
+          </View>
+          </TouchableOpacity>
+          
+        </View>
       </View>
     );
   }
@@ -145,7 +166,7 @@ function JoinScreen(props) {
         streamURL={new MediaStream([webcamStream.track]).toURL()}
         objectFit={'cover'}
         style={{
-          height: 300,
+          height: 400,
           marginVertical: 8,
           marginHorizontal: 8,
         }}
@@ -154,7 +175,7 @@ function JoinScreen(props) {
       <View
         style={{
           backgroundColor: 'grey',
-          height: 300,
+          height: 400,
           justifyContent: 'center',
           alignItems: 'center',
         }}>
@@ -192,6 +213,7 @@ function JoinScreen(props) {
         onMeetingLeft: async() =>{
             console.log('Meeting left')
             activeDisplayNav = 'flex'
+            activeDisplayHead = true
             joinedFlag = false
             props.setMeetingId(null);
             const token = await EncryptedStorage.getItem("id_token");
@@ -327,7 +349,7 @@ export default function HomeScreen() {
   }
   
   function Messeges() {
-    return <ChattingScreen />;
+    return <MessegesScreen />;
   }
 
   
@@ -354,9 +376,8 @@ export default function HomeScreen() {
           height: 50,
         },
 
-        headerStyle: {
-          backgroundColor: 'White',
-        },
+        
+        headerShown: activeDisplayHead,
         headerTintColor: '#e91e63',
         headerTintStyle: {
           fontWeight: 'bold',
@@ -388,8 +409,13 @@ export default function HomeScreen() {
       
       <Tab.Screen
         name="Profile"
+        
         component={Profile}
         options={{
+          headerStyle: {
+            backgroundColor: '#fe8196',
+          },
+          headerShown:false,
           tabBarLabel: 'Profile',
           tabBarIcon: ({color, size}) => (
             <Icon name="user" color={color} size={size} />
@@ -427,7 +453,29 @@ const styles = StyleSheet.create({
     marginBottom: 50,
     marginTop: 100,
   },
+  smallCirlce: {
+    width: 70,
+    height: 70,
+    borderRadius: 70 / 2,
+    bottom: 60,
+    backgroundColor: '#D5D5D5',
+    
+   
+    borderRadius: 100, // half of the width and height to make it circular
+    overflow: 'hidden',
+  },
 
+  smallCirlceRed: {
+    width: 70,
+    height: 70,
+    borderRadius: 70 / 2,
+    bottom: 60,
+    backgroundColor: '#FF3A3E',
+    
+   
+    borderRadius: 100, // half of the width and height to make it circular
+    overflow: 'hidden',
+  },
   smallText: {
     color: 'black',
     fontSize: 20,

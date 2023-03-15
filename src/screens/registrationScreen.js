@@ -1,4 +1,11 @@
-import { StyleSheet, View, TextInput, Text, TouchableOpacity, Image } from "react-native";
+import {
+  StyleSheet,
+  View,
+  TextInput,
+  Text,
+  TouchableOpacity,
+  Image,
+} from 'react-native';
 import ButtonWithBackground from '../components/buttonWithBackground';
 import ButtonWithBackground1 from '../components/buttonWithBackground1';
 import InvalidButton from '../components/invalidButton';
@@ -8,6 +15,7 @@ import axios from 'axios';
 import {Appbar} from 'react-native-paper';
 import storage from '@react-native-firebase/storage';
 import DocumentPicker from 'react-native-document-picker';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const baseUrl = 'https://y2ylvp.deta.dev';
 
@@ -29,7 +37,6 @@ export default function RegistrationScreen({navigation}) {
   const [checkGender, setCheckGender] = useState(false);
   const [image, setImage] = useState(null);
   const [profilePicUrl, setProfilePicUrl] = useState(null);
-
 
   const onChangeFirstNameHandler = first_name => {
     setFirstName(first_name);
@@ -59,25 +66,25 @@ export default function RegistrationScreen({navigation}) {
     setGender(gender);
   };
 
-  const handleCheckFirstName = (first_name) => {
+  const handleCheckFirstName = first_name => {
     setFirstName(first_name);
     if (!first_name.trim()) {
-      setCheckFistName(true)
-      onChangeFirstNameHandler(first_name)
-    } else{
-      setCheckFistName(false)
+      setCheckFistName(true);
+      onChangeFirstNameHandler(first_name);
+    } else {
+      setCheckFistName(false);
     }
-  }
+  };
 
-  const handleCheckLastName = (last_name) => {
+  const handleCheckLastName = last_name => {
     setLastName(last_name);
     if (!last_name.trim()) {
-      setCheckLastName(true)
-      onChangeLastNameHandler(last_name)
-    } else{
-      setCheckLastName(false)
+      setCheckLastName(true);
+      onChangeLastNameHandler(last_name);
+    } else {
+      setCheckLastName(false);
     }
-  }
+  };
 
   const handleCheckEmail = email => {
     const re = /\S+@\S+\.\S+/;
@@ -86,7 +93,7 @@ export default function RegistrationScreen({navigation}) {
     setEmail(email);
     if (re.test(email) || regex.test(email)) {
       setCheckValidEmail(false);
-      onChangeEmailHandler(email)
+      onChangeEmailHandler(email);
     } else {
       setCheckValidEmail(true);
     }
@@ -101,12 +108,12 @@ export default function RegistrationScreen({navigation}) {
 
     setPassword(password);
     if (!isValidLength.test(password)) {
-      setCheckPassword(true)
-      onChangePasswordHandler(password)
-    } else{
-      setCheckPassword(false)
+      setCheckPassword(true);
+      onChangePasswordHandler(password);
+    } else {
+      setCheckPassword(false);
     }
-  }
+  };
 
   // const checkPasswordValidity = password => {
   //   const isNonWhiteSpace = /^\S*$/;
@@ -126,35 +133,34 @@ export default function RegistrationScreen({navigation}) {
   // }
 
   const checkPasswordConfirm = conf_pass => {
-
     setConf_pass(conf_pass);
-    if (conf_pass === password){
+    if (conf_pass === password) {
       setPasswordConf(false);
-      onChangeConf_PassHandler(conf_pass)
-    }else{
-      setPasswordConf(true)
+      onChangeConf_PassHandler(conf_pass);
+    } else {
+      setPasswordConf(true);
     }
-  }
+  };
 
   const checkGenderValid = gender => {
     setGender(gender);
-    if (gender === "m" || gender === "f"){
+    if (gender === 'm' || gender === 'f') {
       setCheckGender(false);
-      onChangeGenderHandler(gender)
-    } else{
+      onChangeGenderHandler(gender);
+    } else {
       setCheckGender(true);
     }
-  }
+  };
 
   const checkAgeValid = age => {
     setAge(age);
-    if (age >= 18){
+    if (age >= 18) {
       setCheckAge(false);
       onChangeAgeHandler(age);
-    }else{
-      setCheckAge(true)
+    } else {
+      setCheckAge(true);
     }
-  }
+  };
 
   const selectImage = async () => {
     // Opening Document Picker to select one file
@@ -162,7 +168,7 @@ export default function RegistrationScreen({navigation}) {
       const res = await DocumentPicker.pick({
         // Provide which type of file you want user to pick
         type: [DocumentPicker.types.images],
-        copyTo: 'cachesDirectory'
+        copyTo: 'cachesDirectory',
       });
       // Printing the log realted to the file
       console.log('res : ' + JSON.stringify(res));
@@ -183,73 +189,82 @@ export default function RegistrationScreen({navigation}) {
   };
 
   const uploadImage = async () => {
-    const uri = image[0]["fileCopyUri"];
+    const uri = image[0]['fileCopyUri'];
     const filename = uri.substring(uri.lastIndexOf('/') + 1);
 
     await storage().ref(filename).putFile(uri);
 
     const profilePicRef = storage().ref(filename);
     const url = await profilePicRef.getDownloadURL();
-    console.log(url)
+    console.log(url);
 
     setProfilePicUrl(url);
-    console.log('set '+ profilePicUrl)
+    console.log('set ' + profilePicUrl);
     return profilePicUrl;
   };
 
   const onSubmitFormHandler = async event => {
     setIsLoading(true);
     try {
-     uploadImage().then(async(profilePicUrl)=>{
-       const response = await axios.post(`${baseUrl}/signup`, {
-         first_name,
-         last_name,
-         email,
-         password,
-         conf_pass,
-         age,
-         gender,
-         profilePicUrl
-       });
-       if (response.status == 200) {
+      uploadImage().then(async profilePicUrl => {
+        const response = await axios.post(`${baseUrl}/signup`, {
+          first_name,
+          last_name,
+          email,
+          password,
+          conf_pass,
+          age,
+          gender,
+          profilePicUrl,
+        });
+        if (response.status == 200) {
+          setIsLoading(false);
+          setFirstName('');
+          setLastName('');
+          setEmail('');
+          setAge('');
+          setGender('');
 
-         setIsLoading(false);
-         setFirstName('');
-         setLastName('');
-         setEmail('');
-         setAge('');
-         setGender('');
-
-         navigation.navigate('Preference');
-       } else {
-         throw new Error('An error has occurred');
-       }
-     });
+          navigation.navigate('Preference');
+        } else {
+          throw new Error('An error has occurred');
+        }
+      });
     } catch (error) {
       setIsLoading(false);
-      throw Error(error)
+      throw Error(error);
     }
   };
 
-  
-
-  const valid = (email === '' || password === '' || first_name === '' || last_name === '' || gender === '' || age === '' ||
-    checkFirstName === true || checkLastName === true || checkValidEmail === true || checkPassword === true);
+  const valid =
+    email === '' ||
+    password === '' ||
+    first_name === '' ||
+    last_name === '' ||
+    gender === '' ||
+    age === '' ||
+    checkFirstName === true ||
+    checkLastName === true ||
+    checkValidEmail === true ||
+    checkPassword === true;
   return (
     <>
-      <Appbar.Header>
-        <Appbar.Action
-          icon="arrow-left-thick"
-          onPress={() => navigation.navigate('Login')}
-        />
-        <Appbar.Content
-          title="Registration"
-          titleStyle={{fontWeight: 'bold'}}
-
-        />
-      </Appbar.Header>
       <SafeAreaView>
         <ScrollView style={styles.container}>
+          <View style={{alignItems: 'center'}}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('Login')}
+              style={{
+                right: 160,
+                paddingTop: 20,
+              }}>
+              <Icon name={'arrow-left'} size={30} />
+            </TouchableOpacity>
+          </View>
+
+          <View>
+            <Text style={styles.title}>Register</Text>
+          </View>
           <View style={styles.inputView}>
             <TextInput
               style={styles.TextInput}
@@ -261,10 +276,10 @@ export default function RegistrationScreen({navigation}) {
             />
           </View>
           {checkFirstName ? (
-              <Text style={styles.textFailed}>First name required</Text>
-            ) : (
-              <Text style={styles.textFailed}> </Text>
-            )}
+            <Text style={styles.textFailed}>First name required</Text>
+          ) : (
+            <Text style={styles.textFailed}> </Text>
+          )}
 
           <View style={styles.inputView}>
             <TextInput
@@ -277,10 +292,10 @@ export default function RegistrationScreen({navigation}) {
             />
           </View>
           {checkLastName ? (
-              <Text style={styles.textFailed}>Last name required</Text>
-            ) : (
-              <Text style={styles.textFailed}> </Text>
-            )}
+            <Text style={styles.textFailed}>Last name required</Text>
+          ) : (
+            <Text style={styles.textFailed}> </Text>
+          )}
 
           <View style={styles.inputView}>
             <TextInput
@@ -291,13 +306,13 @@ export default function RegistrationScreen({navigation}) {
               editable={!isLoading}
               onChangeText={handleCheckEmail}
             />
-           </View>
+          </View>
 
           {checkValidEmail ? (
-              <Text style={styles.textFailed}>Not a valid email</Text>
-            ) : (
-              <Text style={styles.textFailed}> </Text>
-            )}
+            <Text style={styles.textFailed}>Not a valid email</Text>
+          ) : (
+            <Text style={styles.textFailed}> </Text>
+          )}
 
           <View style={styles.inputView}>
             <TextInput
@@ -311,10 +326,10 @@ export default function RegistrationScreen({navigation}) {
             />
           </View>
           {checkPassword ? (
-              <Text style={styles.textFailed}>Not a valid password</Text>
-            ) : (
-              <Text style={styles.textFailed}> </Text>
-            )}
+            <Text style={styles.textFailed}>Not a valid password</Text>
+          ) : (
+            <Text style={styles.textFailed}> </Text>
+          )}
           <View style={styles.inputView}>
             <TextInput
               style={styles.TextInput}
@@ -327,10 +342,10 @@ export default function RegistrationScreen({navigation}) {
             />
           </View>
           {checkPasswordConf ? (
-              <Text style={styles.textFailed}> Password does not match </Text>
-            ) : (
-              <Text style={styles.textFailed}> </Text>
-            )}
+            <Text style={styles.textFailed}> Password does not match </Text>
+          ) : (
+            <Text style={styles.textFailed}> </Text>
+          )}
 
           <View style={styles.inputView}>
             <TextInput
@@ -343,11 +358,11 @@ export default function RegistrationScreen({navigation}) {
               onChangeText={checkAgeValid}
             />
           </View>
-          {checkAge? (
-              <Text style={styles.textFailed}>Must be over 18  </Text>
-            ) : (
-              <Text style={styles.textFailed}> </Text>
-            )}
+          {checkAge ? (
+            <Text style={styles.textFailed}>Must be over 18 </Text>
+          ) : (
+            <Text style={styles.textFailed}> </Text>
+          )}
 
           <View style={styles.inputView}>
             <TextInput
@@ -360,36 +375,38 @@ export default function RegistrationScreen({navigation}) {
               onChangeText={checkGenderValid}
             />
           </View>
-          {checkGender? (
-              <Text style={styles.textFailed}>please input "m" or "f" </Text>
-            ) : (
-              <Text style={styles.textFailed}> </Text>
-            )}
+          {checkGender ? (
+            <Text style={styles.textFailed}>please input "m" or "f" </Text>
+          ) : (
+            <Text style={styles.textFailed}> </Text>
+          )}
           <View style={{paddingLeft: 90}}>
-          <ButtonWithBackground1
-            text="Choose Profile Picture"
-            onPress={selectImage}
-          />
-          {image != null ? (
-            <Text>
-              File Name: {image[0].name ? image[0].name : ''}
-              {'\n'}
-            </Text>
-          ) : null}
+            <ButtonWithBackground1
+              text="Choose Profile Picture"
+              onPress={selectImage}
+            />
+            {image != null ? (
+              <Text>
+                File Name: {image[0].name ? image[0].name : ''}
+                {'\n'}
+              </Text>
+            ) : null}
           </View>
 
           <View style={{paddingLeft: 180}}>
-          <ButtonWithBackground
-            text="Confirm"
-            onPress={onSubmitFormHandler}
-            backgroundColor={valid ? "blue" : "grey"}
-          />
-          {/*DECLARING TWO BUTTONS THIS WAY FOR SOME MAGIC REASON MAKE ONE OF THEM WORK. I CAN'T BE ARSED*/}
-          { <ButtonWithBackground
-            text="Confirm"
-            onPress={onSubmitFormHandler}
-            backgroundColor={valid ? "blue" : "grey"}
-          />}
+            <ButtonWithBackground
+              text="Confirm"
+              onPress={onSubmitFormHandler}
+              backgroundColor={valid ? 'blue' : 'grey'}
+            />
+            {/*DECLARING TWO BUTTONS THIS WAY FOR SOME MAGIC REASON MAKE ONE OF THEM WORK. I CAN'T BE ARSED*/}
+            {
+              <ButtonWithBackground
+                text="Confirm"
+                onPress={onSubmitFormHandler}
+                backgroundColor={valid ? 'blue' : 'grey'}
+              />
+            }
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -401,39 +418,34 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
     paddingLeft: 10,
-    backgroundColor:'#FFF1ED',
+    backgroundColor: '#FFF1ED',
     paddingTop: 15,
-
   },
 
   TextInput: {
-    height: 50,
+    height: 45,
     flex: 1,
-    padding: 5,
     justifyContent: 'center',
     marginLeft: 5,
-
   },
 
   inputView: {
-    borderColor: 'grey',
-    color: 'black',
-    borderRadius: 15,
-    borderWidth: 2,
-    marginBottom: 3,
-    marginHorizontal: 10,
-    marginLeft: 0,
-    marginTop: 5,
+    borderBottomWidth: 2,
+    marginHorizontal: 30,
+    marginLeft: 10,
+
+    borderBottomColor: 'grey',
   },
 
   title: {
     color: 'black',
     fontFamily: 'Roboto',
-    fontSize: 50,
+    fontSize: 35,
     fontWeight: 'bold',
     constterSpacing: 1,
-    marginBottom: 50,
-    marginTop: 100,
+    marginBottom: 20,
+    marginTop: 30,
+    paddingLeft: 10,
   },
 
   regularText: {
@@ -444,27 +456,18 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 
-
   textFailed: {
     color: 'red',
-    alignSelf:'flex-end',
-    right: 30
-
-
-
-
+    alignSelf: 'flex-end',
+    right: 30,
   },
   buttonDisable: {
-
-        margin: 10,
-        padding:10,
-        borderRadius: 25,
-        alignItems: 'center',
-        backgroundColor:'grey',
-        width:180,
-
-
-
+    margin: 10,
+    padding: 10,
+    borderRadius: 25,
+    alignItems: 'center',
+    backgroundColor: 'grey',
+    width: 180,
   },
 
   altTitle: {
