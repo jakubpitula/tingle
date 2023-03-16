@@ -105,7 +105,7 @@ const ProfileScreen = () => {
       setAge(res['age']);
       setProfile(res['profilePicUrl']);
 
-      console.log(profile)
+      console.log("My pic " + profile)
 
 
       if (res['gender'] === 'm') {

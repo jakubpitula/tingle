@@ -47,7 +47,8 @@ export default class App extends Component{
           <Stack.Screen
             options={{headerShown: false}}
             name="Login"
-            component={LoginScreen}
+            component={LoginScreen
+            }
           />
           <Stack.Screen
             options={{headerShown: false}}
