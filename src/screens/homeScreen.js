@@ -39,6 +39,8 @@ let leftBeforeJoinFlag = false;
 let activeDisplayNav = 'flex';
 let activeDisplayHead = true;
 let calledId = ''
+
+
 function JoinScreen(props) {
   const [disabled, setDisabled] = useState(false);
 
@@ -50,8 +52,10 @@ function JoinScreen(props) {
         justifyContent: 'center',
         paddingHorizontal: 6 * 10,
       }}>
+        
       <TouchableOpacity
         disabled={disabled}
+        style={styles.largeCirlce}
         onPress={async () => {
           activeDisplayNav = 'none';
           activeDisplayHead = false;
@@ -64,16 +68,20 @@ function JoinScreen(props) {
             props.setMeetingId(mid);
             props.setUserId(uid);
             calledId = uid
+            console.log("HomeScreen: " + uid);
           }
-        }}
-        style={{backgroundColor: '#FF356B', padding: 12, borderRadius: 6}}>
-        <Text style={{color: 'white', alignSelf: 'center', fontSize: 18}}>
+        }}>
+        
+        <Text style={{color: 'white', alignSelf: 'center', fontSize: 30, top: 95}}>
           Call!
         </Text>
+       
       </TouchableOpacity>
+      
     </SafeAreaView>
   );
 }
+export {calledId};
 
 const Button = ({onPress, buttonText, backgroundColor}) => {
   return (
@@ -106,8 +114,8 @@ function ControlsContainer({leave, changeWebcam, toggleMic}) {
           onPress={() => {
             changeWebcam();
           }}>
-          <View style={{alignItems: 'center', top: 12}}>
-            <Icon name={'camera'} size={40} />
+          <View style={{alignItems: 'center', top: 14}}>
+            <Icon name={'camera'} size={35} />
           </View>
         </TouchableOpacity>
       </View>
@@ -117,8 +125,8 @@ function ControlsContainer({leave, changeWebcam, toggleMic}) {
           onPress={() => {
             toggleMic();
           }}>
-          <View style={{alignItems: 'center', top: 12}}>
-            <Icon name={'microphone'} size={40} />
+          <View style={{alignItems: 'center', top: 14}}>
+            <Icon name={'microphone'} size={35} />
           </View>
         </TouchableOpacity>
       </View>
@@ -155,7 +163,7 @@ function ParticipantView({participantId}) {
       streamURL={new MediaStream([webcamStream.track]).toURL()}
       objectFit={'cover'}
       style={{
-        height: 400,
+        height: 350,
         marginVertical: 8,
         marginHorizontal: 8,
       }}
@@ -452,6 +460,18 @@ const styles = StyleSheet.create({
 
     borderRadius: 100, // half of the width and height to make it circular
     overflow: 'hidden',
+  },
+
+  largeCirlce: {
+    width: 240,
+    height: 240,
+    borderRadius: 240 / 2,
+    bottom: 60,
+    backgroundColor: '#FF3A3E',
+    alignSelf:'center',
+    borderRadius: 120, // half of the width and height to make it circular
+    overflow: 'hidden',
+
   },
   smallText: {
     color: 'black',

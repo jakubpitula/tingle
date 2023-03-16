@@ -8,8 +8,10 @@ import {useNavigation} from '@react-navigation/native';
 import { calledId } from './homeScreen';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import LinearGradient from 'react-native-linear-gradient';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import axios from 'axios';
 
-const baseUrl = "https://y2ylvp.deta.dev"
+const baseUrl = "https://y2ylvp.deta.dev/users"
 
 export default function MatchScreen() {
   const [name, setName] = useState('');
@@ -17,16 +19,28 @@ export default function MatchScreen() {
   const [uid, setUid] = useState(calledId)
   const [isLoading, setIsLoading] = useState(false);
 
+
+
   const navigation = useNavigation();
   
 
   const onSubmitFormHandler = async event => {
     setIsLoading(true);
+    const token = await EncryptedStorage.getItem('id_token');
+    
     try{
-      const response = await axios.post(`${baseUrl}/users/friends`, {
-        uid,
+      const response = await fetch(`${baseUrl}/friends`, {
+        method: 'POST',
+        headers: {
+          Authorization: 'Bearer ' + token,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          uid: uid
+        }),
       });
-      if (response.status == 200){
+
+      if (response.status === 200){
         setIsLoading(false);
         setUid('');
         navigation.navigate('Home')
@@ -44,13 +58,16 @@ export default function MatchScreen() {
 
   useEffect(()=>{
     fetchData();
-
+    
   }, [profile]);
 
   const fetchData = async () => {
     try {
+      
       const token = uid;
-      const response = await fetch(`${baseUrl}/users/me`, {
+      console.log("Token " + uid)
+     
+      const response = await fetch(`https://y2ylvp.deta.dev/users/`+ uid, {
         method: 'GET',
         headers: {
           Authorization: 'Bearer ' + token,
@@ -61,11 +78,15 @@ export default function MatchScreen() {
 
       setName(res['name']);
       setProfilePic(res['profilePicUrl'])
+      console.log("My pic " + profile)
 
     } catch (error) {
       console.error(error);
     }
   };
+
+
+
 
  
 
@@ -88,12 +109,15 @@ export default function MatchScreen() {
             <View style={{paddingLeft: 60, paddingTop: 70}}>
               <TouchableOpacity
                 style={styles.smallCirlceNo}
-                onPress={() => navigation.navigate('Home')}></TouchableOpacity>
+                onPress={() => navigation.navigate('Home')}>
+                  <Icon name={"times"} size={65} style={{top: 15, left: 24}} />
+                </TouchableOpacity>
             </View>
             <View style={{paddingTop: 70, paddingLeft: 60}}>
               <TouchableOpacity
                 style={styles.smallCirlceYes}
                 onPress={onSubmitFormHandler}>
+                  <Icon name={"check"} size={65} style={{top: 17, left: 19}} />
                 </TouchableOpacity>
             </View>
           </View>
