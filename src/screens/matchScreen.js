@@ -1,30 +1,88 @@
-import {StyleSheet, View, TextInput, TouchableOpacity} from 'react-native';
+import {StyleSheet, View, TextInput, TouchableOpacity, Image} from 'react-native';
 import ButtonWithBackground from '../components/buttonWithBackground';
 import {SafeAreaView, ScrollView} from 'react-native';
 import {Text, Appbar} from 'react-native-paper';
 import {SegmentedButtons, Button, Switch} from 'react-native-paper';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
+import { calledId } from './homeScreen';
+import EncryptedStorage from 'react-native-encrypted-storage';
+import LinearGradient from 'react-native-linear-gradient';
+
+const baseUrl = "https://y2ylvp.deta.dev"
 
 export default function MatchScreen() {
-  const [name, setName] = useState([]);
-  const navigation = useNavigation();
+  const [name, setName] = useState('');
+  const [profile, setProfilePic] = useState('')
+  const [uid, setUid] = useState(calledId)
+  const [isLoading, setIsLoading] = useState(false);
 
-  const onSubmitFormHandler = () => {
-    navigation.navigate('Home');
+  const navigation = useNavigation();
+  
+
+  const onSubmitFormHandler = async event => {
+    setIsLoading(true);
+    try{
+      const response = await axios.post(`${baseUrl}/users/friends`, {
+        uid,
+      });
+      if (response.status == 200){
+        setIsLoading(false);
+        setUid('');
+        navigation.navigate('Home')
+        } else{
+          throw new Error('An error has occured');
+        }
+
+    }
+    catch (error) {
+      setIsLoading(false);
+      throw Error(error);
+    }
+    
   };
 
+  useEffect(()=>{
+    fetchData();
+
+  }, [profile]);
+
+  const fetchData = async () => {
+    try {
+      const token = uid;
+      const response = await fetch(`${baseUrl}/users/me`, {
+        method: 'GET',
+        headers: {
+          Authorization: 'Bearer ' + token,
+          'Content-Type': 'application/json',
+        },
+      });
+      const res = await response.json();
+
+      setName(res['name']);
+      setProfilePic(res['profilePicUrl'])
+
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+ 
+
   return (
-    <View style={styles.topContainer}>
+    <LinearGradient style={styles.topContainer} colors={['#fa2f77','#fe8196','#f9d0de','#FFFFFF']} start={{x: 0,y: 0}} end={{x: 0.1, y: 1.25}}>
       <ScrollView>
         <SafeAreaView>
           <View style={styles.title}>
             <Text style={styles.largeText}>Do you want to</Text>
             <Text style={styles.largeText}>match with</Text>
+            <Text style={styles.nameText}>{name}</Text>
           </View>
 
           <View style={{alignItems: 'center'}}>
-            <View style={styles.LargeCircle}></View>
+            <View style={styles.LargeCircle}>
+            <Image style={styles.image} source={{ uri: profile }}/>
+            </View>
           </View>
           <View style={{flexDirection: 'row'}}>
             <View style={{paddingLeft: 60, paddingTop: 70}}>
@@ -35,12 +93,13 @@ export default function MatchScreen() {
             <View style={{paddingTop: 70, paddingLeft: 60}}>
               <TouchableOpacity
                 style={styles.smallCirlceYes}
-                onPress={onSubmitFormHandler}></TouchableOpacity>
+                onPress={onSubmitFormHandler}>
+                </TouchableOpacity>
             </View>
           </View>
         </SafeAreaView>
       </ScrollView>
-    </View>
+    </LinearGradient>
   );
 }
 
@@ -73,8 +132,12 @@ const styles = StyleSheet.create({
     shadowOpacity: 80,
     borderRadius: 100, // half of the width and height to make it circular
     overflow: 'hidden',
+    bottom:120
   },
-
+  image: {
+    width: 200,
+    height: 200,
+  },
   smallCirlceNo: {
     width: 100,
     height: 100,
@@ -122,9 +185,15 @@ const styles = StyleSheet.create({
     paddingBottom: 150,
     alignItems: 'center',
     paddingTop: 70,
+    
   },
   largeText: {
-    fontSize: 30,
+    fontSize: 28,
+  },
+  nameText:{
+    fontSize: 34,
+    paddingTop:20,
+    
   },
   button: {
     backgroundColor: '#fff',

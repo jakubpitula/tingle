@@ -21,6 +21,7 @@ import ButtonWithBackground2 from '../components/buttonWithBackground2';
 import { useNavigation } from "@react-navigation/native";
 import storage from "@react-native-firebase/storage";
 import DocumentPicker from "react-native-document-picker";
+import LinearGradient from 'react-native-linear-gradient';
 
 const ProfileScreen = () => {
   const baseUrl = 'https://y2ylvp.deta.dev/users';
@@ -120,10 +121,10 @@ const ProfileScreen = () => {
 
 
   return (
-    <View style={styles.container1}>
+    <LinearGradient style={styles.topContainer} colors={['#fa2f77','#fe8196','#f9d0de','#FFFFFF']} start={{x: 0,y: 0}} end={{x: 0.1, y: 0.6}}>
       <ScrollView>
         <SafeAreaView>
-        <View style={styles.topContainer}></View>
+          <View style={styles.topContainer}></View>
         <View style={{alignItems: 'center'}}>
           <View style={styles.circle}>
           <Image style={styles.image} source={{ uri: profile }}/>
@@ -234,7 +235,7 @@ const ProfileScreen = () => {
           </View>
           </SafeAreaView>
       </ScrollView>
-    </View>
+      </LinearGradient>
   );
 }
 
@@ -242,10 +243,8 @@ const styles = StyleSheet.create({
   topContainer: {
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: '#fe8196',
     height: 150,
-    width: '100%',
-    padding: 10,
+    width: '100%'
   },
   imageContainer: {
     width: 200,
@@ -258,6 +257,7 @@ const styles = StyleSheet.create({
     height: 200,
   },
   circle: {
+    
     width: 150,
     height: 150,
     borderRadius: 150 / 2,

@@ -87,6 +87,11 @@ export default class App extends Component{
           />
           <Stack.Screen
             options={{headerShown: false}}
+            name="Match"
+            component={MatchScreen}
+          />
+          <Stack.Screen
+            options={{headerShown: false}}
             name="EditProfile"
             component={EditProfileScreen}
           />
@@ -95,11 +100,7 @@ export default class App extends Component{
             name="Video"
             component={VideoCallScreen}
           />
-          <Stack.Screen
-            options={{headerShown: false}}
-            name="Match"
-            component={MatchScreen}
-          />
+          
            
         </Stack.Navigator>
         <StatusBar style="auto" />

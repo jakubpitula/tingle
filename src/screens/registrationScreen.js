@@ -207,6 +207,7 @@ export default function RegistrationScreen({navigation}) {
     setIsLoading(true);
     try {
       uploadImage().then(async profilePicUrl => {
+        
         const response = await axios.post(`${baseUrl}/signup`, {
           first_name,
           last_name,
@@ -224,6 +225,7 @@ export default function RegistrationScreen({navigation}) {
           setEmail('');
           setAge('');
           setGender('');
+          setProfilePicUrl('')
 
           navigation.navigate('Preference');
         } else {
@@ -394,19 +396,15 @@ export default function RegistrationScreen({navigation}) {
           </View>
 
           <View style={{paddingLeft: 180}}>
-            <ButtonWithBackground
-              text="Confirm"
-              onPress={onSubmitFormHandler}
-              backgroundColor={valid ? 'blue' : 'grey'}
-            />
+           
             {/*DECLARING TWO BUTTONS THIS WAY FOR SOME MAGIC REASON MAKE ONE OF THEM WORK. I CAN'T BE ARSED*/}
-            {
+            
               <ButtonWithBackground
                 text="Confirm"
                 onPress={onSubmitFormHandler}
                 backgroundColor={valid ? 'blue' : 'grey'}
               />
-            }
+            
           </View>
         </ScrollView>
       </SafeAreaView>
