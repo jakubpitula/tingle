@@ -70,7 +70,11 @@ export default class App extends Component{
             name="Messege"
             component={MessegesScreen}
           />
-          
+          <Stack.Screen
+            options={{headerShown: false}}
+            name="Chat"
+            component={ChatScreen}
+          />
           <Stack.Screen
           options={{headerShown: false}}
           name="Profile"

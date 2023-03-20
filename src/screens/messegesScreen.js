@@ -14,63 +14,79 @@ import {
   import {SafeAreaView, ScrollView, TouchableOpacity, Image} from 'react-native';
   import {useEffect} from 'react';
   import {Avatar} from 'react-native-paper';
-  import ButtonWithBackground2 from '../components/buttonWithBackground2';
-  import SmallButton from '../components/smallButton';
- 
+  
+  import ChatRoomItem from '../components/chatRoomItem';
   import { useNavigation } from "@react-navigation/native";
+ 
 
 
-  const MessegesScreen = () => {
-    const baseUrl = 'https://y2ylvp.deta.dev/users/me';
+  export default function MessegesScreen () {
 
-    const navigation=useNavigation()
+    let friend_keys = []
 
 
-      const [age, setAge] = useState([]);
-      const [name, setName] = useState([]);
-      const [email, setEmail] = useState([]);
-      const [gender, setGender] = useState([]);
+    useEffect(()=> {
+      fetchFriendData();
+    }, [])
 
-      useEffect(() => {
-        fetchData();
-      }, []);
 
-      const fetchData = async () => {
-        const token = await EncryptedStorage.getItem('id_token');
-        try {
-          const response = await fetch(baseUrl, {
-            method: 'GET',
-            headers: {
-              Authorization: 'Bearer ' + token,
-              'Content-Type': 'application/json',
-            },
+    const [friends, setFriends] = useState([])
+
+    const fetchFriendData = async () => {
+    
+      const token = await EncryptedStorage.getItem('id_token');
+      console.log(token)
+      try {
+        const response = await fetch('https://y2ylvp.deta.dev/users/friends', {
+          method: 'GET',
+          headers: {
+            Authorization: 'Bearer ' + token,
+            'Content-Type': 'application/json',
+          },
+          
+        });
+        const res = await response.json();
+        var obj_1 = JSON.parse(JSON.stringify(res))
+        var values = Object.values(obj_1)
+  
+        values.forEach(function(item) {
+          Object.keys(item).forEach(function(key) {
+           
+            
+            friend_keys.push(item[key])
+           
           });
-          const res = await response.json();
-
-          setName(res['name']);
-          setEmail(res['email']);
-
-        } catch (error) {
-          console.error(error);
-        }
-      };
-
+          
+          setFriends(friend_keys)
+          console.log(friends)
+        
+      });
+        
+       
+       
+        
+        
+        
+  
+      } catch (error) {
+        console.error(error);
+      }
+    };
+   
+      
 
       return (
         <View style={styles.container1}>
-
-          <FlatList>
-            <View>
-              <Text>{name}</Text>
-              </View>
-          
-          
-          </FlatList>
+         <FlatList 
+          data={friends}
+          renderItem ={({item}) => <ChatRoomItem userUid={item}/> }
+         />
+      
 
 
         </View>
         
-        
+    
         
         
         
@@ -99,6 +115,24 @@ const styles = StyleSheet.create({
     width: '100%',
     padding: 10,
   },
+  list: {
+    padding: 10,
+    marginTop: 5,
+    borderRadius: 5,
+    backgroundColor: 'white',
+    marginHorizontal: 5,
+  },
+  item: {
+    backgroundColor: 'grey',
+    color: 'white',
+    padding: 30,
+    margin: 2,
+    borderRadius: 9,
+    
+
+    
+
+  },
   circle: {
     width: 150,
     height: 150,
@@ -111,7 +145,7 @@ const styles = StyleSheet.create({
   container1: {
     backgroundColor: 'white',
     flex: 1,
-    justifyContent: 'center',
+    
   },
 
   TextInput: {
@@ -168,5 +202,5 @@ const styles = StyleSheet.create({
 
 });
 
-export default MessegesScreen;
+
 
