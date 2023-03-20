@@ -194,17 +194,11 @@ const ProfileScreen = () => {
           
           <View style={{paddingTop:10,}}>
             <ButtonWithBackground2
-              text="Preference"
-              onPress={() => navigation.navigate('Settings')}
+              text="Edit Profile"
+              onPress={() => navigation.navigate('EditProfile')}
             />
           </View>
 
-          <View style={{paddingTop:10,}}>
-            <ButtonWithBackground2
-              text="Interests"
-              onPress={() => navigation.navigate('Settings')}
-            />
-          </View>
 
           <View style={{paddingTop:10,}}>
             <ButtonWithBackground2

@@ -1,16 +1,12 @@
 import { StyleSheet, View, TextInput  } from 'react-native';
 import React, { useState } from 'react'
 import ButtonWithBackground1 from '../components/buttonWithBackground';
-
-
 import { SafeAreaView,ScrollView } from 'react-native';
-
 import {Text,Appbar} from 'react-native-paper';
 import { List } from 'react-native-paper';
 import { MultipleSelectList } from 'react-native-dropdown-select-list'
 
-
- 
+const baseUrl = 'https://y2ylvp.deta.dev';
 
 
 
@@ -18,7 +14,7 @@ const InterestScreen = ({navigation}) => {
 
   const [selected, setSelected] = React.useState([]);
   
-  const data1 = [
+  const hobbies = [
       {key:'1', value:'Mobiles'},
       {key:'2', value:'Appliances'},
       {key:'3', value:'Cameras'},
@@ -28,7 +24,7 @@ const InterestScreen = ({navigation}) => {
       {key:'7', value:'Drinks'},
   ]
 
-  const data_zodiac = [
+  const zodiac = [
     {key:'1', value:'Aries'},
     {key:'2', value:'Taurus'},
     {key:'3', value:'Cancer'},
@@ -41,7 +37,7 @@ const InterestScreen = ({navigation}) => {
     {key:'10', value:'Aquarius'},
     {key:'11', value:'Pisces'},
 ]
-const data_communication = [
+const communication = [
   {key:'1', value:'Big time texter'},
   {key:'2', value:'Video chatter'},
   {key:'3', value:'Phone caller'},
@@ -49,13 +45,13 @@ const data_communication = [
   {key:'5', value:'Better in person'},
 ]
 
-const data_workout = [
+const workout = [
   {key:'1', value:'Gym rat'},
   {key:'2', value:'Occasionally'},
   {key:'3', value:'Never'},
 ]
 
-const data_drinking = [
+const drinking = [
   {key:'1', value:'Wine'},
   {key:'2', value:'Beer'},
   {key:'3', value:'Cocktails'},
@@ -68,7 +64,7 @@ const data_drinking = [
   {key:'10', value:'Dont drink'},
 ]
 
-const data_smoking = [
+const smoking = [
   {key:'1', value:'Social smoker'},
   {key:'2', value:'Smoker when drinking'},
   {key:'3', value:'Non-smoker'},
@@ -100,7 +96,7 @@ const data_smoking = [
             <Text style={styles.smallText}> Hobbies </Text>
             <MultipleSelectList 
             setSelected={(val) => setSelected(val)} 
-            data={data1} 
+            data={hobbies} 
             save="value"
             onSelect={() => alert(selected)} 
             label="Categories"/>
@@ -120,7 +116,7 @@ const data_smoking = [
             <Text style={styles.smallerText}> Zodiac Sign </Text>
             <MultipleSelectList 
             setSelected={(val) => setSelected(val)} 
-            data={data_zodiac} 
+            data={zodiac} 
             save="value"
             label="Selected"
             />
@@ -128,7 +124,7 @@ const data_smoking = [
           <Text style={styles.smallerText}> Communication style</Text>
           <MultipleSelectList 
           setSelected={(val) => setSelected(val)} 
-          data={data_communication} 
+          data={communication} 
           save="value" 
           label="Selected"
           />
@@ -136,7 +132,7 @@ const data_smoking = [
           <Text style={styles.smallerText}> Workout</Text>
           <MultipleSelectList 
           setSelected={(val) => setSelected(val)} 
-          data={data_workout} 
+          data={workout} 
           save="value"
           label="Selected"
           />
@@ -144,7 +140,7 @@ const data_smoking = [
           <Text style={styles.smallerText}> Drinking</Text>
           <MultipleSelectList 
           setSelected={(val) => setSelected(val)} 
-          data={data_drinking} 
+          data={drinking} 
           save="value"
           label="Selected"
           />
@@ -152,7 +148,7 @@ const data_smoking = [
           <Text style={styles.smallerText}> Smoking</Text>
           <MultipleSelectList 
           setSelected={(val) => setSelected(val)} 
-          data={data_smoking} 
+          data={smoking} 
           save="value"
           label="Selected"
           />

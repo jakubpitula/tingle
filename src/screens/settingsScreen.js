@@ -1,12 +1,20 @@
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View,} from 'react-native';
 import SmallButton from '../components/smallButton';
 import {SafeAreaView, ScrollView} from 'react-native';
 import {Text, Appbar} from 'react-native-paper';
 import {SegmentedButtons, Button, Switch} from 'react-native-paper';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { TouchableOpacity, Image} from 'react-native';
 import {TextInput} from 'react-native-paper';
 import { Modal, Portal, Provider } from 'react-native-paper';
+import EncryptedStorage from 'react-native-encrypted-storage';
+import ButtonWithBackground3 from '../components/buttonWithBackground3';
+
+
+
+
+
+const baseUrl = 'https://y2ylvp.deta.dev/users';
 
 
 
@@ -26,6 +34,52 @@ const SettingsScreen = ({navigation}) => {
   const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
 
 
+
+  const [age, setAge] = useState([]);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [gender, setGender] = useState([]);
+  const [image, setImage] = useState(null);
+  const [profile, setProfile] = useState(null);
+  const [isLoading, setIsLoading] = useState(false)
+
+
+  const fetchData = async () => {
+    try {
+      const token = await EncryptedStorage.getItem('id_token');
+
+      const response = await fetch(`${baseUrl}/me`, {
+        method: 'GET',
+        headers: {
+          Authorization: 'Bearer ' + token,
+          'Content-Type': 'application/json',
+        },
+      });
+      const res = await response.json();
+
+      setName(res['name']);
+      setEmail(res['email']);
+      setAge(res['age']);
+      setProfile(res['profilePicUrl']);
+
+      console.log(profile)
+
+
+      if (res['gender'] === 'm') {
+        setGender('Male');
+      }
+      if (res['gender'] === 'f') {
+        setGender('Female');
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [])
+
     return (
         <SafeAreaView>
             <ScrollView>
@@ -43,71 +97,31 @@ const SettingsScreen = ({navigation}) => {
 
                 <View style={styles.container}>
                 <Text style={styles.bigText}>Account Settings</Text>
-
+                
+               
+                <TextInput
+                  
+                  style={styles.inputView}
+                  placeholder= {`Name     ${name}`}
+                  placeholderTextColor="black"
+                  editable={false} />
+                
                 <TextInput
                     style={styles.inputView}
-                    label="Phone number"
+                    placeholder= {`Email     ${email}`}
                     placeholderTextColor="black"
-                    value={text}
-                    onChangeText={text => setText(text)}/>
+                    editable={false}/>
 
-                <TextInput
-                    style={styles.inputView}
-                    label="Email"
-                    placeholderTextColor="black"
-                    value={text}
-                    onChangeText={text => setText(text)}/>
+                
 
-                <Text style={styles.bigText}>Discovery</Text>
 
-                <Text style={styles.smallerText}> Location </Text>
 
-                <Provider>
-                  <Portal>
-                    <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={containerStyle}>
-                      <Text>Option to change location</Text>
-                    </Modal>
-                  </Portal>
-                <SmallButton
-                onPress={showModal}
-                text = "Change"/>
-                </Provider>
 
-                <Text style={styles.smallerText}>
-                Only show people in this range{' '}
-                <Switch value={isSwitchOn} onValueChange={onToggleSwitch} />
-                </Text>
+                
 
-                <Text style={styles.smallerText}>Sex preference</Text>
 
-                <SegmentedButtons
-                  value={value}
-                  onValueChange={setValue}
-                  buttons={[
-                {
-                  value: 'male',
-                  label: 'Male',
-                },
-                {
-                  value: 'female',
-                  label: 'Female',
-                },
-              ]}
-                style={styles.group}
-                />
 
-              <Text style={styles.smallerText}>Age Preference</Text>
-              <Text style={styles.smallerText}>
-                Only show people in this range{' '}
-                <Switch value={isSwitchOn} onValueChange={onToggleSwitch} />
-                </Text>
-                <Text style={styles.smallerText}>
-                Global{' '}
-                <Switch value={isSwitchOn} onValueChange={onToggleSwitch} />
-                </Text>
-                <Text style={styles.smallerText}>
-                  Going Global will allow you to see people nearby and from around the world.
-                </Text>
+
 
 
                 <Text style={styles.bigText}>Contact us</Text>
@@ -133,23 +147,30 @@ const SettingsScreen = ({navigation}) => {
 
 
 const styles = StyleSheet.create({
-    container: {
-      flexDirection: 'column',
-      backgroundColor: 'white',
-      paddingLeft: 10,
-      paddingRight: 10,
-      paddingTop: 10,
-      paddingBottom: 10,
-    },
+  container: {
+    flexDirection: 'column',
+    paddingLeft: 10,
+    backgroundColor: '#FFF1ED',
+    paddingTop: 15,
+    flex: 1,
+  },
 
-    TextInput: {
-      height: 50,
-      flex: 1,
-      padding: 10,
+  TextInput: {
+    height: 35,
+    flex: 1,
+    justifyContent: 'center',
+    marginLeft: 5,
+  },
 
-      justifyContent: 'center',
-    },
+  inputView: {
+    borderBottomWidth: 2,
+    marginHorizontal: 30,
+    marginLeft: 10,
+    borderBottomColor: 'grey',
+    backgroundColor: '#FFF1ED',
+  },
 
+    
     title: {
       color: 'black',
       fontFamily: 'Roboto',
@@ -165,9 +186,9 @@ const styles = StyleSheet.create({
       fontFamily: 'Roboto',
       fontWeight: 'bold',
       fontSize: 20,
-      marginTop: 0,
+      marginTop: 10,
       marginLeft: 0,
-      marginBottom: 20,
+      marginBottom: 5,
       justifyContent: 'center',
     },
 
@@ -181,15 +202,7 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
     },
 
-    inputView: {
-      borderColor: 'white',
-      borderWidth: 1,
-      borderRadius: 2,
-      width: '100%',
-      marginBottom: 0,
-      alignContent: 'center',
-      justifyContent: 'center',
-    },
+   
 
     altTitle: {
       fontFamily: 'Roboto',

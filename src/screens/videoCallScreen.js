@@ -1,6 +1,7 @@
 import {
     View,
     TouchableOpacity,
+    StyleSheet,
   } from 'react-native';
 import React, { useEffect, useState } from "react";
 import {SafeAreaView, FlatList, BackHandler} from 'react-native';
@@ -18,7 +19,7 @@ import {
   useParticipant,
 } from '@videosdk.live/react-native-sdk';
 
-
+import LinearGradient from 'react-native-linear-gradient';
 
 
 
@@ -39,13 +40,16 @@ function JoinScreen(props) {
   const [disabled, setDisabled] = useState(false);
   
     return (
-      <SafeAreaView
-        style={{
-          flex: 1,
-          backgroundColor: 'white',
-          justifyContent: 'center',
-          paddingHorizontal: 6 * 10,
-        }}>
+      <LinearGradient style={styles.topContainer} colors={['#fa2f77','#fe8196','#f9d0de','#FFFFFF']} start={{x: 0,y: 0}} end={{x: 0.1, y: 0.6}}>
+        {/* <SafeAreaView
+          style={{
+            flex: 1,
+            backgroundColor: 'white',
+            justifyContent: 'center',
+            paddingHorizontal: 6 * 10,
+          }}> */}
+
+
         <TouchableOpacity
           disabled={disabled}
           onPress={async()=>{
@@ -65,7 +69,8 @@ function JoinScreen(props) {
             Call!
           </Text>
         </TouchableOpacity>
-      </SafeAreaView>
+      {/* </SafeAreaView> */}
+      </LinearGradient>
       
     );
   }
@@ -301,7 +306,13 @@ function JoinScreen(props) {
     )
   }
 
-  
-
+const styles = StyleSheet.create({
+    topContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      height: 150,
+      width: '100%'
+    },
+});
 
 export {activeDisplayNav};

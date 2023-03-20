@@ -7,13 +7,135 @@ import React, {useState} from 'react';
 
 const baseUrl = 'https://y2ylvp.deta.dev';
 
-
 const PreferenceScreen = ({navigation}) => {
   const [value, setValue] = React.useState('');
 
   const [isSwitchOn, setIsSwitchOn] = React.useState(false);
   const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
 
+  const [distance, setDistance] = useState('');
+  const [sex, setSex] = useState('');
+  const [age_min, setAgeMin] = useState('');
+  const [age_max, setAgeMax] = useState('');
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [checkDistance, setCheckDistance] = useState(false);
+  const [checkSex, setCheckSex] = useState(false);
+  const [checkAgeMin, setCheckAgeMin] = useState(false);
+  const [checkAgeMax, setCheckAgeMax] = useState(false);
+
+  const onChangeDistanceHandler = distance => {
+    setDistance(distance);
+  };
+
+  const onChangeSexHandler = sex => {
+    setSex(sex);
+  };
+
+  const onChangeAgeMinHandler = age_min => {
+    setAgeMin(age_min);
+  };
+
+  const onChangeAgeMaxHandler = age_max => {
+    setAgeMax(age_max);
+  };
+
+  const handleCheckDistance = distance => {
+    const pattern = /^(?:100|[1-9][0-9]?|0)$/;
+
+    setMaxDistance(distance);
+    if (!pattern.test(distance)) {
+      setCheckDistance(true);
+      onChangeDistanceHandler(distance);
+    } else {
+      setCheckDistance(false);
+    }
+  };
+
+  const handleCheckSex = sex => {
+    setSex(sex);
+    if (!sex.trim()) {
+      setCheckSex(true);
+      onChangeSexHandler(sex);
+    } else {
+      setCheckSex(false);
+    }
+  };
+
+  const handleCheckAgeMin = age_min => {
+    const pattern = /^(?:100|[1-9][0-9]?|0)$/;
+
+    // Check if age_min is greater than age_max
+    if (parseInt(age_min) > parseInt(age_max)) {
+      setAgeMax(age_min);
+      setCheckAgeMax(false);
+      onChangeAgeMaxHandler(age_min);
+    }
+
+    setAgeMin(age_min);
+    if (!pattern.test(age_min)) {
+      setCheckAgeMin(true);
+      onChangeAgeMinHandler(age_min);
+    } else {
+      setCheckAgeMin(false);
+    }
+  };
+
+  const handleCheckAgeMax = age_max => {
+    const pattern = /^(?:100|[1-9][0-9]?|0)$/;
+
+    // Check if age_max is less than age_min
+    if (parseInt(age_max) < parseInt(age_min)) {
+      setAgeMin(age_max);
+      setCheckAgeMin(false);
+      onChangeAgeMinHandler(age_max);
+    }
+
+    setAgeMax(age_max);
+    if (!pattern.test(age_max)) {
+      setCheckAgeMax(true);
+      onChangeAgeMaxHandler(age_max);
+    } else {
+      setCheckAgeMax(false);
+    }
+  };
+
+  const onSubmitFormHandler = async event => {
+    setIsLoading(true);
+    try {
+      const response = await axios.post(`${baseUrl}/users/preferences`, {
+        distance,
+        sex,
+        age_min,
+        age_max,
+      });
+      if (response.status == 200) {
+        setIsLoading(false);
+        setDistance('');
+        setSex('');
+        setAgeMin('');
+        setAgeMax('');
+
+        navigation.navigate('Interests');
+      } else {
+        throw new Error('An error has occurred');
+      }
+    } catch (error) {
+      setIsLoading(false);
+      throw Error(error);
+    }
+  };
+
+  const valid =
+    distance === '' ||
+    age_min === '' ||
+    age_max === '' ||
+    sex === '' ||
+    checkDistance === true ||
+    checkAgeMin === true ||
+    checkAgeMax === true ||
+    checkSex == true;
 
   return (
     <SafeAreaView>
@@ -33,18 +155,23 @@ const PreferenceScreen = ({navigation}) => {
         <View style={styles.container}>
           <Text style={styles.smallText}>Distance preference</Text>
 
-         
+
           <View style={styles.inputView}>
-          <TextInput
-              style={styles.TextInput}
-              placeholder="Distance"/></View>
+            <TextInput style={styles.TextInput} 
+            placeholder="Distance"
+            value={distance}
+            editable={!isLoading}
+            onChangeText={handleCheckDistance}
+             />
+          </View>
 
           <Text style={styles.smallerText}>
-            Only show people in this range {' '} 
-            <Switch value={isSwitchOn} onValueChange={onToggleSwitch} /></Text>
+            Only show people in this range{' '}
+            <Switch value={isSwitchOn} onValueChange={onToggleSwitch} />
+          </Text>
 
-          <View style={{paddingTop: 20,}}>
-          <Text style={styles.smallText}>Sex preference</Text>
+          <View style={{paddingTop: 20}}>
+            <Text style={styles.smallText}>Sex preference</Text>
           </View>
 
           <SegmentedButtons
@@ -63,33 +190,37 @@ const PreferenceScreen = ({navigation}) => {
             style={styles.group}
           />
 
-          <View style={{paddingTop: 20,}}>
-          <Text style={styles.smallText}>Age preference</Text>
+          <View style={{paddingTop: 20}}>
+            <Text style={styles.smallText}>Age preference</Text>
           </View>
 
           <View style={styles.inputView}>
-          <TextInput
-              style={styles.TextInput}
-              placeholder="Min Age"/></View>
-          
-          <View style={styles.inputView}>
-          <TextInput
-              style={styles.TextInput}
-              placeholder="Max Age"/></View>
+            <TextInput style={styles.TextInput} 
+            placeholder="Min Age"
+            value={age_min}
+            editable={!isLoading}
+            onChangeText={handleCheckAgeMin} />
+          </View>
 
+          <View style={styles.inputView}>
+            <TextInput style={styles.TextInput} 
+            placeholder="Max Age"
+            value={age_max}
+            editable={!isLoading}
+            onChangeText={handleCheckAgeMax}/>
+          </View>
 
           <Text style={styles.smallerText}>
             Only show people in this range{' '}
             <Switch value={isSwitchOn} onValueChange={onToggleSwitch} />
           </Text>
-          <View style={{paddingTop: 150, paddingLeft: 180}}>
-          <ButtonWithBackground
-            text="Next"
-            onPress={() => navigation.navigate('Interest')}
-          />
+          <View style={{paddingTop: 100, paddingLeft: 180}}>
+            <ButtonWithBackground
+              text="Next"
+              onPress={onSubmitFormHandler}
+            />
+          </View>
         </View>
-        </View>
-        
       </ScrollView>
     </SafeAreaView>
   );
@@ -98,12 +229,11 @@ const PreferenceScreen = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
-    
-    paddingLeft: 10,
-    paddingRight:10,
-    backgroundColor:'#FFF1ED',
-    paddingTop: 15,
 
+    paddingLeft: 10,
+    paddingRight: 10,
+    backgroundColor: '#FFF1ED',
+    paddingTop: 15,
   },
   TextInput: {
     height: 50,
@@ -112,7 +242,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginLeft: 5,
   },
-
 
   title: {
     color: 'black',
@@ -143,7 +272,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 
-  
   inputView: {
     borderColor: 'grey',
     color: 'black',
@@ -154,7 +282,6 @@ const styles = StyleSheet.create({
     marginLeft: 0,
     marginTop: 5,
   },
- 
 
   altTitle: {
     fontFamily: 'Roboto',
