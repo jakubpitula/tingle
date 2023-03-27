@@ -86,7 +86,7 @@ const ProfileScreen = () => {
 
   }, [profile]);
 
-  
+
   const fetchData = async () => {
     try {
       const token = await EncryptedStorage.getItem('id_token');
@@ -137,7 +137,7 @@ const ProfileScreen = () => {
 
         ):(
         <View style={{alignItems: 'center'}}>
-          
+
           <Text style={styles.title}>{name}</Text>
 
           <Text
@@ -146,7 +146,7 @@ const ProfileScreen = () => {
               fontSize: 20,
               fontWeight: 'bold',
               color: 'grey',
-              
+
             }}>
             {' '}
             {age}, {gender}
@@ -191,7 +191,7 @@ const ProfileScreen = () => {
               }}
             />
           </View>
-          
+
           <View style={{paddingTop:10,}}>
             <ButtonWithBackground2
               text="Edit Profile"
@@ -210,21 +210,21 @@ const ProfileScreen = () => {
           <View style={{paddingTop:10, }}>
             <ButtonWithBackground2
               text="Log out"
-              
+
               onPress={async() => {
                 const token = await EncryptedStorage.getItem("id_token");
-                await fetch(`https://y2ylvp.deta.dev/delete_from_pool`, {
-                  method: "POST",
-                  headers: {
-                    'Authorization': 'Bearer ' + token,
-                    "Content-Type": "application/json",
-                  },
-                });
+                // await fetch(`https://y2ylvp.deta.dev/delete_from_pool`, {
+                //   method: "POST",
+                //   headers: {
+                //     'Authorization': 'Bearer ' + token,
+                //     "Content-Type": "application/json",
+                //   },
+                // });
                 await EncryptedStorage.removeItem('id_token');
                 navigation.navigate('Login')
               }}
             />
-           
+
           </View>
           </View>
           </SafeAreaView>
@@ -251,7 +251,7 @@ const styles = StyleSheet.create({
     height: 200,
   },
   circle: {
-    
+
     width: 150,
     height: 150,
     borderRadius: 150 / 2,
@@ -267,7 +267,7 @@ const styles = StyleSheet.create({
     width: '100%',
     justifycontent: 'center',
     alignItems: 'center',
-    
+
 },
   container1: {
     backgroundColor: 'white',
