@@ -82,7 +82,7 @@ export default class App extends Component{
           />
           <Stack.Screen
             options={{headerShown: false}}
-            name="Interest"
+            name="Interests"
             component={InterestScreen}
           />
           <Stack.Screen
@@ -105,8 +105,8 @@ export default class App extends Component{
             name="Video"
             component={VideoCallScreen}
           />
-          
-           
+
+
         </Stack.Navigator>
         <StatusBar style="auto" />
       </NavigationContainer>

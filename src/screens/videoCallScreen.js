@@ -34,11 +34,11 @@ let activeDisplayNav = 'flex';
 
 function JoinScreen(props) {
 
-  
-  
+
+
 
   const [disabled, setDisabled] = useState(false);
-  
+
     return (
       <LinearGradient style={styles.topContainer} colors={['#fa2f77','#fe8196','#f9d0de','#FFFFFF']} start={{x: 0,y: 0}} end={{x: 0.1, y: 0.6}}>
         {/* <SafeAreaView
@@ -71,7 +71,7 @@ function JoinScreen(props) {
         </TouchableOpacity>
       {/* </SafeAreaView> */}
       </LinearGradient>
-      
+
     );
   }
 
@@ -222,7 +222,7 @@ function JoinScreen(props) {
           console.log('joined')
           joinedFlag = true
         }});
-
+  
     BackHandler.addEventListener('hardwareBackPress', async function(){
       try {
         leave();
@@ -280,7 +280,7 @@ function JoinScreen(props) {
   }
 
   export default function VideoCallScreen(){
-    
+
     const [meetingId, setMeetingId] = useState(null);
     const [userId, setUserId] = useState(null);
     const CallRoute = () => {

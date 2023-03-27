@@ -16,6 +16,7 @@ import {Appbar} from 'react-native-paper';
 import storage from '@react-native-firebase/storage';
 import DocumentPicker from 'react-native-document-picker';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import EncryptedStorage from "react-native-encrypted-storage";
 
 const baseUrl = 'https://y2ylvp.deta.dev';
 
@@ -216,6 +217,27 @@ export default function RegistrationScreen({navigation}) {
           profilePicUrl,
         });
         if (response.status == 200) {
+          const formData = new FormData();
+
+          formData.append('username', email);
+          formData.append('password', password);
+
+          setIsLoading(true);
+            const res = await axios
+              .post(`${baseUrl}/token`, formData, {
+                headers: {'Content-Type': 'multipart/form-data'},
+              })
+              .then(res => {
+                if (res.status === 200) {
+                  setIsLoading(false)
+                  EncryptedStorage.setItem('id_token', res.data.access_token);
+
+                  navigation.navigate('Home');
+                } else {
+                  throw new Error('An error occurred');
+                }
+              });
+
           setIsLoading(false);
           setFirstName('');
           setLastName('');

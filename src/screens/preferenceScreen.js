@@ -4,6 +4,9 @@ import {SafeAreaView, ScrollView} from 'react-native';
 import {Text, Appbar} from 'react-native-paper';
 import {SegmentedButtons, Button, Switch} from 'react-native-paper';
 import React, {useState} from 'react';
+import EncryptedStorage from "react-native-encrypted-storage";
+import axios from 'axios';
+
 
 const baseUrl = 'https://y2ylvp.deta.dev';
 
@@ -24,6 +27,7 @@ const PreferenceScreen = ({navigation}) => {
   const [checkSex, setCheckSex] = useState(false);
   const [checkAgeMin, setCheckAgeMin] = useState(false);
   const [checkAgeMax, setCheckAgeMax] = useState(false);
+  const [checkAgeDiff, setCheckAgeDiff] = useState(false);
 
   const onChangeDistanceHandler = distance => {
     setDistance(distance);
@@ -44,7 +48,7 @@ const PreferenceScreen = ({navigation}) => {
   const handleCheckDistance = distance => {
     const pattern = /^(?:100|[1-9][0-9]?|0)$/;
 
-    setMaxDistance(distance);
+    setDistance(distance);
     if (!pattern.test(distance)) {
       setCheckDistance(true);
       onChangeDistanceHandler(distance);
@@ -67,10 +71,11 @@ const PreferenceScreen = ({navigation}) => {
     const pattern = /^(?:100|[1-9][0-9]?|0)$/;
 
     // Check if age_min is greater than age_max
-    if (parseInt(age_min) > parseInt(age_max)) {
-      setAgeMax(age_min);
-      setCheckAgeMax(false);
-      onChangeAgeMaxHandler(age_min);
+    if (parseInt(age_min) > parseInt(age_max) && age_min && age_max) {
+      setCheckAgeDiff(true)
+    }
+    else {
+      setCheckAgeDiff(false)
     }
 
     setAgeMin(age_min);
@@ -87,9 +92,10 @@ const PreferenceScreen = ({navigation}) => {
 
     // Check if age_max is less than age_min
     if (parseInt(age_max) < parseInt(age_min)) {
-      setAgeMin(age_max);
-      setCheckAgeMin(false);
-      onChangeAgeMinHandler(age_max);
+      setCheckAgeDiff(true)
+    }
+    else {
+      setCheckAgeDiff(false)
     }
 
     setAgeMax(age_max);
@@ -103,13 +109,20 @@ const PreferenceScreen = ({navigation}) => {
 
   const onSubmitFormHandler = async event => {
     setIsLoading(true);
+    const token = await EncryptedStorage.getItem('id_token');
     try {
       const response = await axios.post(`${baseUrl}/users/preferences`, {
         distance,
         sex,
         age_min,
         age_max,
-      });
+      },
+        {
+          headers: {
+            Authorization: 'Bearer ' + token,
+              'Content-Type': 'application/json',
+          }
+        });
       if (response.status == 200) {
         setIsLoading(false);
         setDistance('');
@@ -157,7 +170,7 @@ const PreferenceScreen = ({navigation}) => {
 
 
           <View style={styles.inputView}>
-            <TextInput style={styles.TextInput} 
+            <TextInput style={styles.TextInput}
             placeholder="Distance"
             value={distance}
             editable={!isLoading}
@@ -175,15 +188,15 @@ const PreferenceScreen = ({navigation}) => {
           </View>
 
           <SegmentedButtons
-            value={value}
-            onValueChange={setValue}
+            value={sex}
+            onValueChange={setSex}
             buttons={[
               {
-                value: 'male',
+                value: 'm',
                 label: 'Male',
               },
               {
-                value: 'female',
+                value: 'f',
                 label: 'Female',
               },
             ]}
@@ -195,7 +208,7 @@ const PreferenceScreen = ({navigation}) => {
           </View>
 
           <View style={styles.inputView}>
-            <TextInput style={styles.TextInput} 
+            <TextInput style={styles.TextInput}
             placeholder="Min Age"
             value={age_min}
             editable={!isLoading}
@@ -203,12 +216,17 @@ const PreferenceScreen = ({navigation}) => {
           </View>
 
           <View style={styles.inputView}>
-            <TextInput style={styles.TextInput} 
+            <TextInput style={styles.TextInput}
             placeholder="Max Age"
             value={age_max}
             editable={!isLoading}
             onChangeText={handleCheckAgeMax}/>
           </View>
+          {checkAgeDiff ? (
+            <Text style={styles.textFailed}>Maximum age must be higher than minimum age! </Text>
+          ) : (
+            <Text style={styles.textFailed}> </Text>
+          )}
 
           <Text style={styles.smallerText}>
             Only show people in this range{' '}
@@ -262,7 +280,11 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     justifyContent: 'center',
   },
-
+  textFailed: {
+    color: 'red',
+    alignSelf: 'flex-end',
+    right: 30,
+  },
   smallerText: {
     color: 'black',
     fontFamily: 'Roboto',
