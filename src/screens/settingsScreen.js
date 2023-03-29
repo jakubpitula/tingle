@@ -9,6 +9,7 @@ import {TextInput} from 'react-native-paper';
 import { Modal, Portal, Provider } from 'react-native-paper';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import ButtonWithBackground3 from '../components/buttonWithBackground3';
+import { useNavigation } from '@react-navigation/native';
 
 
 
@@ -20,7 +21,7 @@ const baseUrl = 'https://y2ylvp.deta.dev/users';
 
 
 
-const SettingsScreen = ({navigation}) => {
+export default function SettingsScreen () {
   const [text, setText] = React.useState("");
   const [value, setValue] = React.useState('');
 
@@ -80,13 +81,15 @@ const SettingsScreen = ({navigation}) => {
     fetchData();
   }, [])
 
+  const navigation=useNavigation();
+
     return (
         <SafeAreaView>
             <ScrollView>
                 <Appbar.Header>
                 <Appbar.Action
                     icon="arrow-left-thick"
-                    onPress={() => navigation.navigate('Home')}
+                    onPress={() => navigation.goBack()}
                 />
                 <Appbar.Content
                     title="Settings"
@@ -213,5 +216,5 @@ const styles = StyleSheet.create({
     },
   });
 
-  export default SettingsScreen;
+
 

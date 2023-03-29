@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
         marginBottom: 0,
     },
     text: {
-        color: 'black',
+        color: '#C73866',
         fontSize: 13,
         fontWeight: 'bold',
         textDecorationLine: 'underline',

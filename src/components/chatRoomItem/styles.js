@@ -4,16 +4,28 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     padding: 15,
-    borderColor:'grey',
-    borderWidth: 2,
-    margin: 2,
-    borderRadius: 10
+    margin: 5,
+    borderRadius: 10,
+    right: 10,
+    alignSelf: 'flex-start',
+    width: 365,
+    borderBottomColor: 'grey',
+    borderWidth: 0.6,
+    borderBottomLeftRadius: 1,
+    borderBottomRightRadius: 1,
+    borderRightColor: "#1b1b1b",
+    borderTopColor: '#1b1b1b',
+    
+
+
+    
+    
     
 
   },
   image: {
-    height: 55,
-    width: 55,
+    height: 60,
+    width: 60,
     borderRadius: 30,
     marginRight: 10,
   },
@@ -27,7 +39,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
-    left: 45,
+    left: 55,
     top: 10,
   },
   badgeText: {
@@ -47,9 +59,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 18,
     marginBottom: 3,
+    color: 'white'
   },
   text: {
-    color: 'grey',
+    color: '#e5e5e5',
   }
 });
 

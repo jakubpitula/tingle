@@ -4,7 +4,7 @@ import LinearGradient from 'react-native-linear-gradient';
 const buttonWithBackground1 = props => {
     const content = (
         
-        <LinearGradient style={styles.button} colors={['#fe8196', '#fc0e78']}>
+        <LinearGradient style={styles.button} colors={['#C73866', '#FE676E']}>
             <Text style={styles.text}>{props.text}</Text>
         </LinearGradient>
     )

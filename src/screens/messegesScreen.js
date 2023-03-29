@@ -17,6 +17,7 @@ import {
   
   import ChatRoomItem from '../components/chatRoomItem';
   import { useNavigation } from "@react-navigation/native";
+  import LinearGradient from 'react-native-linear-gradient';
  
 
 
@@ -76,15 +77,26 @@ import {
       
 
       return (
-        <View style={styles.container1}>
+        
+        <View style={styles.container}>
+          <LinearGradient style={styles.upperContainer} colors={['#ec0f5d','#C73866','#FE676E',]} start={{ x: 0, y: 0}} end={{ x: 0.4, y: 0 }}/>
+          
+        <View style={{bottom: 50}}>
+          <Text style={styles.title} >Chats</Text>
+          </View>
+          
          <FlatList 
+         style={{bottom: 40}}
           data={friends}
           renderItem ={({item}) => <ChatRoomItem userUid={item}/> }
          />
+         </View>
+      
+     
       
 
 
-        </View>
+      
         
     
         
@@ -107,13 +119,25 @@ import {
 
 
 const styles = StyleSheet.create({
-  topContainer: {
+  container: {
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: '#fe8196',
-    height: 65,
+    backgroundColor: '#1b1b1b',
+   
     width: '100%',
     padding: 10,
+    
+    
+  },
+
+  upperContainer: {
+    height: 140,
+    width: 1000,
+    bottom: 100,
+    right: 50,
+    transform: [{skewY: '-5deg'}],
+   
+
   },
   list: {
     padding: 10,
@@ -164,11 +188,13 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
   },
   title: {
-    color: 'black',
-    fontSize: 30,
-    fontWeight: '700',
+    color: '#C73866',
+    fontSize: 45,
+    fontFamily: "Roboto-Black",   
     alignItems: 'center',
-    bottom: 70,
+    paddingLeft: 15,
+    
+    
   },
   button: {
     backgroundColor: '#fff',

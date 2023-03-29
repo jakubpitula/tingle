@@ -6,14 +6,16 @@ import {
   BackHandler,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
-import SettingsButton from '../components/settingsButton';
+
+import LinearGradient from 'react-native-linear-gradient';
 import {
   SafeAreaView,
   ScrollView,
   ActivityIndicator,
   FlatList,
+  Image
 } from 'react-native';
-import {Appbar, Avatar} from 'react-native-paper';
+
 import {Text, BottomNavigation} from 'react-native-paper';
 
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -32,53 +34,144 @@ import {
   useMeeting,
   useParticipant,
 } from '@videosdk.live/react-native-sdk';
+import {Easing} from 'react-native-reanimated';
+import {MotiView} from '@motify/components';
 
 let joinedFlag = false;
 let leftBeforeJoinFlag = false;
+const baseUrl = 'https://y2ylvp.deta.dev/users';
 
 let activeDisplayNav = 'flex';
 let activeDisplayHead = true;
-let calledId = ''
+let calledId = '';
+
+const _size = 100;
+
 
 
 function JoinScreen(props) {
   const [disabled, setDisabled] = useState(false);
+  const [age, setAge] = useState([]);
+  const [name, setName] = useState([]);
+  const [email, setEmail] = useState([]);
+  const [gender, setGender] = useState([]);
+  const [image, setImage] = useState(null);
+  const [profile, setProfile] = useState(null);
+  const [isLoading, setIsLoading] = useState(false)
+
+  useEffect(()=>{
+    fetchData();
+  },[])
+
+
+  const fetchData = async () => {
+    try {
+      const token = await EncryptedStorage.getItem('id_token');
+
+      const response = await fetch(`${baseUrl}/me`, {
+        method: 'GET',
+        headers: {
+          Authorization: 'Bearer ' + token,
+          'Content-Type': 'application/json',
+        },
+      });
+      const res = await response.json();
+
+      setName(res['name']);
+      setEmail(res['email']);
+      setAge(res['age']);
+      setProfile(res['profilePicUrl']);
+
+      console.log("My pic " + profile)
+
+
+      if (res['gender'] === 'm') {
+        setGender('Male');
+      }
+      if (res['gender'] === 'f') {
+        setGender('Female');
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        backgroundColor: 'white',
-        justifyContent: 'center',
-        paddingHorizontal: 6 * 10,
-      }}>
-        
-      <TouchableOpacity
-        disabled={disabled}
-        style={styles.largeCirlce}
-        onPress={async () => {
-          activeDisplayNav = 'none';
-          activeDisplayHead = false;
-          console.log(activeDisplayNav);
-          setDisabled(true);
-          const pool = await props.readPool().catch(err => console.log(err));
-          const mid = pool['mId'];
-          const uid = pool['uId'];
-          if (mid) {
-            props.setMeetingId(mid);
-            props.setUserId(uid);
-            calledId = uid
-            console.log("HomeScreen: " + uid);
-          }
-        }}>
-        
-        <Text style={{color: 'white', alignSelf: 'center', fontSize: 30, top: 95}}>
-          Call!
-        </Text>
-       
-      </TouchableOpacity>
+    <><View style={{ flexDirection: 'row' ,backgroundColor: "#1b1b1b",  flexWrap: 'wrap', justifyContent:'space-between',
+    alignItems: 'flex-start',padding: 20}}>
+      <View>
+        <Text style={styles.title}>Tingle</Text>
+      </View>
       
-    </SafeAreaView>
+        <View style={styles.circle}>
+          <Image style={styles.image} source={{ uri: profile }} />
+        </View>
+        
+    </View><View style={{
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      paddingHorizontal: 6 * 10,
+      backgroundColor: "#1b1b1b"
+    }}>
+
+        <TouchableOpacity
+          disabled={disabled}
+          style={styles.cirlce}
+          onPress={async () => {
+            activeDisplayNav = 'none';
+            activeDisplayHead = false;
+            console.log(activeDisplayNav);
+            setDisabled(true);
+
+            const pool = await props.readPool().catch(err => console.log(err));
+            const mid = pool['mId'];
+            const uid = pool['uId'];
+            if (mid) {
+              props.setMeetingId(mid);
+              props.setUserId(uid);
+              calledId = uid;
+              console.log('HomeScreen: ' + uid);
+            }
+          } }>
+          {disabled != false ? (
+
+
+            <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+              <View style={[styles.cirlce]}>
+                {[...Array(3).keys()].map(index => {
+                  return (
+                    <MotiView
+                      from={{ opacity: 0.8, scale: 1 }}
+                      animate={{ opacity: 0, scale: 4 }}
+                      transition={{
+                        type: 'timing',
+                        duration: 2000,
+                        easing: Easing.out(Easing.ease),
+                        delay: index * 400,
+                        repeatReverse: false,
+                        loop: true,
+                      }}
+                      key={index}
+                      style={[StyleSheet.absoluteFillObject, styles.cirlce]} />
+                  );
+                })}
+                <Icon
+                  name={'phone'}
+                  size={50}
+                  style={{ alignSelf: 'center', justifyContent: 'center', top: 28 }} />
+              </View>
+            </View>
+          ) : (
+
+            <Icon
+              name={'phone'}
+              size={50}
+              style={{ alignSelf: 'center', justifyContent: 'center', top: 28 }} />
+
+          )}
+        </TouchableOpacity>
+      </View></>
   );
 }
 export {calledId};
@@ -306,16 +399,15 @@ function MeetingView(props) {
   );
 }
 
-
 ///////////////////////////////////////////////////////////VIDEOSDK/////
-
-
 
 const Tab = createBottomTabNavigator();
 
 export default function HomeScreen() {
   const [meetingId, setMeetingId] = useState(null);
   const [userId, setUserId] = useState(null);
+  
+
 
   const CallRoute = () => {
     return meetingId ? (
@@ -357,17 +449,16 @@ export default function HomeScreen() {
     <Tab.Navigator
       initialRouteName="Call"
       screenOptions={{
-        tabBarActiveTintColor: '#e91e63',
+        tabBarActiveTintColor: '#C73866',
         tabBarStyle: {
           position: 'absolute',
           display: activeDisplayNav,
-          bottom: 5,
-          left: 20,
-          right: 20,
-          elevation: 3,
-          backgroundColor: 'white',
-          borderRadius: 15,
-          height: 50,
+          
+         
+          
+          backgroundColor: '#1e1e1e',
+          
+          height: 70,
         },
 
         headerShown: activeDisplayHead,
@@ -380,9 +471,10 @@ export default function HomeScreen() {
         name="Call"
         component={Call}
         options={{
-          tabBarLabel: 'Call',
+          tabBarLabel: '',
+          headerShown: false,
           tabBarIcon: ({color, size}) => (
-            <Icon name="phone" color={color} size={size} />
+            <Icon name="phone" color={color} size={30} style={{top:5}} />
           ),
         }}
       />
@@ -390,9 +482,10 @@ export default function HomeScreen() {
         name="Messages"
         component={Messeges}
         options={{
-          tabBarLabel: 'Messages',
+          tabBarLabel: '',
+          headerShown: false,
           tabBarIcon: ({color, size}) => (
-            <Icon name="comment" color={color} size={size} />
+            <Icon name="comment" color={color} size={30} style={{top:5}} />
           ),
           tabBarBadge: 69,
         }}
@@ -406,9 +499,9 @@ export default function HomeScreen() {
             backgroundColor: '#fe8196',
           },
           headerShown: false,
-          tabBarLabel: 'Profile',
+          tabBarLabel: '',
           tabBarIcon: ({color, size}) => (
-            <Icon name="user" color={color} size={size} />
+            <Icon name="user" color={color} size={30} style={{top:5}}/>
           ),
         }}
       />
@@ -419,9 +512,26 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
-    backgroundColor: 'white',
+    backgroundColor: '#1b1b1b',
     alignSelf: 'center',
     justifyContent: 'center',
+  },
+  image: {
+    width: 100,
+    height: 100,
+    
+  },
+  circle: {
+    
+    width: 60,
+    height: 60,
+    borderRadius: 60 / 2,
+    backgroundColor: '#1b1b1b',
+    bottom: 100,
+    elevation: 15,
+    shadowOpacity: 50,
+    borderRadius: 100, // half of the width and height to make it circular
+    overflow: 'hidden',
   },
 
   TextInput: {
@@ -431,21 +541,29 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 
-  title: {
-    color: 'black',
-    fontFamily: 'Roboto',
-    fontSize: 50,
-    fontWeight: 'bold',
+  title: {  
+    fontSize: 30,
+   
     letterSpacing: 1,
-    marginBottom: 50,
-    marginTop: 100,
+    color: "#C73866", 
+    fontFamily: "Roboto-BlackItalic",
+    textShadowColor: '#FE676E',
+    textShadowOffset: {width: -1, height: 2},
+    textShadowRadius: 4
+
+  },
+  cirlce: {
+    width: _size,
+    height: _size,
+    borderRadius: _size,
+    backgroundColor: '#e91e63',
   },
   smallCirlce: {
     width: 70,
     height: 70,
     borderRadius: 70 / 2,
     bottom: 60,
-    backgroundColor: '#D5D5D5',
+    backgroundColor: 'grey',
 
     borderRadius: 100, // half of the width and height to make it circular
     overflow: 'hidden',
@@ -468,10 +586,9 @@ const styles = StyleSheet.create({
     borderRadius: 240 / 2,
     bottom: 60,
     backgroundColor: '#FF3A3E',
-    alignSelf:'center',
+    alignSelf: 'center',
     borderRadius: 120, // half of the width and height to make it circular
     overflow: 'hidden',
-
   },
   smallText: {
     color: 'black',
@@ -500,4 +617,3 @@ const styles = StyleSheet.create({
 });
 
 export {Tab};
-

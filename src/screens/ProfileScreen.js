@@ -121,7 +121,7 @@ const ProfileScreen = () => {
 
 
   return (
-    <LinearGradient style={styles.topContainer} colors={['#fa2f77','#fe8196','#f9d0de','#FFFFFF']} start={{x: 0,y: 0}} end={{x: 0.1, y: 0.6}}>
+    <View style={styles.topContainer} >
       <ScrollView>
         <SafeAreaView>
           <View style={styles.topContainer}></View>
@@ -229,7 +229,7 @@ const ProfileScreen = () => {
           </View>
           </SafeAreaView>
       </ScrollView>
-      </LinearGradient>
+      </View>
   );
 }
 
@@ -238,7 +238,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     height: 150,
-    width: '100%'
+    width: '100%',
+    backgroundColor: "#1b1b1b"
   },
   imageContainer: {
     width: 200,
@@ -256,7 +257,7 @@ const styles = StyleSheet.create({
     height: 150,
     borderRadius: 150 / 2,
     backgroundColor: 'white',
-    bottom: 80,
+    bottom: 100,
     elevation: 15,
     shadowOpacity: 80,
     borderRadius: 100, // half of the width and height to make it circular
@@ -291,7 +292,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
   },
   title: {
-    color: 'black',
+    color: '#e4e4e4',
     fontSize: 30,
     fontWeight: '700',
     alignItems: 'center',

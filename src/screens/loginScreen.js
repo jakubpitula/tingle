@@ -78,28 +78,22 @@ export default function LoginScreen({navigation}) {
       <ScrollView>
         {isLoading? (
           <View style={styles.loaderContainer}>
-            <ActivityIndicator animating={true} color={'#fe8196'} size={60} top={300} />
-          </View>
+            <ActivityIndicator animating={true} color={'#C73866'} size={70} top={300} />
+            </View>
 
         ):(
-        <View style={styles.container}>
-          <Image
-            source={require('../assets/Tingle_logo_example.jpg')}
-            style={{
-              width: 300,
-              height: 150,
-              left: 43,
-              top: 100,
-              marginBottom: 150,
-            }}></Image>
+          
+         <View style={styles.container}>
+          <LinearGradient style={styles.topContainer} colors={['#ec0f5d','#C73866','#FE676E',]} start={{ x: 0, y: 0}} end={{ x: 0.4, y: 0 }}/>
+          <Text style={styles.title}>Tingle</Text>
           
           <View style={styles.inputView}>
-          <Icon name={"at"} size={25} style={{top: 12}}/>
+          <Icon name={"at"} size={25} style={{top: 12}} color={"#b1b1b1"}/>
             <TextInput
               style={styles.TextInput}
               value={email}
               placeholder="Email"
-              placeholderTextColor="black"
+              placeholderTextColor="#b1b1b1"
               onChangeText={onChangeEmailHandler}
               ref={input => {
                 this.textInput_email = input;
@@ -107,19 +101,20 @@ export default function LoginScreen({navigation}) {
               editable={!isLoading}
             />
           </View>
-
+          
           <View style={styles.inputView}>
-            <Icon name={"lock"} size={25} style={{top: 12}}/>
+            <Icon name={"lock"} size={25} style={{top: 12}} color={"#b1b1b1"}/>
             <TextInput
               style={styles.TextInput}
               placeholder="Password"
+              
               value={password}
               onChangeText={onChangePasswordHandler}
               editable={!isLoading}
               ref={input => {
                 this.textInput_pass = input;
               }}
-              placeholderTextColor="black"
+              placeholderTextColor="#b1b1b1"
               secureTextEntry
             />
           </View>
@@ -158,15 +153,30 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'flex-end',
-    backgroundColor: '#FFF1ED',
+    backgroundColor: '#1b1b1b',
+    elevation: 25,
+    shadowOpacity: 100,
+   
   },
+
+  topContainer: {
+    height: 230,
+    width: 1000,
+   bottom: 100,
+    right: 50,
+    backgroundColor: 'blue',
+    transform: [{skewY: '-10deg'}],
+   
+
+  },
+
   loaderContainer: {
     width: '100%',
     height: 1000,
     flex: 1,
     justifycontent: 'center',
     alignItems: 'center',
-    backgroundColor: '#FFF1ED',
+    backgroundColor: '#1b1b1b',
     
 },
 
@@ -175,35 +185,42 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginLeft: 5,
-    color: 'black',
+    color: 'white',
     flex: 1,
     padding: 5,
   },
 
   inputView: {
     borderBottomWidth: 2,
+    
     marginHorizontal: 30,
     marginLeft: 30,
     marginRight:35,
-    borderBottomColor: 'grey',
+    borderBottomColor: '#C73866',
     flexDirection: 'row'
   },
 
   title: {
-    color: '#374B73',
-    fontSize: 50,
-    fontWeight: '800',
+    fontSize: 60,
+    color: "#C73866",
     letterSpacing: 1,
-    paddingBottom: 100,
-    paddingTop: 150,
-    alignItems: 'center',
-    paddingLeft: 110,
+    paddingBottom: 50,
+    paddingLeft: 20,
+    
+    fontFamily: "Archivo-VariableFont_wdth,wght",
+    alignSelf: 'flex-start',
+    textShadowColor: '#FE676E',
+    textShadowOffset: {width: -1, height: 2},
+    textShadowRadius: 4,
+    
+
   },
 
   smallText: {
-    color: 'grey',
+    color: '#6d6d6d',
     fontSize: 14,
     letterSpacing: 0,
+    fontFamily: 'Gruppo'
   },
 
   textFailed: {

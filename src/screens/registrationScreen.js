@@ -12,7 +12,7 @@ import InvalidButton from '../components/invalidButton';
 import React, {useState} from 'react';
 import {SafeAreaView, ScrollView} from 'react-native';
 import axios from 'axios';
-import {Appbar} from 'react-native-paper';
+import {ActivityIndicator, Appbar} from 'react-native-paper';
 import storage from '@react-native-firebase/storage';
 import DocumentPicker from 'react-native-document-picker';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -270,15 +270,21 @@ export default function RegistrationScreen({navigation}) {
   return (
     <>
       <SafeAreaView>
-        <ScrollView style={styles.container}>
+        <ScrollView>
+
+       
+
+        
+          <View style={styles.container}>
           <View style={{alignItems: 'center'}}>
             <TouchableOpacity
               onPress={() => navigation.navigate('Login')}
               style={{
-                right: 160,
+                alignSelf: 'flex-start',
+                left: 5,
                 paddingTop: 20,
               }}>
-              <Icon name={'arrow-left'} size={30} />
+              <Icon name={'arrow-left'} size={30} color={'#C73866'}/>
             </TouchableOpacity>
           </View>
 
@@ -289,7 +295,7 @@ export default function RegistrationScreen({navigation}) {
             <TextInput
               style={styles.TextInput}
               placeholder="First Name *"
-              placeholderTextColor="black"
+              placeholderTextColor="#b1b1b1"
               value={first_name}
               editable={!isLoading}
               onChangeText={handleCheckFirstName}
@@ -306,7 +312,7 @@ export default function RegistrationScreen({navigation}) {
               style={styles.TextInput}
               placeholder="Last Name *"
               value={last_name}
-              placeholderTextColor="black"
+              placeholderTextColor="#b1b1b1"
               editable={!isLoading}
               onChangeText={handleCheckLastName}
             />
@@ -321,7 +327,7 @@ export default function RegistrationScreen({navigation}) {
             <TextInput
               style={styles.TextInput}
               placeholder="Email *"
-              placeholderTextColor="black"
+              placeholderTextColor="#b1b1b1"
               value={email}
               editable={!isLoading}
               onChangeText={handleCheckEmail}
@@ -338,7 +344,7 @@ export default function RegistrationScreen({navigation}) {
             <TextInput
               style={styles.TextInput}
               placeholder="Password *"
-              placeholderTextColor="black"
+              placeholderTextColor="#b1b1b1"
               secureTextEntry
               value={password}
               editable={!isLoading}
@@ -354,7 +360,7 @@ export default function RegistrationScreen({navigation}) {
             <TextInput
               style={styles.TextInput}
               placeholder="Confirm Password *"
-              placeholderTextColor="black"
+              placeholderTextColor="#b1b1b1"
               secureTextEntry
               value={conf_pass}
               editable={!isLoading}
@@ -371,7 +377,7 @@ export default function RegistrationScreen({navigation}) {
             <TextInput
               style={styles.TextInput}
               placeholder="Age"
-              placeholderTextColor="black"
+              placeholderTextColor="#b1b1b1"
               secureTextEntry
               value={age}
               editable={!isLoading}
@@ -388,7 +394,7 @@ export default function RegistrationScreen({navigation}) {
             <TextInput
               style={styles.TextInput}
               placeholder="Gender"
-              placeholderTextColor="black"
+              placeholderTextColor="#b1b1b1"
               secureTextEntry
               value={gender}
               editable={!isLoading}
@@ -400,26 +406,39 @@ export default function RegistrationScreen({navigation}) {
           ) : (
             <Text style={styles.textFailed}> </Text>
           )}
-          <View style={{paddingLeft: 90}}>
+          <View style={{alignSelf: 'flex-start'}}>
             <ButtonWithBackground1
-              text="Choose Profile Picture"
+              text="Profile Picture"
               onPress={selectImage}
             />
             {image != null ? (
-              <Text>
-                File Name: {image[0].name ? image[0].name : ''}
-                {'\n'}
+              <Text style={{color: 'white'}}>
+                Image Uploaded!
               </Text>
             ) : null}
           </View>
+          {isLoading? (
+            <View style={{alignSelf: 'center', paddingTop: 10, paddingBottom: 40}}>
+            
+            <ActivityIndicator animating={true} color={'#FE676E'} size={20}  />
+            
+        </View>
+            
 
-          <View style={{paddingLeft: 180}}>
+          ) :(
+          <View style={{alignSelf: 'center', paddingTop: 10, paddingBottom: 40}}>
+            <TouchableOpacity disabled={!valid} >
               <ButtonWithBackground
                 text="Confirm"
+                
                 onPress={onSubmitFormHandler}
                 backgroundColor={valid ? 'blue' : 'grey'}
               />
+              </TouchableOpacity>
           </View>
+        )}
+          </View>
+        
         </ScrollView>
       </SafeAreaView>
     </>
@@ -430,7 +449,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
     paddingLeft: 10,
-    backgroundColor: '#FFF1ED',
+    backgroundColor: '#1b1b1b',
     paddingTop: 15,
   },
 
@@ -439,6 +458,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     marginLeft: 5,
+    color: 'white'
   },
 
   inputView: {
@@ -446,14 +466,14 @@ const styles = StyleSheet.create({
     marginHorizontal: 30,
     marginLeft: 10,
 
-    borderBottomColor: 'grey',
+    borderBottomColor: '#C73866',
   },
 
   title: {
-    color: 'black',
-    fontFamily: 'Roboto',
-    fontSize: 35,
-    fontWeight: 'bold',
+    color: '#C73866',
+    fontFamily: 'Roboto-Italic',
+    fontSize: 40,
+    
     constterSpacing: 1,
     marginBottom: 20,
     marginTop: 30,

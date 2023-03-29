@@ -5,7 +5,7 @@ import LinearGradient from 'react-native-linear-gradient';
 const buttonWithBackground1 = props => {
     const content = (
         
-        <LinearGradient style={styles.button} colors={['#fe8196', '#fc0e78']}>
+        <LinearGradient style={styles.button} colors={['#FE676E', '#C73866']}>
             <Text style={styles.text}>{props.text}</Text>
         </LinearGradient>
     )
@@ -18,13 +18,14 @@ const styles = StyleSheet.create({
         padding:13,
         margin: 0,
         width: 280,
-        borderRadius: 25,
+        borderRadius: 15,
         alignItems: 'center',
         justifyContent:"center"
     },
     text:{
         color: 'white',
         fontSize: 20,
+        
         
         
     }
