@@ -1,4 +1,4 @@
-import {StyleSheet, View, TextInput} from 'react-native';
+import {StyleSheet, View, TextInput, TouchableOpacity} from 'react-native';
 import ButtonWithBackground from '../components/buttonWithBackground';
 import {SafeAreaView, ScrollView} from 'react-native';
 import {Text, Appbar} from 'react-native-paper';
@@ -6,6 +6,7 @@ import {SegmentedButtons, Button, Switch} from 'react-native-paper';
 import React, {useState} from 'react';
 import EncryptedStorage from "react-native-encrypted-storage";
 import axios from 'axios';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 
 const baseUrl = 'https://y2ylvp.deta.dev';
@@ -153,20 +154,14 @@ const PreferenceScreen = ({navigation}) => {
   return (
     <SafeAreaView>
       <ScrollView>
-        <Appbar.Header>
-          <Appbar.Action
-            icon="arrow-left-thick"
-            onPress={() => navigation.navigate('Registration')}
-          />
-          <Appbar.Content
-            title="Preferences"
-            color="#FF356B"
-            titleStyle={{fontWeight: 'bold'}}
-          />
-        </Appbar.Header>
+      <View style={styles.container}>
+      <View>
+            <Text style={styles.title}>Preferences</Text>
+          </View>
+            <Text style={styles.smallerText}>Select your matching preferences: </Text>
 
         <View style={styles.container}>
-          <Text style={styles.smallText}>Distance preference</Text>
+          <Text style={styles.smallText}>Distance </Text>
 
 
           <View style={styles.inputView}>
@@ -174,14 +169,15 @@ const PreferenceScreen = ({navigation}) => {
             placeholder="Distance"
             value={distance}
             editable={!isLoading}
+            placeholderTextColor= '#6d6d6d'
             onChangeText={handleCheckDistance}
              />
           </View>
 
-          <Text style={styles.smallerText}>
+          {/* <Text style={styles.smallerText}>
             Only show people in this range{' '}
             <Switch value={isSwitchOn} onValueChange={onToggleSwitch} />
-          </Text>
+          </Text> */}
 
           <View style={{paddingTop: 20}}>
             <Text style={styles.smallText}>Sex preference</Text>
@@ -190,28 +186,33 @@ const PreferenceScreen = ({navigation}) => {
           <SegmentedButtons
             value={sex}
             onValueChange={setSex}
+            style={styles.TextInput}
             buttons={[
               {
                 value: 'm',
                 label: 'Male',
+                
               },
               {
                 value: 'f',
                 label: 'Female',
               },
             ]}
-            style={styles.group}
+            
           />
 
           <View style={{paddingTop: 20}}>
-            <Text style={styles.smallText}>Age preference</Text>
+            <Text style={styles.smallText}>Age Range</Text>
           </View>
 
+            <View style={{flexDirection: 'row'}}>
           <View style={styles.inputView}>
             <TextInput style={styles.TextInput}
             placeholder="Min Age"
             value={age_min}
+            placeholderTextColor= '#6d6d6d'
             editable={!isLoading}
+            
             onChangeText={handleCheckAgeMin} />
           </View>
 
@@ -219,8 +220,10 @@ const PreferenceScreen = ({navigation}) => {
             <TextInput style={styles.TextInput}
             placeholder="Max Age"
             value={age_max}
+            placeholderTextColor= '#6d6d6d'
             editable={!isLoading}
             onChangeText={handleCheckAgeMax}/>
+          </View>
           </View>
           {checkAgeDiff ? (
             <Text style={styles.textFailed}>Maximum age must be higher than minimum age! </Text>
@@ -228,16 +231,17 @@ const PreferenceScreen = ({navigation}) => {
             <Text style={styles.textFailed}> </Text>
           )}
 
-          <Text style={styles.smallerText}>
+          {/* <Text style={styles.smallerText}>
             Only show people in this range{' '}
             <Switch value={isSwitchOn} onValueChange={onToggleSwitch} />
-          </Text>
-          <View style={{paddingTop: 100, paddingLeft: 180}}>
+          </Text> */}
+          <View style={{paddingTop: 100, paddingLeft: 150}}>
             <ButtonWithBackground
               text="Next"
               onPress={onSubmitFormHandler}
             />
           </View>
+        </View>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -247,33 +251,33 @@ const PreferenceScreen = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
-
     paddingLeft: 10,
-    paddingRight: 10,
-    backgroundColor: '#FFF1ED',
+    backgroundColor: '#1b1b1b',
     paddingTop: 15,
+    paddingBottom: 100
   },
   TextInput: {
-    height: 50,
-    flex: 1,
-    padding: 5,
+    color: 'white',
+    
     justifyContent: 'center',
-    marginLeft: 5,
+    
   },
 
   title: {
-    color: 'black',
-    fontFamily: 'Roboto',
-    fontSize: 50,
-    fontWeight: 'bold',
-    letterSpacing: 1,
-    marginBottom: 50,
-    marginTop: 100,
+    color: '#C73866',
+    fontFamily: 'Roboto-Italic',
+    fontSize: 40,
+    
+    paddingBottom: 30,
+    constterSpacing: 1,
+    marginBottom: 20,
+    marginTop: 30,
+    paddingLeft: 10,
   },
 
   smallText: {
-    fontWeight: 'bold',
-    color: 'black',
+    color: 'white',
+    fontFamily: 'Roboto-Italic',
     fontSize: 20,
     marginTop: 0,
     marginLeft: 0,
@@ -286,23 +290,22 @@ const styles = StyleSheet.create({
     right: 30,
   },
   smallerText: {
-    color: 'black',
-    fontFamily: 'Roboto',
-    fontSize: 15,
-    marginTop: 0,
-    marginLeft: 0,
+    color: 'white',
+    fontFamily: 'Roboto-Italic',
+    fontSize: 14,
+    bottom: 20,
+
     justifyContent: 'center',
   },
 
   inputView: {
-    borderColor: 'grey',
-    color: 'black',
-    borderRadius: 15,
+    
+    marginHorizontal: 30,
+    marginLeft: 10,
+    
     borderWidth: 2,
-    marginBottom: 3,
-    marginHorizontal: 10,
-    marginLeft: 0,
-    marginTop: 5,
+    borderRadius: 15,
+    borderColor: '#C73866',
   },
 
   altTitle: {

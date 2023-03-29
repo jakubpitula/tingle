@@ -546,10 +546,7 @@ const styles = StyleSheet.create({
    
     letterSpacing: 1,
     color: "#C73866", 
-    fontFamily: "Roboto-BlackItalic",
-    textShadowColor: '#FE676E',
-    textShadowOffset: {width: -1, height: 2},
-    textShadowRadius: 4
+    fontFamily: "Archivo-VariableFont_wdth,wght",
 
   },
   cirlce: {

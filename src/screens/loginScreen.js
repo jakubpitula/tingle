@@ -84,7 +84,7 @@ export default function LoginScreen({navigation}) {
         ):(
           
          <View style={styles.container}>
-          <LinearGradient style={styles.topContainer} colors={['#ec0f5d','#C73866','#FE676E',]} start={{ x: 0, y: 0}} end={{ x: 0.4, y: 0 }}/>
+          <LinearGradient style={styles.topContainer} colors={['#ec0f5d','#b0234f','#f18a55',]} start={{ x: 0, y: 0}} end={{ x: 0.4, y: 0 }}/>
           <Text style={styles.title}>Tingle</Text>
           
           <View style={styles.inputView}>
@@ -209,9 +209,7 @@ const styles = StyleSheet.create({
     
     fontFamily: "Archivo-VariableFont_wdth,wght",
     alignSelf: 'flex-start',
-    textShadowColor: '#FE676E',
-    textShadowOffset: {width: -1, height: 2},
-    textShadowRadius: 4,
+   
     
 
   },

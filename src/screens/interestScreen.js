@@ -128,19 +128,22 @@ const [expanded, setExpanded] = React.useState(true);
         <SafeAreaView>
             <ScrollView>
 
-            <Appbar.Header>
-                <Appbar.Action icon='arrow-left-thick'  onPress={() => navigation.navigate('Preference')}/>
-                <Appbar.Content title="Interests" color='#FF356B' titleStyle={{fontWeight: 'bold'}}/>
-            </Appbar.Header>
+           
 
 
             <View style={styles.container}>
+              <Text style={styles.title}> Interests</Text>
+              <Text style={styles.headerText}>Select a few of the interests that apply to you: </Text>
             <Text style={styles.smallText}> Hobbies </Text>
+            
             <MultipleSelectList
             setSelected={(val) => setHobbies(val)}
             data={hobbies_fields}
             save="value"
+            boxStyles={{backgroundColor:'#6d6d6d'}}
+            dropdownItemStyles={{backgroundColor:'#6d6d6d'}}
             label="Categories"/>
+            
 
 
             <Text style={styles.smallText}> About me </Text>
@@ -148,7 +151,7 @@ const [expanded, setExpanded] = React.useState(true);
               <TextInput
               style={styles.TextInputAboutMe}
               placeholder="50000"
-              placeholderTextColor='color'
+              placeholderTextColor='white'
               value={about}
               onChangeText={handleCheckAbout}
               />
@@ -160,6 +163,8 @@ const [expanded, setExpanded] = React.useState(true);
             <SelectList
             setSelected={(val) => setZodiac(val)}
             data={zodiac_fields}
+            boxStyles={{backgroundColor:'#6d6d6d'}}
+            dropdownItemStyles={{backgroundColor:'#6d6d6d'}}
             save="value"
             label="Selected"
             />
@@ -169,32 +174,45 @@ const [expanded, setExpanded] = React.useState(true);
           setSelected={(val) => setCommunication(val)}
           data={communication_fields}
           save="value"
+          boxStyles={{backgroundColor:'#6d6d6d'}}
+          dropdownItemStyles={{backgroundColor:'#6d6d6d'}}
           label="Selected"
           />
-
+        
+        <View>
           <Text style={styles.smallerText}> Workout</Text>
           <MultipleSelectList
           setSelected={(val) => setWorkout(val)}
           data={workout_fields}
+          boxStyles={{backgroundColor:'#6d6d6d'}}
+          dropdownItemStyles={{backgroundColor:'#6d6d6d'}}
           save="value"
           label="Selected"
           />
+          </View>
 
           <Text style={styles.smallerText}> Drinking</Text>
           <MultipleSelectList
           setSelected={(val) => setDrinking(val)}
           data={drinking_fields}
+          boxStyles={{backgroundColor:'#6d6d6d'}}
+          dropdownItemStyles={{backgroundColor:'#6d6d6d'}}
           save="value"
           label="Selected"
           />
 
           <Text style={styles.smallerText}> Smoking</Text>
+         
           <MultipleSelectList
+         backgroundColor={'white'}
           setSelected={(val) => setSmoking(val)}
           data={smoking_fields}
+          boxStyles={{backgroundColor:'#6d6d6d'}}
+          dropdownItemStyles={{backgroundColor:'#6d6d6d'}}
           save="value"
           label="Selected"
           />
+          
 
           <View style={{paddingLeft: 180}}>
             <ButtonWithBackground1
@@ -214,10 +232,35 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
     paddingLeft: 10,
-    paddingRight: 10,
-    backgroundColor:'#FFF1ED',
+    backgroundColor: '#1b1b1b',
     paddingTop: 15,
-    justifyContent: 'flex-end',
+  },
+
+  smallerText: {
+    color: 'white',
+    fontFamily: 'Roboto-Italic',
+    fontSize: 14,
+    justifyContent: 'center',
+  },
+
+  headerText: {
+    color: 'white',
+    fontFamily: 'Roboto-Italic',
+    fontSize: 14,
+    bottom: 20,
+
+    justifyContent: 'center',
+  },
+
+  title: {
+    color: '#C73866',
+    fontFamily: 'Roboto-Italic',
+    fontSize: 40,
+    
+    constterSpacing: 1,
+    marginBottom: 20,
+    marginTop: 30,
+    paddingLeft: 10,
   },
 
 TextInputAboutMe: {
@@ -227,22 +270,22 @@ TextInputAboutMe: {
     paddingBottom: 40,
     marginBottom:0,
     justifyContent: 'center',
-    borderColor: 'grey',
+    
   },
 
   inputView:{
-    borderColor: 'grey',
     borderWidth: 2,
     borderRadius: 15,
     width: '100%',
     marginBottom: 15,
     alignContent: 'center',
     justifyContent: 'center',
+    backgroundColor:'#6d6d6d'
   },
 
   smallText: {
     fontWeight:'bold',
-    color: 'black',
+    color: 'white',
     fontSize: 20,
     marginTop: 0,
     marginLeft: 0,
@@ -250,14 +293,7 @@ TextInputAboutMe: {
     justifyContent: 'center',
   },
 
-  smallerText: {
-    color: 'black',
-    fontFamily: 'Roboto',
-    fontSize: 15,
-    marginTop: 0,
-    marginLeft: 0,
-    justifyContent: 'center',
-  },
+ 
 
 });
 
