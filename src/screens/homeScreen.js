@@ -121,18 +121,24 @@ function JoinScreen(props) {
           onPress={async () => {
             activeDisplayNav = 'none';
             activeDisplayHead = false;
-            console.log(activeDisplayNav);
+            
             setDisabled(true);
-
-            const pool = await props.readPool().catch(err => console.log(err));
-            const mid = pool['mId'];
-            const uid = pool['uId'];
+            setIsLoading(true);
+              setTimeout(async () => {
+                setIsLoading(false)
+                const pool = await props.readPool().catch(err => console.log(err));
+                const mid = pool['mId'];
+               const uid = pool['uId'];
             if (mid) {
               props.setMeetingId(mid);
               props.setUserId(uid);
               calledId = uid;
               console.log('HomeScreen: ' + uid);
             }
+
+              }, 5000);
+
+            
           } }>
           {disabled != false ? (
 
@@ -259,17 +265,18 @@ function ParticipantView({participantId}) {
         height: 350,
         marginVertical: 8,
         marginHorizontal: 8,
+        
       }}
     />
   ) : (
     <View
       style={{
         backgroundColor: 'grey',
-        height: 400,
+        height: 300,
         justifyContent: 'center',
         alignItems: 'center',
       }}>
-      <Text style={{fontSize: 16}}>NO MEDIA</Text>
+      <Text style={{fontSize: 16}}>AWATING USER TO JOIN</Text>
     </View>
   );
 }
@@ -411,7 +418,7 @@ export default function HomeScreen() {
 
   const CallRoute = () => {
     return meetingId ? (
-      <SafeAreaView style={{flex: 1, backgroundColor: '#F6F6FF'}}>
+      <SafeAreaView style={{flex: 1, backgroundColor: '#1e1e1e'}}>
         <MeetingProvider
           config={{
             meetingId,

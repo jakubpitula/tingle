@@ -164,7 +164,8 @@ const styles = StyleSheet.create({
     width: 1000,
    bottom: 100,
     right: 50,
-    backgroundColor: 'blue',
+    
+    
     transform: [{skewY: '-10deg'}],
    
 

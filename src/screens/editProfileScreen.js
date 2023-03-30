@@ -5,11 +5,13 @@ import {Text, Appbar} from 'react-native-paper';
 import {SegmentedButtons, Button, Switch} from 'react-native-paper';
 import React, {useState} from 'react';
 import { MultipleSelectList } from 'react-native-dropdown-select-list'
+import { useNavigation } from '@react-navigation/native';
 
 
 
-const EditProfileScreen = ({navigation}) => {
+const EditProfileScreen = () => {
   const [selected, setSelected] = React.useState([]);
+
 
   const data_zodiac = [
     {key:'1', value:'Aries'},
@@ -61,13 +63,15 @@ const data_smoking = [
 
     const [expanded, setExpanded] = React.useState(true);
   
+    const navigation=useNavigation();
+
     return (
         <SafeAreaView>
             <ScrollView>
                 <Appbar.Header>
                 <Appbar.Action
                     icon="arrow-left-thick"
-                    onPress={() => navigation.navigate('HomeScreen')}
+                    onPress={() => navigation.navigate('Home')}
                 />
                 <Appbar.Content
                     title="Settings"

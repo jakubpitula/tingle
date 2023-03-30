@@ -91,7 +91,7 @@ export default function MatchScreen() {
  
 
   return (
-    <LinearGradient style={styles.topContainer} colors={['#fa2f77','#fe8196','#f9d0de','#FFFFFF']} start={{x: 0,y: 0}} end={{x: 0.1, y: 1.25}}>
+    <LinearGradient style={styles.topContainer} colors={['#ec0f5d','#b0234f','#f18a55']} start={{x: 0,y: 0}} end={{x: 0.1, y: 0.9}}>
       <ScrollView>
         <SafeAreaView>
           <View style={styles.title}>
@@ -117,7 +117,9 @@ export default function MatchScreen() {
               <TouchableOpacity
                 style={styles.smallCirlceYes}
                 onPress={onSubmitFormHandler}>
-                  <Icon name={"check"} size={65} style={{top: 17, left: 19}} />
+                  <LinearGradient style= {{height: 100}} colors={['#ff008a','#ac154a']} start={{x: 0,y: 0}} end={{x: 0.1, y: 1}}>
+                  <Icon name={"heart"} size={65} style={{top: 17, left: 19}} />
+                  </LinearGradient>
                 </TouchableOpacity>
             </View>
           </View>
@@ -177,10 +179,9 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     borderRadius: 100 / 2,
-    backgroundColor: 'green',
     bottom: 80,
-    elevation: 15,
-    shadowOpacity: 80,
+  
+    
     borderRadius: 100, // half of the width and height to make it circular
     overflow: 'hidden',
   },
@@ -213,10 +214,12 @@ const styles = StyleSheet.create({
   },
   largeText: {
     fontSize: 28,
+    fontFamily: 'Roboto-Black',
   },
   nameText:{
     fontSize: 34,
     paddingTop:20,
+    fontFamily: 'Roboto-Italic',
     
   },
   button: {
