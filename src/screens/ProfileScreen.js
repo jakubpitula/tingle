@@ -8,26 +8,36 @@ import {
 } from 'react-native';
 import React, {useState} from 'react';
 import axios from 'axios';
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {ActivityIndicator} from 'react-native-paper';
 import {SafeAreaView, ScrollView, TouchableOpacity, Image} from 'react-native';
 import {useEffect} from 'react';
 import ButtonWithBackground2 from '../components/buttonWithBackground2';
-import { useNavigation } from "@react-navigation/native";
-import storage from "@react-native-firebase/storage";
-import DocumentPicker from "react-native-document-picker";
-import LinearGradient from 'react-native-linear-gradient';
+import {useNavigation} from '@react-navigation/native';
+import storage from '@react-native-firebase/storage';
+import DocumentPicker from 'react-native-document-picker';
+import firebase from 'firebase';
+
+if (!firebase.apps.length) {
+  firebase.initializeApp({
+    apiKey: "AIzaSyAH5m-W1aWKQpC9zwXXOX4C7tWQR3WAdUU",
+    authDomain: "dating-app-3e0f5.firebaseapp.com",
+    databaseURL: "https://dating-app-3e0f5-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "dating-app-3e0f5",
+    storageBucket: "dating-app-3e0f5.appspot.com",
+    messagingSenderId: "775458561795",
+    appId: "1:775458561795:web:a5a0f059c513fb071d1336",
+    measurementId: "G-1F93T08THP"
+  });
+}
+
+const auth = firebase.auth();
 
 const ProfileScreen = () => {
   const baseUrl = 'https://y2ylvp.deta.dev/users';
 
-  const navigation = useNavigation()
-
+  const navigation = useNavigation();
 
   const [age, setAge] = useState([]);
   const [name, setName] = useState([]);
@@ -35,8 +45,7 @@ const ProfileScreen = () => {
   const [gender, setGender] = useState([]);
   const [image, setImage] = useState(null);
   const [profile, setProfile] = useState(null);
-  const [isLoading, setIsLoading] = useState(false)
-
+  const [isLoading, setIsLoading] = useState(false);
 
   const selectImage = async () => {
     // Opening Document Picker to select one file
@@ -44,7 +53,7 @@ const ProfileScreen = () => {
       const res = await DocumentPicker.pick({
         // Provide which type of file you want user to pick
         type: [DocumentPicker.types.images],
-        copyTo: 'cachesDirectory'
+        copyTo: 'cachesDirectory',
       });
       // Printing the log realted to the file
       console.log('res : ' + JSON.stringify(res));
@@ -65,27 +74,25 @@ const ProfileScreen = () => {
   };
 
   const uploadImage = async () => {
-    const uri = image[0]["fileCopyUri"];
+    const uri = image[0]['fileCopyUri'];
     const filename = uri.substring(uri.lastIndexOf('/') + 1);
 
     await storage().ref(filename).putFile(uri);
 
     const profilePicRef = storage().ref(filename);
-    const url = await profilePicRef.getDownloadURL()
+    const url = await profilePicRef.getDownloadURL();
 
-    console.log(url)
+    console.log(url);
     return url;
   };
 
   useEffect(() => {
     setIsLoading(true);
     fetchData();
-    setTimeout(()=> {
+    setTimeout(() => {
       setIsLoading(false);
     }, 1500);
-
   }, [profile]);
-
 
   const fetchData = async () => {
     try {
@@ -105,8 +112,7 @@ const ProfileScreen = () => {
       setAge(res['age']);
       setProfile(res['profilePicUrl']);
 
-      console.log("My pic " + profile)
-
+      console.log('My pic ' + profile);
 
       if (res['gender'] === 'm') {
         setGender('Male');
@@ -119,119 +125,126 @@ const ProfileScreen = () => {
     }
   };
 
-
   return (
-    <View style={styles.topContainer} >
+    <View style={styles.topContainer}>
       <ScrollView>
         <SafeAreaView>
           <View style={styles.topContainer}></View>
-        <View style={{alignItems: 'center'}}>
-          <View style={styles.circle}>
-          <Image style={styles.image} source={{ uri: profile }}/>
+          <View style={{alignItems: 'center'}}>
+            <View style={styles.circle}>
+              <Image style={styles.image} source={{uri: profile}} />
+            </View>
           </View>
-        </View>
-        {isLoading? (
-          <View style={styles.loaderContainer}>
-            <ActivityIndicator animating={true} color={'#fe8196'} size={30} bottom={40}/>
-          </View>
+          {isLoading ? (
+            <View style={styles.loaderContainer}>
+              <ActivityIndicator
+                animating={true}
+                color={'#fe8196'}
+                size={30}
+                bottom={40}
+              />
+            </View>
+          ) : (
+            <View style={{alignItems: 'center'}}>
+              <Text style={styles.title}>{name}</Text>
 
-        ):(
-        <View style={{alignItems: 'center'}}>
-
-          <Text style={styles.title}>{name}</Text>
-
-          <Text
-            style={{
-              bottom: 55,
-              fontSize: 20,
-              fontWeight: 'bold',
-              color: 'grey',
-
-            }}>
-            {' '}
-            {age}, {gender}
-          </Text>
-        </View>
-        )}
-<View style={{alignItems: 'center', bottom: 15, paddingBottom: 30}}>
-        <View style={{ paddingTop:0}}>
-            <ButtonWithBackground2
-              text="Change Photo"
-              onPress={async()=>{
-                const token = await EncryptedStorage.getItem('id_token');
-                selectImage().then(()=>{
-                  if(image) {
-                    try {
-                      uploadImage().then(async (profilePicUrl) => {
-                        const response = await axios.put(`${baseUrl}/update`, {
-                            profilePicUrl
-                          },
-                          {
-                            headers: {
-                              Authorization: 'Bearer ' + token,
-                              'Content-Type': 'application/json',
+              <Text
+                style={{
+                  bottom: 55,
+                  fontSize: 20,
+                  fontWeight: 'bold',
+                  color: 'grey',
+                }}>
+                {' '}
+                {age}, {gender}
+              </Text>
+            </View>
+          )}
+          <View style={{alignItems: 'center', bottom: 15, paddingBottom: 30}}>
+            <View style={{paddingTop: 0}}>
+              <ButtonWithBackground2
+                text="Change Photo"
+                onPress={async () => {
+                  const token = await EncryptedStorage.getItem('id_token');
+                  selectImage().then(() => {
+                    if (image) {
+                      try {
+                        uploadImage().then(async profilePicUrl => {
+                          const response = await axios.put(
+                            `${baseUrl}/update`,
+                            {
+                              profilePicUrl,
                             },
-                          });
-                        if (response.status == 200) {
-                          setProfile(response.data["profilePicUrl"])
-                          alert('Profile picture changed successfully.')
-                        } else {
-                          throw new Error('An error has occurred');
-                        }
-                      });
-                    } catch (error) {
-                      alert('Something went wrong uploading the image.')
-                      throw Error(error)
+                            {
+                              headers: {
+                                Authorization: 'Bearer ' + token,
+                                'Content-Type': 'application/json',
+                              },
+                            },
+                          );
+                          if (response.status == 200) {
+                            setProfile(response.data['profilePicUrl']);
+                            alert('Profile picture changed successfully.');
+                          } else {
+                            throw new Error('An error has occurred');
+                          }
+                        });
+                      } catch (error) {
+                        alert('Something went wrong uploading the image.');
+                        throw Error(error);
+                      }
+                    } else {
+                      alert('Something went wrong selecting the image.');
                     }
-                  }
-                  else{
-                    alert('Something went wrong selecting the image.')
-                  }
-                })
-              }}
-            />
+                  });
+                }}
+              />
+            </View>
+
+            <View style={{paddingTop: 10}}>
+              <ButtonWithBackground2
+                text="Edit Profile"
+                onPress={() => navigation.navigate('EditProfile')}
+              />
+            </View>
+
+            <View style={{paddingTop: 10}}>
+              <ButtonWithBackground2
+                text="Settings"
+                onPress={() => navigation.navigate('Settings')}
+              />
+            </View>
+
+            <View style={{paddingTop: 10}}>
+              <ButtonWithBackground2
+                text="Log out"
+                onPress={async () => {
+                  const token = await EncryptedStorage.getItem('id_token');
+                  // await fetch(`https://y2ylvp.deta.dev/delete_from_pool`, {
+                  //   method: "POST",
+                  //   headers: {
+                  //     'Authorization': 'Bearer ' + token,
+                  //     "Content-Type": "application/json",
+                  //   },
+                  // });
+                  await EncryptedStorage.removeItem('id_token');
+                  auth.signOut()
+                    .then(() => {
+                      console.log('User signed out successfully');
+                    })
+                    .catch(error => {
+                      console.log(error);
+                    });
+                  navigation.navigate('Login');
+                }}
+              />
+            </View>
           </View>
-
-          <View style={{paddingTop:10,}}>
-            <ButtonWithBackground2
-              text="Edit Profile"
-              onPress={() => navigation.navigate('EditProfile')}
-            />
-          </View>
-
-
-          <View style={{paddingTop:10,}}>
-            <ButtonWithBackground2
-              text="Settings"
-              onPress={() => navigation.navigate('Settings')}
-            />
-          </View>
-
-          <View style={{paddingTop:10, }}>
-            <ButtonWithBackground2
-              text="Log out"
-
-              onPress={async() => {
-                const token = await EncryptedStorage.getItem("id_token");
-                // await fetch(`https://y2ylvp.deta.dev/delete_from_pool`, {
-                //   method: "POST",
-                //   headers: {
-                //     'Authorization': 'Bearer ' + token,
-                //     "Content-Type": "application/json",
-                //   },
-                // });
-                await EncryptedStorage.removeItem('id_token');
-                navigation.navigate('Login')
-              }}
-            />
-
-          </View>
-          </View>
-          </SafeAreaView>
+        </SafeAreaView>
       </ScrollView>
-      </View>
+    </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   topContainer: {
@@ -239,7 +252,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     height: 150,
     width: '100%',
-    backgroundColor: "#1b1b1b"
+    backgroundColor: '#1b1b1b',
   },
   imageContainer: {
     width: 200,
@@ -252,7 +265,6 @@ const styles = StyleSheet.create({
     height: 200,
   },
   circle: {
-
     width: 150,
     height: 150,
     borderRadius: 150 / 2,
@@ -268,8 +280,7 @@ const styles = StyleSheet.create({
     width: '100%',
     justifycontent: 'center',
     alignItems: 'center',
-
-},
+  },
   container1: {
     backgroundColor: 'white',
     flex: 1,
@@ -312,7 +323,7 @@ const styles = StyleSheet.create({
     elevation: 15,
     shadowOpacity: 80,
     width: '70%',
-    color:'black',
+    color: 'black',
   },
 
   smallText: {
@@ -327,7 +338,6 @@ const styles = StyleSheet.create({
     bottom: 33,
     right: 70,
   },
-
 });
 
 export default ProfileScreen;

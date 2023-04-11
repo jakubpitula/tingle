@@ -8,6 +8,7 @@ import {
     FlatList,
   } from 'react-native';
   import React, {useState} from 'react';
+  import firebase from 'firebase';
   
   // import AsyncStorage from '@react-native-async-storage/async-storage';
   import EncryptedStorage from 'react-native-encrypted-storage';
@@ -18,7 +19,20 @@ import {
   import ChatRoomItem from '../components/chatRoomItem';
   import { useNavigation } from "@react-navigation/native";
   import LinearGradient from 'react-native-linear-gradient';
+  import AddChatRoomButton from '../components/addChatRoom';
  
+  if (!firebase.apps.length) {
+    firebase.initializeApp({
+      apiKey: "AIzaSyAH5m-W1aWKQpC9zwXXOX4C7tWQR3WAdUU",
+      authDomain: "dating-app-3e0f5.firebaseapp.com",
+      databaseURL: "https://dating-app-3e0f5-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "dating-app-3e0f5",
+      storageBucket: "dating-app-3e0f5.appspot.com",
+      messagingSenderId: "775458561795",
+      appId: "1:775458561795:web:a5a0f059c513fb071d1336",
+      measurementId: "G-1F93T08THP"
+    });
+  }
 
 
   export default function MessegesScreen () {
@@ -36,7 +50,7 @@ import {
     const fetchFriendData = async () => {
     
       const token = await EncryptedStorage.getItem('id_token');
-      console.log(token)
+      
       try {
         const response = await fetch('https://y2ylvp.deta.dev/users/friends', {
           method: 'GET',
@@ -59,7 +73,7 @@ import {
           });
           
           setFriends(friend_keys)
-          console.log(friends)
+          
         
       });
         
@@ -73,48 +87,25 @@ import {
         console.error(error);
       }
     };
+
+
    
-      
 
       return (
-        
         <View style={styles.container}>
-          <LinearGradient style={styles.upperContainer} colors={['#ec0f5d','#C73866','#FE676E',]} start={{ x: 0, y: 0}} end={{ x: 0.4, y: 0 }}/>
-          
-        <View style={{bottom: 50}}>
-          <Text style={styles.title} >Chats</Text>
+            <LinearGradient style={styles.upperContainer} colors={['#ec0f5d', '#C73866', '#FE676E',]} start={{ x: 0, y: 0 }} end={{ x: 0.4, y: 0 }} />
+
+            <View style={{ bottom: 50 }}>
+              <Text style={styles.title}>Chats</Text>
+              
+            </View>
+            
+            <FlatList
+              style={{ bottom: 40 }}
+              data={friends}
+              renderItem={({ item }) => <ChatRoomItem userUid={item} />} />
           </View>
           
-         <FlatList 
-         style={{bottom: 40}}
-          data={friends}
-          renderItem ={({item}) => <ChatRoomItem userUid={item}/> }
-         />
-         </View>
-      
-     
-      
-
-
-      
-        
-    
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
        )}
 
 

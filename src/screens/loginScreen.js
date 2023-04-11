@@ -9,8 +9,24 @@ import EncryptedStorage from 'react-native-encrypted-storage';
 import {ActivityIndicator, MD2Colors} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import LinearGradient from "react-native-linear-gradient";
+import firebase from 'firebase';
+
 
 const baseUrl = 'https://y2ylvp.deta.dev';
+if (!firebase.apps.length) {
+  firebase.initializeApp({
+    apiKey: "AIzaSyAH5m-W1aWKQpC9zwXXOX4C7tWQR3WAdUU",
+    authDomain: "dating-app-3e0f5.firebaseapp.com",
+    databaseURL: "https://dating-app-3e0f5-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "dating-app-3e0f5",
+    storageBucket: "dating-app-3e0f5.appspot.com",
+    messagingSenderId: "775458561795",
+    appId: "1:775458561795:web:a5a0f059c513fb071d1336",
+    measurementId: "G-1F93T08THP"
+  });
+}
+
+const auth = firebase.auth();
 
 export default function LoginScreen({navigation}) {
   const [email, setEmail] = useState('');
@@ -46,7 +62,11 @@ export default function LoginScreen({navigation}) {
     formData.append('username', email);
     formData.append('password', password);
 
+
+
     setIsLoading(true);
+
+
     try {
       const response = await axios
         .post(`${baseUrl}/token`, formData, {
@@ -58,7 +78,13 @@ export default function LoginScreen({navigation}) {
             EncryptedStorage.setItem('id_token', response.data.access_token);
             this.textInput_email.clear();
             this.textInput_pass.clear();
-            
+            auth.signInWithEmailAndPassword(email, password)
+            .then(() => {
+              console.log('User logged in successfully');
+            })
+            .catch((error) => {
+              setErrorMessage(error.message);
+            });
             navigation.navigate('Home');
             
           } else {

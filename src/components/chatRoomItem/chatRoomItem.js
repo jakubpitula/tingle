@@ -16,9 +16,7 @@ import {
  
   import { useNavigation } from "@react-navigation/native";
 
-
-
-  export default function ChatRoomItem ({ userUid }) {
+export default function ChatRoomItem ({ userUid }) {
   
 
     const navigation=useNavigation()
@@ -62,7 +60,8 @@ import {
   };
 
   const onPress = () => {
-    navigation.navigate("Chat")
+    const token = userUid
+    navigation.navigate("Chat", {friendUid: userUid})
   }
 
   return(

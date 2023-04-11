@@ -1,31 +1,20 @@
 import {
   StyleSheet,
   View,
-  TextInput,
   TouchableOpacity,
   BackHandler,
+  SafeAreaView,
+  FlatList,
+  Image,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
-
-import LinearGradient from 'react-native-linear-gradient';
-import {
-  SafeAreaView,
-  ScrollView,
-  ActivityIndicator,
-  FlatList,
-  Image
-} from 'react-native';
-
 import {Text, BottomNavigation} from 'react-native-paper';
-
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import ProfileScreen from './ProfileScreen';
 import MessegesScreen from './messegesScreen';
-
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {useNavigation} from '@react-navigation/native';
-
 import {readPool, token} from '../../api';
 import {
   MediaStream,
@@ -36,18 +25,30 @@ import {
 } from '@videosdk.live/react-native-sdk';
 import {Easing} from 'react-native-reanimated';
 import {MotiView} from '@motify/components';
+import firebase from 'firebase';
 
 let joinedFlag = false;
 let leftBeforeJoinFlag = false;
 const baseUrl = 'https://y2ylvp.deta.dev/users';
 
+if (!firebase.apps.length) {
+  firebase.initializeApp({
+    apiKey: "AIzaSyAH5m-W1aWKQpC9zwXXOX4C7tWQR3WAdUU",
+    authDomain: "dating-app-3e0f5.firebaseapp.com",
+    databaseURL: "https://dating-app-3e0f5-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "dating-app-3e0f5",
+    storageBucket: "dating-app-3e0f5.appspot.com",
+    messagingSenderId: "775458561795",
+    appId: "1:775458561795:web:a5a0f059c513fb071d1336",
+    measurementId: "G-1F93T08THP"
+  });
+}
+const auth = firebase.auth();
 let activeDisplayNav = 'flex';
 let activeDisplayHead = true;
 let calledId = '';
 
 const _size = 100;
-
-
 
 function JoinScreen(props) {
   const [disabled, setDisabled] = useState(false);
@@ -57,9 +58,10 @@ function JoinScreen(props) {
   const [gender, setGender] = useState([]);
   const [image, setImage] = useState(null);
   const [profile, setProfile] = useState(null);
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
+  const [uid, setUid] = useState(null)
 
-  useEffect(()=>{
+  useEffect(() => {
     fetchData();
   },[])
 
@@ -82,8 +84,7 @@ function JoinScreen(props) {
       setAge(res['age']);
       setProfile(res['profilePicUrl']);
 
-      console.log("My pic " + profile)
-
+      console.log(token);
 
       if (res['gender'] === 'm') {
         setGender('Male');
@@ -97,34 +98,43 @@ function JoinScreen(props) {
   };
 
   return (
-    <><View style={{ flexDirection: 'row' ,backgroundColor: "#1b1b1b",  flexWrap: 'wrap', justifyContent:'space-between',
-    alignItems: 'flex-start',padding: 20}}>
-      <View>
-        <Text style={styles.title}>Tingle</Text>
-      </View>
-      
-        <View style={styles.circle}>
-          <Image style={styles.image} source={{ uri: profile }} />
+    <>
+      <View
+        style={{
+          flexDirection: 'row',
+          backgroundColor: '#1b1b1b',
+          flexWrap: 'wrap',
+          justifyContent: 'space-between',
+          alignItems: 'flex-start',
+          padding: 20,
+        }}>
+        <View>
+          <Text style={styles.title}>Tingle</Text>
         </View>
-        
-    </View><View style={{
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      paddingHorizontal: 6 * 10,
-      backgroundColor: "#1b1b1b"
-    }}>
 
+        <View style={styles.circle}>
+          <Image style={styles.image} source={{uri: profile}} />
+        </View>
+      </View>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          paddingHorizontal: 6 * 10,
+          backgroundColor: '#1b1b1b',
+        }}>
         <TouchableOpacity
           disabled={disabled}
           style={styles.cirlce}
           onPress={async () => {
             activeDisplayNav = 'none';
             activeDisplayHead = false;
+
             
             setDisabled(true);
             setIsLoading(true);
-              setTimeout(async () => {
+              
                 setIsLoading(false)
                 const pool = await props.readPool().catch(err => console.log(err));
                 const mid = pool['mId'];
@@ -135,49 +145,54 @@ function JoinScreen(props) {
               calledId = uid;
               console.log('HomeScreen: ' + uid);
             }
+          }}>
 
-              }, 5000);
+              
 
             
-          } }>
+         
           {disabled != false ? (
-
-
-            <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+            <View style={{alignItems: 'center', justifyContent: 'center'}}>
               <View style={[styles.cirlce]}>
                 {[...Array(3).keys()].map(index => {
                   return (
                     <MotiView
-                      from={{ opacity: 0.8, scale: 1 }}
-                      animate={{ opacity: 0, scale: 4 }}
+                      from={{opacity: 0.8, scale: 1}}
+                      animate={{opacity: 0, scale: 4}}
                       transition={{
                         type: 'timing',
-                        duration: 2000,
+                        duration: 3000,
                         easing: Easing.out(Easing.ease),
                         delay: index * 400,
                         repeatReverse: false,
                         loop: true,
                       }}
                       key={index}
-                      style={[StyleSheet.absoluteFillObject, styles.cirlce]} />
+                      style={[StyleSheet.absoluteFillObject, styles.cirlce]}
+                    />
                   );
                 })}
                 <Icon
                   name={'phone'}
                   size={50}
-                  style={{ alignSelf: 'center', justifyContent: 'center', top: 28 }} />
+                  style={{
+                    alignSelf: 'center',
+                    justifyContent: 'center',
+                    top: 28,
+                  }}
+                />
               </View>
             </View>
           ) : (
-
             <Icon
               name={'phone'}
               size={50}
-              style={{ alignSelf: 'center', justifyContent: 'center', top: 28 }} />
-
+              style={{alignSelf: 'center', justifyContent: 'center', top: 28}}
+            />
           )}
         </TouchableOpacity>
-      </View></>
+      </View>
+    </>
   );
 }
 export {calledId};
@@ -388,7 +403,7 @@ function MeetingView(props) {
   }, []);
   console.log('participants: ' + participants.size);
 
-  return (
+  return joinedFlag ? (
     <View style={{flex: 1}}>
       {meetingId ? (
         <Text style={{fontSize: 18, padding: 12}}>Meeting Id :{meetingId}</Text>
@@ -403,6 +418,43 @@ function MeetingView(props) {
         participants={participants}
       />
     </View>
+  ) : (
+    <View
+      style={{
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingHorizontal: 6 * 10,
+        backgroundColor: '#1b1b1b',
+      }}>
+      <View style={{alignItems: 'center', justifyContent: 'center'}}>
+        <View style={[styles.cirlce]}>
+          {[...Array(3).keys()].map(index => {
+            return (
+              <MotiView
+                from={{opacity: 0.8, scale: 1}}
+                animate={{opacity: 0, scale: 4}}
+                transition={{
+                  type: 'timing',
+                  duration: 2000,
+                  easing: Easing.out(Easing.ease),
+                  delay: index * 400,
+                  repeatReverse: false,
+                  loop: true,
+                }}
+                key={index}
+                style={[StyleSheet.absoluteFillObject, styles.cirlce]}
+              />
+            );
+          })}
+          <Icon
+            name={'phone'}
+            size={50}
+            style={{alignSelf: 'center', justifyContent: 'center', top: 28}}
+          />
+        </View>
+      </View>
+    </View>
   );
 }
 
@@ -413,8 +465,6 @@ const Tab = createBottomTabNavigator();
 export default function HomeScreen() {
   const [meetingId, setMeetingId] = useState(null);
   const [userId, setUserId] = useState(null);
-  
-
 
   const CallRoute = () => {
     return meetingId ? (
@@ -460,11 +510,9 @@ export default function HomeScreen() {
         tabBarStyle: {
           position: 'absolute',
           display: activeDisplayNav,
-          
-         
-          
+
           backgroundColor: '#1e1e1e',
-          
+
           height: 70,
         },
 
@@ -481,7 +529,7 @@ export default function HomeScreen() {
           tabBarLabel: '',
           headerShown: false,
           tabBarIcon: ({color, size}) => (
-            <Icon name="phone" color={color} size={30} style={{top:5}} />
+            <Icon name="phone" color={color} size={30} style={{top: 5}} />
           ),
         }}
       />
@@ -492,7 +540,7 @@ export default function HomeScreen() {
           tabBarLabel: '',
           headerShown: false,
           tabBarIcon: ({color, size}) => (
-            <Icon name="comment" color={color} size={30} style={{top:5}} />
+            <Icon name="comment" color={color} size={30} style={{top: 5}} />
           ),
           tabBarBadge: 69,
         }}
@@ -508,7 +556,7 @@ export default function HomeScreen() {
           headerShown: false,
           tabBarLabel: '',
           tabBarIcon: ({color, size}) => (
-            <Icon name="user" color={color} size={30} style={{top:5}}/>
+            <Icon name="user" color={color} size={30} style={{top: 5}} />
           ),
         }}
       />
@@ -526,10 +574,8 @@ const styles = StyleSheet.create({
   image: {
     width: 100,
     height: 100,
-    
   },
   circle: {
-    
     width: 60,
     height: 60,
     borderRadius: 60 / 2,
@@ -548,13 +594,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 
-  title: {  
+  title: {
     fontSize: 30,
-   
-    letterSpacing: 1,
-    color: "#C73866", 
-    fontFamily: "Archivo-VariableFont_wdth,wght",
 
+    letterSpacing: 1,
+    color: '#C73866',
+    fontFamily: 'Archivo-VariableFont_wdth,wght',
   },
   cirlce: {
     width: _size,
