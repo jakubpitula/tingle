@@ -161,7 +161,7 @@ export default function LoginScreen({navigation}) {
               justifyContent: 'flex-end',
               marginTop: 30,
             }}>
-            <SmallButton text="Forgot Password?" />
+            <SmallButton text="Forgot Password?" onPress={() => navigation.navigate('Password')} />
             <Text style={styles.smallText}> Don't have an account yet?</Text>
             <SmallButton
               text="Sign up"

@@ -14,6 +14,8 @@ import VideoCallScreen from "./src/screens/videoCallScreen";
 import MatchScreen from './src/screens/matchScreen';
 import MessegesScreen from './src/screens/messegesScreen';
 import ChatScreen from './src/screens/chatScreen';
+import PassowordReset from './src/screens/forgotPasswordScreen';
+
 
 
 const Stack = createNativeStackNavigator();
@@ -49,6 +51,11 @@ export default class App extends Component{
             name="Login"
             component={LoginScreen
             }
+          />
+           <Stack.Screen
+            options={{headerShown: false}}
+            name="Password"
+            component={PassowordReset}
           />
           <Stack.Screen
             options={{headerShown: false}}
