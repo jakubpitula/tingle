@@ -9,18 +9,17 @@ import {
   } from 'react-native';
   import React, {useState} from 'react';
   import firebase from 'firebase';
-  
+
   // import AsyncStorage from '@react-native-async-storage/async-storage';
   import EncryptedStorage from 'react-native-encrypted-storage';
   import {SafeAreaView, ScrollView, TouchableOpacity, Image} from 'react-native';
   import {useEffect} from 'react';
   import {Avatar} from 'react-native-paper';
-  
+
   import ChatRoomItem from '../components/chatRoomItem';
   import { useNavigation } from "@react-navigation/native";
   import LinearGradient from 'react-native-linear-gradient';
-  import AddChatRoomButton from '../components/addChatRoom';
- 
+
   if (!firebase.apps.length) {
     firebase.initializeApp({
       apiKey: "AIzaSyAH5m-W1aWKQpC9zwXXOX4C7tWQR3WAdUU",
@@ -48,9 +47,9 @@ import {
     const [friends, setFriends] = useState([])
 
     const fetchFriendData = async () => {
-    
+
       const token = await EncryptedStorage.getItem('id_token');
-      
+
       try {
         const response = await fetch('https://y2ylvp.deta.dev/users/friends', {
           method: 'GET',
@@ -58,38 +57,38 @@ import {
             Authorization: 'Bearer ' + token,
             'Content-Type': 'application/json',
           },
-          
+
         });
         const res = await response.json();
         var obj_1 = JSON.parse(JSON.stringify(res))
         var values = Object.values(obj_1)
-  
+
         values.forEach(function(item) {
           Object.keys(item).forEach(function(key) {
-           
-            
+
+
             friend_keys.push(item[key])
-           
+
           });
-          
+
           setFriends(friend_keys)
-          
-        
+
+
       });
-        
-       
-       
-        
-        
-        
-  
+
+
+
+
+
+
+
       } catch (error) {
         console.error(error);
       }
     };
 
 
-   
+
 
       return (
         <View style={styles.container}>
@@ -97,15 +96,15 @@ import {
 
             <View style={{ bottom: 50 }}>
               <Text style={styles.title}>Chats</Text>
-              
+
             </View>
-            
+
             <FlatList
               style={{ bottom: 40 }}
               data={friends}
               renderItem={({ item }) => <ChatRoomItem userUid={item} />} />
           </View>
-          
+
        )}
 
 
@@ -114,11 +113,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     backgroundColor: '#1b1b1b',
-   
+
     width: '100%',
     padding: 10,
-    
-    
+
+
   },
 
   upperContainer: {
@@ -127,7 +126,7 @@ const styles = StyleSheet.create({
     bottom: 100,
     right: 50,
     transform: [{skewY: '-5deg'}],
-   
+
 
   },
   list: {
@@ -143,9 +142,9 @@ const styles = StyleSheet.create({
     padding: 30,
     margin: 2,
     borderRadius: 9,
-    
 
-    
+
+
 
   },
   circle: {
@@ -160,7 +159,7 @@ const styles = StyleSheet.create({
   container1: {
     backgroundColor: 'white',
     flex: 1,
-    
+
   },
 
   TextInput: {
@@ -181,11 +180,11 @@ const styles = StyleSheet.create({
   title: {
     color: '#C73866',
     fontSize: 45,
-    fontFamily: "Roboto-Black",   
+    fontFamily: "Roboto-Black",
     alignItems: 'center',
     paddingLeft: 15,
-    
-    
+
+
   },
   button: {
     backgroundColor: '#fff',

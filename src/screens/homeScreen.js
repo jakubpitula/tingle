@@ -46,7 +46,7 @@ if (!firebase.apps.length) {
 const auth = firebase.auth();
 let activeDisplayNav = 'flex';
 let activeDisplayHead = true;
-let calledId = '';
+let friendId = '';
 
 const _size = 100;
 
@@ -131,26 +131,27 @@ function JoinScreen(props) {
             activeDisplayNav = 'none';
             activeDisplayHead = false;
 
-            
+
             setDisabled(true);
             setIsLoading(true);
-              
+
                 setIsLoading(false)
                 const pool = await props.readPool().catch(err => console.log(err));
+                console.log('pool after homescren ' + pool['mId'] + ' ' + pool['uId'])
                 const mid = pool['mId'];
                const uid = pool['uId'];
             if (mid) {
               props.setMeetingId(mid);
               props.setUserId(uid);
-              calledId = uid;
+              friendId = uid;
               console.log('HomeScreen: ' + uid);
             }
           }}>
 
-              
 
-            
-         
+
+
+
           {disabled != false ? (
             <View style={{alignItems: 'center', justifyContent: 'center'}}>
               <View style={[styles.cirlce]}>
@@ -195,7 +196,7 @@ function JoinScreen(props) {
     </>
   );
 }
-export {calledId};
+export {friendId};
 
 const Button = ({onPress, buttonText, backgroundColor}) => {
   return (
@@ -280,7 +281,7 @@ function ParticipantView({participantId}) {
         height: 350,
         marginVertical: 8,
         marginHorizontal: 8,
-        
+
       }}
     />
   ) : (
@@ -311,15 +312,19 @@ function ParticipantList({participants}) {
 
 function MeetingView(props) {
   const navigation = useNavigation();
-
-  const {join, end, leave, changeWebcam, toggleMic, meetingId, participants} =
+  console.log('other users id '+ props.userId + ', called id ' + friendId)
+  if (props.userId){
+    friendId = props.userId;
+  }
+  console.log('meeting id at the beg of meetingview ', props.meetingId)
+  const {join, end, leave, changeWebcam, toggleMic, participants} =
     useMeeting({
       onParticipantLeft: async () => {
         console.log('Participant left ');
         activeDisplayNav = 'flex';
         leave();
         const res = await fetch(
-          `https://y2ylvp.deta.dev/users/${props.userId}`,
+          `https://y2ylvp.deta.dev/users/${friendId}`,
           {
             method: 'GET',
           },
@@ -342,13 +347,31 @@ function MeetingView(props) {
           },
           body: JSON.stringify({
             uId: props.userId,
-            mId: meetingId,
+            mId: props.meetingId,
           }),
         });
 
         navigation.navigate('Match');
       },
-      onMeetingJoined: () => {
+      onParticipantJoined: async()=>{
+        const token = await EncryptedStorage.getItem('id_token');
+        if(!friendId) {
+          const friendJson = await fetch(`https://y2ylvp.deta.dev/find_user`, {
+            method: 'POST',
+            headers: {
+              Authorization: 'Bearer ' + token,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              mId: props.meetingId,
+            }),
+          });
+          const friend = await friendJson.json();
+          friendId = friend["userId"]
+          console.log("called id ", friendId)
+        }
+      },
+      onMeetingJoined: async() => {
         // console.log('left before? '+ leftBeforeJoinFlag)
         // if(!leftBeforeJoinFlag){
         //   console.log('joined')
@@ -359,10 +382,8 @@ function MeetingView(props) {
         //   leftBeforeJoinFlag = false;
         //   leave();
         // }
-
-        console.log('joined');
-        joinedFlag = true;
-      },
+        console.log('joined')
+        joinedFlag = true}
     });
 
   BackHandler.addEventListener('hardwareBackPress', async function () {
@@ -387,7 +408,7 @@ function MeetingView(props) {
     //       },
     //       body: JSON.stringify({
     //         'uId': props.userId,
-    //         'mId': meetingId
+    //         'mId': props.meetingId
     //       })
     //     });
     //     props.setMeetingId(null);
@@ -405,8 +426,8 @@ function MeetingView(props) {
 
   return joinedFlag ? (
     <View style={{flex: 1}}>
-      {meetingId ? (
-        <Text style={{fontSize: 18, padding: 12}}>Meeting Id :{meetingId}</Text>
+      {props.meetingId ? (
+        <Text style={{fontSize: 18, padding: 12}}>Meeting Id :{props.meetingId}</Text>
       ) : null}
       <ParticipantList participants={participantsArrId} />
       <ControlsContainer
@@ -477,7 +498,7 @@ export default function HomeScreen() {
             name: 'Test User',
           }}
           token={token}>
-          <MeetingView setMeetingId={setMeetingId} userId={userId} />
+          <MeetingView setMeetingId={setMeetingId} userId={userId} meetingId={meetingId} />
         </MeetingProvider>
       </SafeAreaView>
     ) : (

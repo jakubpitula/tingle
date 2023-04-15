@@ -9,6 +9,7 @@ import {Text} from 'react-native-paper';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import { useNavigation } from '@react-navigation/native';
+// import {calledId} from './homeScreen';
 
 import {readPool, token} from '../../api';
 import {
@@ -28,17 +29,8 @@ let leftBeforeJoinFlag = false;
 
 let activeDisplayNav = 'flex';
 
-
-
-
-
 function JoinScreen(props) {
-
-
-
-
   const [disabled, setDisabled] = useState(false);
-
     return (
       <LinearGradient style={styles.topContainer} colors={['#fa2f77','#fe8196','#f9d0de','#FFFFFF']} start={{x: 0,y: 0}} end={{x: 0.1, y: 0.6}}>
         {/* <SafeAreaView
@@ -59,9 +51,13 @@ function JoinScreen(props) {
             const pool = await props.readPool().catch(err=>console.log(err));
             const mid = pool["mId"];
             const uid = pool["uId"];
+
             if (mid) {
               props.setMeetingId(mid);
               props.setUserId(uid);
+              // if(!calledId){
+              //   calledId = uid;
+              // }
             }
           }}
           style={{backgroundColor: '#FF356B', padding: 12, borderRadius: 6}}>
@@ -222,7 +218,7 @@ function JoinScreen(props) {
           console.log('joined')
           joinedFlag = true
         }});
-  
+
     BackHandler.addEventListener('hardwareBackPress', async function(){
       try {
         leave();

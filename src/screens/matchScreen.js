@@ -9,13 +9,13 @@ import {SafeAreaView, ScrollView} from 'react-native';
 import {Text} from 'react-native-paper';
 import React, {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
-import {calledId} from './homeScreen';
+import {friendId} from './homeScreen';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import firebase from 'firebase';
 
-const baseUrl = 'https://y2ylvp.deta.dev/users';
+const baseUrl = 'https://y2ylvp.deta.dev';
 
 if (!firebase.apps.length) {
   firebase.initializeApp({
@@ -33,40 +33,63 @@ if (!firebase.apps.length) {
 const auth = firebase.auth();
 let otherUid = '';
 let chatRoomId = '';
+let matchedFlag = false;
+
 export default function MatchScreen() {
   const [name, setName] = useState('');
   const [profile, setProfilePic] = useState('');
-  const [friendUid, setFriendUid] = useState(calledId);
+  const [friendUid, setFriendUid] = useState(friendId);
   const [myUid, setMyUid] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const navigation = useNavigation();
+  console.log('Friends/called id ' + friendUid);
 
   const onSubmitFormHandler = async event => {
     setIsLoading(true);
+    const token = await EncryptedStorage.getItem('id_token');
+    console.log('data in match screen: ', name, friendUid, myUid)
 
-    try {
-      const response = await fetch(`${baseUrl}/friends`, {
-        method: 'POST',
-        headers: {
-          Authorization: 'Bearer ' + token,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          uid: uid,
-        }),
-      });
+    const otherPersonMatched = await fetch(`${baseUrl}/did_match`, {
+      method: 'POST',
+      headers: {
+        Authorization: 'Bearer ' + token,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        friendUid: friendUid,
+        myUid: myUid
+      }),
+    });
 
-      if (response.status === 200) {
+    const matchedRes = await otherPersonMatched.json();
+    const matched = matchedRes["matched"];
+    matchedFlag = matched
+
+    if(matched) {
+      try {
+        const response = await fetch(`${baseUrl}/users/friends`, {
+          method: 'POST',
+          headers: {
+            Authorization: 'Bearer ' + token,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            uid: friendUid,
+          }),
+        });
+
+        if (response.status === 200) {
+          setIsLoading(false);
+          setFriendUid('');
+          navigation.navigate('Home');
+        } else {
+          throw new Error('An error has occured');
+        }
+      } catch (error) {
         setIsLoading(false);
-        setFriendUid('');
-        navigation.navigate('Home');
-      } else {
-        throw new Error('An error has occured');
+        throw Error(error);
       }
-    } catch (error) {
-      setIsLoading(false);
-      throw Error(error);
     }
   };
 
@@ -76,8 +99,8 @@ export default function MatchScreen() {
 
   const fetchData = async () => {
     try {
-      const token = friendUid;
-      console.log('Token ' + friendUid);
+      console.log('Token friend ' + friendUid);
+      const token = await EncryptedStorage.getItem('id_token');
 
       const response = await fetch(
         `https://y2ylvp.deta.dev/users/` + friendUid,
@@ -140,7 +163,7 @@ export default function MatchScreen() {
       const friend = snapshot.key;
       otherUid = friend;
       console.log('Friend UID:', otherUid);
-      
+
     });
 
     firebase
@@ -161,8 +184,14 @@ export default function MatchScreen() {
 
   const runAsyncFunctions = async () => {
     await onSubmitFormHandler();
-    await handlecreateChatRoom();
-    await handleAddChatRoom();
+    console.log('Matched flag: ', matchedFlag);
+    if(matchedFlag) {
+      await handlecreateChatRoom();
+      await handleAddChatRoom();
+    }
+    else{
+      navigation.navigate('Home');
+    }
   };
 
   const handleButtonPress = async () => {
@@ -261,8 +290,8 @@ const styles = StyleSheet.create({
     height: 100,
     borderRadius: 100 / 2,
     bottom: 80,
-  
-    
+
+
     borderRadius: 100, // half of the width and height to make it circular
     overflow: 'hidden',
   },
@@ -300,7 +329,7 @@ const styles = StyleSheet.create({
     fontSize: 34,
     paddingTop:20,
     fontFamily: 'Roboto-Italic',
-    
+
   },
   button: {
     backgroundColor: '#fff',
