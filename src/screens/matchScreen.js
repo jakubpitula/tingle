@@ -33,12 +33,15 @@ if (!firebase.apps.length) {
 const auth = firebase.auth();
 let otherUid = '';
 let chatRoomId = '';
+let myFriendsListId = '';
+let theirFriendsListId = '';
 let matchedFlag = false;
 
 export default function MatchScreen() {
   const [name, setName] = useState('');
   const [profile, setProfilePic] = useState('');
   const [friendUid, setFriendUid] = useState(friendId);
+
   const [myUid, setMyUid] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -75,8 +78,8 @@ export default function MatchScreen() {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            uid: friendUid,
-          }),
+            uid1: myUid,
+            uid2: friendUid          }),
         });
 
         if (response.status === 200) {
@@ -138,11 +141,11 @@ export default function MatchScreen() {
     try {
       const chatRoomRef = firebase.database().ref('chatRooms').push();
       await chatRoomRef.set({
-        person1: uid,
-        person2: 'uid',
+        person1: myUid,
+        person2: friendUid,
         messages: [[]],
       });
-      chatRoomID = chatRoomRef.key;
+      chatRoomId = chatRoomRef.key;
     } catch (error) {
       console.error(error);
     } finally {
@@ -151,36 +154,69 @@ export default function MatchScreen() {
   };
 
   const handleAddChatRoom = async () => {
-     //Get the friends friendUID using their userUID
-    const friendsRef = firebase
+     //Get the current users friends friendUID using their userUID
+    const friendsRef_me = firebase
       .database()
       .ref('users')
       .child(myUid)
       .child('friends')
       .orderByChild('uid')
       .equalTo(friendUid);
-    friendsRef.on('child_added', snapshot => {
+    friendsRef_me.on('child_added', snapshot => {
       const friend = snapshot.key;
-      otherUid = friend;
-      console.log('Friend UID:', otherUid);
+      myFriendsListId = friend;
+      console.log('Friend UID:', myFriendsListId);
 
     });
+//Get my friendID for the other person using myUID 
+    const friendsRef_friend = firebase
+    .database()
+    .ref('users')
+    .child(friendUid)
+    .child('friends')
+    .orderByChild('uid')
+    .equalTo(myUid);
+  friendsRef_friend.on('child_added', snapshot => {
+    const friend = snapshot.key;
+    theirFriendsListId = friend;
+    console.log('Friend UID:', theirFriendsListId);
 
+  });
+  
+//Add the chatroom to my friends list
     firebase
       .database()
-      .ref(`users/${myUid}/friends/${otherUid}`)
+      .ref(`users/${myUid}/friends/${myFriendsListId}`)
       .update({
-        chatRoom: chatRoomID,
+        chatRoom: chatRoomId,
       })
       .then(() => {
         console.log(
-          `Added chatRoomID ${chatRoomID} to friend ${otherUid}`,
+          `Added chatRoomID ${chatRoomId} to friend ${myFriendsListId}`,
         );
       })
       .catch(error => {
         console.error(`Error adding chatRoomID to friend: ${error}`);
       });
-  };
+  ;
+//Add the chatroom to their friends list 
+  firebase
+  .database()
+  .ref(`users/${friendUid}/friends/${theirFriendsListId}`)
+  .update({
+    chatRoom: chatRoomId,
+  })
+  .then(() => {
+    console.log(
+      `Added chatRoomID ${chatRoomId} to friend ${theirFriendsListId}`,
+    );
+  })
+  .catch(error => {
+    console.error(`Error adding chatRoomID to friend: ${error}`);
+  });
+};
+
+
 
   const runAsyncFunctions = async () => {
     await onSubmitFormHandler();
@@ -194,9 +230,7 @@ export default function MatchScreen() {
     }
   };
 
-  const handleButtonPress = async () => {
-    await runAsyncFunctions();
-  };
+  
 
   return (
     <LinearGradient

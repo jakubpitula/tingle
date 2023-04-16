@@ -45,7 +45,8 @@ export default function PassowordReset() {
             alert("Email to reset password has been sent!")
             navigation.navigate('Login')
           } catch (error) {
-            console.error(error);
+            
+            alert("Email doesn't exists. Please enter a registered email")
           }
 
 }
