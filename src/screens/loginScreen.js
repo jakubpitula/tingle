@@ -48,15 +48,14 @@ export default function LoginScreen({navigation}) {
     setEmail(email);
   };
 
- 
 
   const onSubmitFormHandler = async event => {
-    
+
     if (!email.trim() || !password.trim()) {
       alert('email or passoword is invalid');
       return;
     }
-    
+
     const formData = new FormData();
 
     formData.append('username', email);
@@ -86,7 +85,7 @@ export default function LoginScreen({navigation}) {
               setErrorMessage(error.message);
             });
             navigation.navigate('Home');
-            
+
           } else {
             throw new Error('Email or Password incorrect');
           }
@@ -99,7 +98,7 @@ export default function LoginScreen({navigation}) {
 
   return (
 
-  
+
     <SafeAreaView>
       <ScrollView>
         {isLoading? (
@@ -108,11 +107,11 @@ export default function LoginScreen({navigation}) {
             </View>
 
         ):(
-          
+
          <View style={styles.container}>
           <LinearGradient style={styles.topContainer} colors={['#ec0f5d','#b0234f','#f18a55',]} start={{ x: 0, y: 0}} end={{ x: 0.4, y: 0 }}/>
           <Text style={styles.title}>Tingle</Text>
-          
+
           <View style={styles.inputView}>
           <Icon name={"at"} size={25} style={{top: 12}} color={"#b1b1b1"}/>
             <TextInput
@@ -127,13 +126,13 @@ export default function LoginScreen({navigation}) {
               editable={!isLoading}
             />
           </View>
-          
+
           <View style={styles.inputView}>
             <Icon name={"lock"} size={25} style={{top: 12}} color={"#b1b1b1"}/>
             <TextInput
               style={styles.TextInput}
               placeholder="Password"
-              
+
               value={password}
               onChangeText={onChangePasswordHandler}
               editable={!isLoading}
@@ -182,7 +181,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#1b1b1b',
     elevation: 25,
     shadowOpacity: 100,
-   
+
   },
 
   topContainer: {
@@ -190,10 +189,10 @@ const styles = StyleSheet.create({
     width: 1000,
    bottom: 100,
     right: 50,
-    
-    
+
+
     transform: [{skewY: '-10deg'}],
-   
+
 
   },
 
@@ -204,7 +203,7 @@ const styles = StyleSheet.create({
     justifycontent: 'center',
     alignItems: 'center',
     backgroundColor: '#1b1b1b',
-    
+
 },
 
   TextInput: {
@@ -219,7 +218,7 @@ const styles = StyleSheet.create({
 
   inputView: {
     borderBottomWidth: 2,
-    
+
     marginHorizontal: 30,
     marginLeft: 30,
     marginRight:35,
@@ -233,11 +232,11 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
     paddingBottom: 50,
     paddingLeft: 20,
-    
+
     fontFamily: "Archivo-VariableFont_wdth,wght",
     alignSelf: 'flex-start',
-   
-    
+
+
 
   },
 

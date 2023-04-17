@@ -30,6 +30,10 @@ import firebase from 'firebase';
 let joinedFlag = false;
 let leftBeforeJoinFlag = false;
 const baseUrl = 'https://y2ylvp.deta.dev/users';
+let timeoutFlagLocal = false; // if it takes me longer than 10s to join, abort
+let timeoutFlagRemote = false; // if the other person hasn't changed their flag from 1 to 2 in 10s, abort
+let timeoutLocal;
+let timeoutRemote;
 
 if (!firebase.apps.length) {
   firebase.initializeApp({
@@ -60,6 +64,7 @@ function JoinScreen(props) {
   const [profile, setProfile] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [uid, setUid] = useState(null)
+  const navigation = useNavigation();
 
   useEffect(() => {
     fetchData();
@@ -128,18 +133,38 @@ function JoinScreen(props) {
           disabled={disabled}
           style={styles.cirlce}
           onPress={async () => {
+
             activeDisplayNav = 'none';
             activeDisplayHead = false;
 
-
             setDisabled(true);
-            setIsLoading(true);
+            setIsLoading(false)
 
-                setIsLoading(false)
-                const pool = await props.readPool().catch(err => console.log(err));
-                console.log('pool after homescren ' + pool['mId'] + ' ' + pool['uId'])
-                const mid = pool['mId'];
-               const uid = pool['uId'];
+            //sets joining flag to 1 (1 - pressed join; 2 - actually joined)
+            const pool = await props.readPool().catch(err => console.log(err));
+
+            timeoutLocal = setTimeout(async function(){
+              activeDisplayNav = 'flex';
+              activeDisplayHead = true;
+              props.setMeetingId("")
+              const token = await EncryptedStorage.getItem('id_token');
+              await fetch(`https://y2ylvp.deta.dev/delete_from_pool`, {
+                method: 'POST',
+                headers: {
+                  Authorization: 'Bearer ' + token,
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  uId: props.userId,
+                  mId: props.meetingId,
+                }),
+              });
+              console.log("timed out locally in join screen")
+            }, 10000)
+
+            console.log('pool after homescreen ' + pool['mId'] + ' ' + pool['uId'])
+            const mid = pool['mId'];
+            const uid = pool['uId'];
             if (mid) {
               props.setMeetingId(mid);
               props.setUserId(uid);
@@ -148,11 +173,7 @@ function JoinScreen(props) {
             }
           }}>
 
-
-
-
-
-          {disabled != false ? (
+          {disabled !== false ? (
             <View style={{alignItems: 'center', justifyContent: 'center'}}>
               <View style={[styles.cirlce]}>
                 {[...Array(3).keys()].map(index => {
@@ -317,11 +338,14 @@ function MeetingView(props) {
     friendId = props.userId;
   }
   console.log('meeting id at the beg of meetingview ', props.meetingId)
+
   const {join, end, leave, changeWebcam, toggleMic, participants} =
     useMeeting({
       onParticipantLeft: async () => {
         console.log('Participant left ');
         activeDisplayNav = 'flex';
+        activeDisplayHead = true;
+
         leave();
         const res = await fetch(
           `https://y2ylvp.deta.dev/users/${friendId}`,
@@ -350,8 +374,12 @@ function MeetingView(props) {
             mId: props.meetingId,
           }),
         });
-
-        navigation.navigate('Match');
+        if(!timeoutFlagRemote) {
+          navigation.navigate('Match');
+        }
+        else{
+          timeoutFlagRemote = false;
+        }
       },
       onParticipantJoined: async()=>{
         const token = await EncryptedStorage.getItem('id_token');
@@ -372,18 +400,26 @@ function MeetingView(props) {
         }
       },
       onMeetingJoined: async() => {
-        // console.log('left before? '+ leftBeforeJoinFlag)
-        // if(!leftBeforeJoinFlag){
-        //   console.log('joined')
-        //   joinedFlag = true
-        // }
-        // else{
-        //   joinedFlag = false;
-        //   leftBeforeJoinFlag = false;
-        //   leave();
-        // }
+        // end_join_time = performance.now()
+        // console.log('time to join: ', end_join_time-start_join_time)
+        clearTimeout(timeoutLocal);
         console.log('joined')
-        joinedFlag = true}
+        joinedFlag = true
+        const token = await EncryptedStorage.getItem('id_token');
+
+        const res = await fetch(`https://y2ylvp.deta.dev/mark_joined`, {
+          method: 'POST',
+          headers: {
+            Authorization: 'Bearer ' + token,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            mId: props.meetingId,
+          }),
+        });
+        const res_json = await res.json();
+        console.log('video pool after marking joined: ', res_json);
+      }
     });
 
   BackHandler.addEventListener('hardwareBackPress', async function () {
@@ -423,6 +459,61 @@ function MeetingView(props) {
     join();
   }, []);
   console.log('participants: ' + participants.size);
+
+  let remoteJoinStatus = 0;
+  useEffect(() => {
+    async function doEffect() {
+      try {
+        const token = await EncryptedStorage.getItem('id_token');
+        const stat = await fetch(`https://y2ylvp.deta.dev/get_remote_join_status`, {
+          method: 'POST',
+          headers: {
+            Authorization: 'Bearer ' + token,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            mId: props.meetingId,
+          }),
+        });
+        const stat_json = await stat.json();
+        console.log('status in use effect: ', stat_json, ' caller ', stat_json["content"][0]["caller"],
+          ' answerer ', stat_json["content"][0]["answerer"])
+        remoteJoinStatus = stat_json["status"]
+
+        if (remoteJoinStatus === 1) {
+          timeoutRemote = setTimeout(function() {
+            remoteJoinStatus = 0;
+            timeoutFlagRemote = true;
+            try{
+              leave();
+            }catch (error){
+              console.log('error when leaving - ', error)
+            }
+            console.log("timed out remotely in meeting view")
+          }, 10000)
+        }
+        if (remoteJoinStatus === -1) {
+          remoteJoinStatus = 0;
+          timeoutFlagRemote = true;
+          clearTimeout(timeoutRemote);
+          try{
+            leave();
+          }
+          catch (error){
+            console.log('Error when leaiving - ', error);
+            activeDisplayNav = 'flex';
+            activeDisplayHead = true;
+            props.setMeetingId('')
+          }
+          console.log("didnt find the meeting - aborted (status -1)")
+        }
+      } catch (error) {
+        console.log('Error occurred while fetching remote join status:', error);
+      }
+    }
+    doEffect();
+  } )
+  clearTimeout(timeoutRemote);
 
   return joinedFlag ? (
     <View style={{flex: 1}}>

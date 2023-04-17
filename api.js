@@ -39,6 +39,8 @@ export const readPool = async () => {
   const token = await EncryptedStorage.getItem("id_token");
   let meetingId = ""
   let userId = ""
+
+  // join flag setting in read_pool on backend
   const res = await fetch(`https://y2ylvp.deta.dev/read_pool`, {
     method: "POST",
     headers: {
@@ -67,17 +69,6 @@ export const readPool = async () => {
     meetingId = status["meetingId"];
     userId = status["userId"];
     await getMeeting({ meetingId });
-
-    const resp_joining = await fetch(`https://y2ylvp.deta.dev/read_pool`, {
-      method: "POST",
-      headers: {
-        'Authorization': 'Bearer ' + token,
-        "Content-Type": "application/json",
-      },
-    });
-
-    // const res = await resp_joining.json()
-    // console.log(res);
   }
   return {"mId": meetingId, "uId": userId};
 }

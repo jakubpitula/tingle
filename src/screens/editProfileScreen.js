@@ -58,11 +58,11 @@ const data_smoking = [
   {key:'2', value:'Smoker when drinking'},
   {key:'3', value:'Non-smoker'},
   {key:'4', value:'Smoker'},
-  
+
 ]
 
     const [expanded, setExpanded] = React.useState(true);
-  
+
     const navigation=useNavigation();
 
     return (
@@ -70,7 +70,7 @@ const data_smoking = [
             <ScrollView>
                 <Appbar.Header>
                 <Appbar.Action
-                    icon="arrow-left-thick"
+                    icon="arrow-left-thick"video
                     onPress={() => navigation.navigate('Home')}
                 />
                 <Appbar.Content
@@ -81,52 +81,52 @@ const data_smoking = [
                 </Appbar.Header>
 
                 <View style={styles.container}>
-                <Text style={styles.smallText}>Account Info</Text>      
+                <Text style={styles.smallText}>Account Info</Text>
 
 
                 <Text style={styles.smallText}> Lifestyle </Text>
 
             <Text style={styles.smallerText}> Zodiac Sign </Text>
-            <MultipleSelectList 
-            setSelected={(val) => setSelected(val)} 
-            data={data_zodiac} 
+            <MultipleSelectList
+            setSelected={(val) => setSelected(val)}
+            data={data_zodiac}
             save="value"
             label="Selected"
             />
 
           <Text style={styles.smallerText}> Communication style</Text>
-          <MultipleSelectList 
-          setSelected={(val) => setSelected(val)} 
-          data={data_communication} 
-          save="value" 
+          <MultipleSelectList
+          setSelected={(val) => setSelected(val)}
+          data={data_communication}
+          save="value"
           label="Selected"
           />
 
           <Text style={styles.smallerText}> Workout</Text>
-          <MultipleSelectList 
-          setSelected={(val) => setSelected(val)} 
-          data={data_workout} 
+          <MultipleSelectList
+          setSelected={(val) => setSelected(val)}
+          data={data_workout}
           save="value"
           label="Selected"
           />
 
           <Text style={styles.smallerText}> Drinking</Text>
-          <MultipleSelectList 
-          setSelected={(val) => setSelected(val)} 
-          data={data_drinking} 
+          <MultipleSelectList
+          setSelected={(val) => setSelected(val)}
+          data={data_drinking}
           save="value"
           label="Selected"
           />
 
           <Text style={styles.smallerText}> Smoking</Text>
-          <MultipleSelectList 
-          setSelected={(val) => setSelected(val)} 
-          data={data_smoking} 
+          <MultipleSelectList
+          setSelected={(val) => setSelected(val)}
+          data={data_smoking}
           save="value"
           label="Selected"
           />
-       
-                </View>          
+
+                </View>
 
             </ScrollView>
         </SafeAreaView>
@@ -141,15 +141,15 @@ const styles = StyleSheet.create({
       paddingRight: 50,
       paddingTop: 30,
     },
-  
+
     TextInput: {
       height: 50,
       flex: 1,
       padding: 10,
-  
+
       justifyContent: 'center',
     },
-  
+
     title: {
       color: 'black',
       fontFamily: 'Roboto',
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
       marginBottom: 50,
       marginTop: 100,
     },
-  
+
     smallText: {
       color: 'black',
       fontFamily: 'Roboto',
@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
       marginBottom: 20,
       justifyContent: 'center',
     },
-  
+
     smallerText: {
       color: 'black',
       fontFamily: 'Roboto',
@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
       marginBottom: 20,
       justifyContent: 'center',
     },
-  
+
     inputView: {
       borderColor: 'grey',
       borderWidth: 2,
@@ -189,7 +189,7 @@ const styles = StyleSheet.create({
       alignContent: 'center',
       justifyContent: 'center',
     },
-  
+
     altTitle: {
       fontFamily: 'Roboto',
       fontSize: 20,
@@ -198,6 +198,6 @@ const styles = StyleSheet.create({
       flex: 1,
     },
   });
-  
+
   export default EditProfileScreen;
-  
+

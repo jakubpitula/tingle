@@ -10,7 +10,6 @@ import InterestScreen from './src/screens/interestScreen';
 import SettingsScreen from './src/screens/settingsScreen';
 import EditProfileScreen from './src/screens/editProfileScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
-import VideoCallScreen from "./src/screens/videoCallScreen";
 import MatchScreen from './src/screens/matchScreen';
 import MessegesScreen from './src/screens/messegesScreen';
 import ChatScreen from './src/screens/chatScreen';
@@ -107,12 +106,6 @@ export default class App extends Component{
             name="EditProfile"
             component={EditProfileScreen}
           />
-          <Stack.Screen
-            options={{headerShown: false}}
-            name="Video"
-            component={VideoCallScreen}
-          />
-
 
         </Stack.Navigator>
         <StatusBar style="auto" />

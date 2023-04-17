@@ -60,28 +60,21 @@ import {
 
         });
         const res = await response.json();
-        var obj_1 = JSON.parse(JSON.stringify(res))
-        var values = Object.values(obj_1)
+        if(res) {
+          let obj_1 = JSON.parse(JSON.stringify(res))
+          let values = Object.values(obj_1)
 
-        values.forEach(function(item) {
-          Object.keys(item).forEach(function(key) {
+          values.forEach(function(item) {
+            Object.keys(item).forEach(function(key) {
 
 
-            friend_keys.push(item[key])
+              friend_keys.push(item[key])
 
+            });
+
+            setFriends(friend_keys)
           });
-
-          setFriends(friend_keys)
-
-
-      });
-
-
-
-
-
-
-
+        }
       } catch (error) {
         console.error(error);
       }
