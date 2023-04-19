@@ -15,7 +15,7 @@ import ProfileScreen from './ProfileScreen';
 import MessegesScreen from './messegesScreen';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {useNavigation} from '@react-navigation/native';
-import {readPool, token} from '../../api';
+import { getMeeting, readPool, token } from "../../api";
 import {
   MediaStream,
   MeetingProvider,
@@ -26,6 +26,7 @@ import {
 import {Easing} from 'react-native-reanimated';
 import {MotiView} from '@motify/components';
 import firebase from 'firebase';
+import EventSource from "react-native-sse";
 
 let joinedFlag = false;
 let leftBeforeJoinFlag = false;
@@ -51,7 +52,7 @@ const auth = firebase.auth();
 let activeDisplayNav = 'flex';
 let activeDisplayHead = true;
 let friendId = '';
-
+let queueRes = '';
 const _size = 100;
 
 function JoinScreen(props) {
@@ -102,6 +103,49 @@ function JoinScreen(props) {
     }
   };
 
+  useEffect(() => {
+    async function doEffect(){
+      if(queueRes){
+        if (queueRes["status"] === 'matched') {
+          const matchId = queueRes["uid"]
+          const mId = await getMeeting({})
+          console.log('matched with ', matchId);
+          // props.setMeetingId(mId)
+          // props.setUserId(matchId)
+
+          await fetch(`https://y2ylvp.deta.dev/add_match`, {
+            method: 'POST',
+            headers: {
+              Authorization: 'Bearer ' + token,
+              'Content-Type': 'application/json',
+            },
+            body: {
+              'mId': mId,
+              'matchId': matchId
+            }
+          });
+        } else if (queueRes["status"] === 'added') {
+          const evtSource = new EventSource("https://y2ylvp.deta.dev/matched_event")
+          evtSource.addEventListener("match", function(event) {
+            // Logic to handle status updates
+            console.log('event received ', event.data)
+          });
+          //
+          // evtSource.addEventListener("end_event", function (event) {
+          //   console.log('event ended ', event.data)
+          //   evtSource.close();
+          // });
+
+          return () => {
+            evtSource.close();
+          };
+        }
+      }
+    }
+    doEffect()
+  }, [queueRes]);
+
+
   return (
     <>
       <View
@@ -134,43 +178,55 @@ function JoinScreen(props) {
           style={styles.cirlce}
           onPress={async () => {
 
-            activeDisplayNav = 'none';
-            activeDisplayHead = false;
+            // activeDisplayNav = 'none';
+            // activeDisplayHead = false;
 
             setDisabled(true);
             setIsLoading(false)
 
             //sets joining flag to 1 (1 - pressed join; 2 - actually joined)
-            const pool = await props.readPool().catch(err => console.log(err));
+            // const pool = await props.readPool().catch(err => console.log(err));
 
-            timeoutLocal = setTimeout(async function(){
-              activeDisplayNav = 'flex';
-              activeDisplayHead = true;
-              props.setMeetingId("")
-              const token = await EncryptedStorage.getItem('id_token');
-              await fetch(`https://y2ylvp.deta.dev/delete_from_pool`, {
-                method: 'POST',
-                headers: {
-                  Authorization: 'Bearer ' + token,
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                  uId: props.userId,
-                  mId: props.meetingId,
-                }),
-              });
-              console.log("timed out locally in join screen")
-            }, 10000)
+            // timeoutLocal = setTimeout(async function(){
+            //   activeDisplayNav = 'flex';
+            //   activeDisplayHead = true;
+            //   props.setMeetingId("")
+            //   const token = await EncryptedStorage.getItem('id_token');
+            //   await fetch(`https://y2ylvp.deta.dev/delete_from_pool`, {
+            //     method: 'POST',
+            //     headers: {
+            //       Authorization: 'Bearer ' + token,
+            //       'Content-Type': 'application/json',
+            //     },
+            //     body: JSON.stringify({
+            //       uId: props.userId,
+            //       mId: props.meetingId,
+            //     }),
+            //   });
+            //   console.log("timed out locally in join screen")
+            // }, 10000)
 
-            console.log('pool after homescreen ' + pool['mId'] + ' ' + pool['uId'])
-            const mid = pool['mId'];
-            const uid = pool['uId'];
-            if (mid) {
-              props.setMeetingId(mid);
-              props.setUserId(uid);
-              friendId = uid;
-              console.log('HomeScreen: ' + uid);
-            }
+            // console.log('pool after homescreen ' + pool['mId'] + ' ' + pool['uId'])
+            // const mid = pool['mId'];
+            // const uid = pool['uId'];
+            // if (mid) {
+            //   props.setMeetingId(mid);
+            //   props.setUserId(uid);
+            //   friendId = uid;
+            //   console.log('HomeScreen: ' + uid);
+            // }
+            const token = await EncryptedStorage.getItem('id_token');
+
+            const res = await fetch(`https://y2ylvp.deta.dev/add_user_to_queue`, {
+              method: 'POST',
+              headers: {
+                Authorization: 'Bearer ' + token,
+                'Content-Type': 'application/json',
+              },
+            });
+            queueRes = await res.json();
+            console.log('queue res is ', queueRes)
+
           }}>
 
           {disabled !== false ? (

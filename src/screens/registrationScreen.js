@@ -5,6 +5,7 @@ import {
   Text,
   TouchableOpacity,
   Image,
+  Button
 } from 'react-native';
 import ButtonWithBackground from '../components/buttonWithBackground';
 import ButtonWithBackground1 from '../components/buttonWithBackground1';
@@ -17,6 +18,11 @@ import storage from '@react-native-firebase/storage';
 import DocumentPicker from 'react-native-document-picker';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import EncryptedStorage from "react-native-encrypted-storage";
+import DatePicker from 'react-native-date-picker'
+import { format } from 'date-fns'
+
+// import "react-widgets/styles.css";
+import { SelectList } from 'react-native-dropdown-select-list'
 
 const baseUrl = 'https://y2ylvp.deta.dev';
 
@@ -26,7 +32,8 @@ export default function RegistrationScreen({navigation}) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [conf_pass, setConf_pass] = useState('');
-  const [age, setAge] = useState('');
+  const [date, setDate] = useState(new Date());
+  const [open, setOpen] = useState(false);
   const [gender, setGender] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [checkFirstName, setCheckFistName] = useState(false);
@@ -34,9 +41,10 @@ export default function RegistrationScreen({navigation}) {
   const [checkValidEmail, setCheckValidEmail] = useState(false);
   const [checkPassword, setCheckPassword] = useState(false);
   const [checkPasswordConf, setPasswordConf] = useState(false);
-  const [checkAge, setCheckAge] = useState(false);
+  const [checkDate, setCheckDate] = useState(false);
   const [checkGender, setCheckGender] = useState(false);
   const [image, setImage] = useState(null);
+  const [datePicked, setDatePicked] = useState(false);
   // const [profilePicUrl, setProfilePicUrl] = useState("");
 
   const onChangeFirstNameHandler = first_name => {
@@ -59,8 +67,8 @@ export default function RegistrationScreen({navigation}) {
     setConf_pass(conf_pass);
   };
 
-  const onChangeAgeHandler = age => {
-    setAge(age);
+  const onChangeDateHandler = date => {
+    setDate(date);
   };
 
   const onChangeGenderHandler = gender => {
@@ -153,13 +161,19 @@ export default function RegistrationScreen({navigation}) {
     }
   };
 
-  const checkAgeValid = age => {
-    setAge(age);
+  const checkDateValid = date => {
+    console.log(format(date, 'dd/MM/yyyy'))
+    let formattedDate = format(date, 'dd/MM/yyyy')
+    setDate(formattedDate);
+    const ageDifMs = Date.now()-date;
+    let ageDate = new Date(ageDifMs); // miliseconds from epoch
+    let age = Math.abs(ageDate.getUTCFullYear() - 1970)
+    console.log(age);
     if (age >= 18) {
-      setCheckAge(false);
-      onChangeAgeHandler(age);
+      setCheckDate(false);
+      onChangeDateHandler(formattedDate);
     } else {
-      setCheckAge(true);
+      setCheckDate(true);
     }
   };
 
@@ -212,7 +226,7 @@ export default function RegistrationScreen({navigation}) {
           email,
           password,
           conf_pass,
-          age,
+          date,
           gender,
           profilePicUrl,
         });
@@ -242,11 +256,12 @@ export default function RegistrationScreen({navigation}) {
           setFirstName('');
           setLastName('');
           setEmail('');
-          setAge('');
+          setDate('');
           setGender('');
 
           navigation.navigate('Preference');
         } else {
+          setIsLoading(false);
           throw new Error('An error has occurred');
         }
       });
@@ -262,7 +277,7 @@ export default function RegistrationScreen({navigation}) {
     first_name === '' ||
     last_name === '' ||
     gender === '' ||
-    age === '' ||
+    date === '' ||
     checkFirstName === true ||
     checkLastName === true ||
     checkValidEmail === true ||
@@ -272,9 +287,9 @@ export default function RegistrationScreen({navigation}) {
       <SafeAreaView>
         <ScrollView>
 
-       
 
-        
+
+
           <View style={styles.container}>
           <View style={{alignItems: 'center'}}>
             <TouchableOpacity
@@ -374,31 +389,50 @@ export default function RegistrationScreen({navigation}) {
           )}
 
           <View style={styles.inputView}>
-            <TextInput
-              style={styles.TextInput}
-              placeholder="Age"
-              placeholderTextColor="#b1b1b1"
-              secureTextEntry
-              value={age}
-              editable={!isLoading}
-              onChangeText={checkAgeValid}
+            {/*<TextInput*/}
+            {/*  style={styles.TextInput}*/}
+            {/*  placeholder="Date"*/}
+            {/*  placeholderTextColor="#b1b1b1"*/}
+            {/*  secureTextEntry*/}
+            {/*  value={age}*/}
+            {/*  editable={!isLoading}*/}
+            {/*  onChangeText={checkDateValid}*/}
+            {/*/>*/}
+            <Button title= {datePicked ? "Birthdate - " + date.toString() : "Pick your birthdate"} onPress={() => setOpen(true)} />
+            <DatePicker
+              modal
+              mode="date"
+              open={open}
+              date={new Date()}
+              onConfirm={(date) => {
+                setOpen(false)
+                checkDateValid(date)
+                setDatePicked(true)
+              }}
+              onCancel={() => {
+                setOpen(false)
+              }}
             />
           </View>
-          {checkAge ? (
+          {checkDate ? (
             <Text style={styles.textFailed}>Must be over 18 </Text>
           ) : (
             <Text style={styles.textFailed}> </Text>
           )}
 
           <View style={styles.inputView}>
-            <TextInput
+            <SelectList
+              placeholder="Select gender"
               style={styles.TextInput}
-              placeholder="Gender"
-              placeholderTextColor="#b1b1b1"
-              secureTextEntry
+              boxStyles={{backgroundColor:'#6d6d6d'}}
+              dropdownItemStyles={{backgroundColor:'#6d6d6d'}}
+              save='key'
+              setSelected={checkGenderValid}
               value={gender}
-              editable={!isLoading}
-              onChangeText={checkGenderValid}
+              data={[
+                { key: 'm', value: "Male" },
+                { key: 'f', value: "Female" },
+              ]}
             />
           </View>
           {checkGender ? (
@@ -419,18 +453,18 @@ export default function RegistrationScreen({navigation}) {
           </View>
           {isLoading? (
             <View style={{alignSelf: 'center', paddingTop: 10, paddingBottom: 40}}>
-            
+
             <ActivityIndicator animating={true} color={'#FE676E'} size={20}  />
-            
+
         </View>
-            
+
 
           ) :(
           <View style={{alignSelf: 'center', paddingTop: 10, paddingBottom: 40}}>
             <TouchableOpacity disabled={!valid} >
               <ButtonWithBackground
                 text="Confirm"
-                
+
                 onPress={onSubmitFormHandler}
                 backgroundColor={valid ? 'blue' : 'grey'}
               />
@@ -438,7 +472,7 @@ export default function RegistrationScreen({navigation}) {
           </View>
         )}
           </View>
-        
+
         </ScrollView>
       </SafeAreaView>
     </>
@@ -473,7 +507,7 @@ const styles = StyleSheet.create({
     color: '#C73866',
     fontFamily: 'Roboto-Italic',
     fontSize: 40,
-    
+
     constterSpacing: 1,
     marginBottom: 20,
     marginTop: 30,

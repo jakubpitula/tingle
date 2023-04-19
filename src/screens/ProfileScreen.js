@@ -18,6 +18,8 @@ import {useNavigation} from '@react-navigation/native';
 import storage from '@react-native-firebase/storage';
 import DocumentPicker from 'react-native-document-picker';
 import firebase from 'firebase';
+import { format } from 'date-fns'
+
 
 if (!firebase.apps.length) {
   firebase.initializeApp({
@@ -39,13 +41,14 @@ const ProfileScreen = () => {
 
   const navigation = useNavigation();
 
-  const [age, setAge] = useState([]);
+  const [date, setDate] = useState([]);
   const [name, setName] = useState([]);
   const [email, setEmail] = useState([]);
   const [gender, setGender] = useState([]);
   const [image, setImage] = useState(null);
   const [profile, setProfile] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [age, setAge] = useState(null);
 
   const selectImage = async () => {
     // Opening Document Picker to select one file
