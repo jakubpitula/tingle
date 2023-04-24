@@ -20,6 +20,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import EncryptedStorage from "react-native-encrypted-storage";
 import DatePicker from 'react-native-date-picker'
 import { format } from 'date-fns'
+import { Svg, Path } from 'react-native-svg';
+import LinearGradient from 'react-native-linear-gradient';
 
 // import "react-widgets/styles.css";
 import { SelectList } from 'react-native-dropdown-select-list'
@@ -286,7 +288,16 @@ export default function RegistrationScreen({navigation}) {
     <>
       <SafeAreaView>
         <ScrollView>
-
+        <LinearGradient style={styles.upperContainer} colors={['#ec0f5d', '#b0234f', '#f18a55',]} start={{ x: 0, y: 0 }} end={{ x: 0.9, y: 0 }}>
+              <Svg style={{ top: 10, right: 15}}
+                width={410}
+                height={100}
+                viewBox="0 0 1440 320">
+                <Path
+                  fill="#1b1b1b"
+                  fill-opacity="1" d="M0,320L26.7,314.7C53.3,309,107,299,160,250.7C213.3,203,267,117,320,101.3C373.3,85,427,139,480,133.3C533.3,128,587,64,640,74.7C693.3,85,747,171,800,213.3C853.3,256,907,256,960,218.7C1013.3,181,1067,107,1120,74.7C1173.3,43,1227,53,1280,69.3C1333.3,85,1387,107,1413,117.3L1440,128L1440,320L1413.3,320C1386.7,320,1333,320,1280,320C1226.7,320,1173,320,1120,320C1066.7,320,1013,320,960,320C906.7,320,853,320,800,320C746.7,320,693,320,640,320C586.7,320,533,320,480,320C426.7,320,373,320,320,320C266.7,320,213,320,160,320C106.7,320,53,320,27,320L0,320Z"></Path>
+              </Svg>
+              </LinearGradient>
 
 
 
@@ -388,7 +399,34 @@ export default function RegistrationScreen({navigation}) {
             <Text style={styles.textFailed}> </Text>
           )}
 
-          <View style={styles.inputView}>
+          
+          <View style={styles.genderView}>
+            <SelectList
+            
+              placeholder="Select gender *"
+              placeholderTextColor="#b1b1b1"
+              search={false}
+              inputStyles={{color:'#b1b1b1' }}
+              boxStyles={{backgroundColor:'#1b1b1b', width: 150 }}
+              dropdownStyles={{width: 150}}
+              dropdownItemStyles={{backgroundColor:'#1b1b1b'}}
+              dropdownTextStyles={{color: '#b1b1b1'}}
+              save='key'
+              setSelected={checkGenderValid}
+              value={gender}
+              data={[
+                { key: 'm', value: "Male" },
+                { key: 'f', value: "Female" },
+              ]}
+            />
+          </View>
+          {checkGender ? (
+            <Text style={styles.textFailed}>please input "m" or "f" </Text>
+          ) : (
+            <Text style={styles.textFailed}> </Text>
+          )}
+
+<View style= {styles.dobView}>
             {/*<TextInput*/}
             {/*  style={styles.TextInput}*/}
             {/*  placeholder="Date"*/}
@@ -398,7 +436,7 @@ export default function RegistrationScreen({navigation}) {
             {/*  editable={!isLoading}*/}
             {/*  onChangeText={checkDateValid}*/}
             {/*/>*/}
-            <Button title= {datePicked ? "Birthdate - " + date.toString() : "Pick your birthdate"} onPress={() => setOpen(true)} />
+            <ButtonWithBackground1 text={"Date of Birth"} title= {datePicked ? "Birthdate - " + date.toString() : "Pick your birthdate"} onPress={() => setOpen(true)} />
             <DatePicker
               modal
               mode="date"
@@ -415,31 +453,12 @@ export default function RegistrationScreen({navigation}) {
             />
           </View>
           {checkDate ? (
-            <Text style={styles.textFailed}>Must be over 18 </Text>
+            <Text style={{ color: 'red',
+            alignSelf: 'flex-start', left: 10}}>Must be over 18 </Text>
           ) : (
             <Text style={styles.textFailed}> </Text>
           )}
 
-          <View style={styles.inputView}>
-            <SelectList
-              placeholder="Select gender"
-              style={styles.TextInput}
-              boxStyles={{backgroundColor:'#6d6d6d'}}
-              dropdownItemStyles={{backgroundColor:'#6d6d6d'}}
-              save='key'
-              setSelected={checkGenderValid}
-              value={gender}
-              data={[
-                { key: 'm', value: "Male" },
-                { key: 'f', value: "Female" },
-              ]}
-            />
-          </View>
-          {checkGender ? (
-            <Text style={styles.textFailed}>please input "m" or "f" </Text>
-          ) : (
-            <Text style={styles.textFailed}> </Text>
-          )}
           <View style={{alignSelf: 'flex-start'}}>
             <ButtonWithBackground1
               text="Profile Picture"
@@ -484,7 +503,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     paddingLeft: 10,
     backgroundColor: '#1b1b1b',
-    paddingTop: 15,
+    paddingTop: 10,
   },
 
   TextInput: {
@@ -513,7 +532,16 @@ const styles = StyleSheet.create({
     marginTop: 30,
     paddingLeft: 10,
   },
+  dobView: {
+    alignItems: 'flex-start',
 
+
+
+  },
+  genderView: {
+    marginHorizontal: 30,
+    marginLeft: 10,
+  },
   regularText: {
     color: 'black',
     fontSize: 20,

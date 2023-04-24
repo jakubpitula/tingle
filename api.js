@@ -69,6 +69,14 @@ export const readPool = async () => {
     meetingId = status["meetingId"];
     userId = status["userId"];
     await getMeeting({ meetingId });
+
+    const resp_joining = await fetch(`https://y2ylvp.deta.dev/read_pool`, {
+      method: "POST",
+      headers: {
+        'Authorization': 'Bearer ' + token,
+        "Content-Type": "application/json",
+      },
+    });
   }
   return {"mId": meetingId, "uId": userId};
 }

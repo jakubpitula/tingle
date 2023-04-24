@@ -6,16 +6,20 @@ import {
   SafeAreaView,
   FlatList,
   Image,
+  
 } from 'react-native';
+
 import React, {useEffect, useState} from 'react';
-import {Text, BottomNavigation} from 'react-native-paper';
+import {Text} from 'react-native-paper';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import ProfileScreen from './ProfileScreen';
 import MessegesScreen from './messegesScreen';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {useNavigation} from '@react-navigation/native';
-import { getMeeting, readPool, token } from "../../api";
+import { Svg, Path } from 'react-native-svg';
+import LinearGradient from 'react-native-linear-gradient';
+import {readPool, token} from '../../api';
 import {
   MediaStream,
   MeetingProvider,
@@ -26,15 +30,10 @@ import {
 import {Easing} from 'react-native-reanimated';
 import {MotiView} from '@motify/components';
 import firebase from 'firebase';
-import EventSource from "react-native-sse";
 
 let joinedFlag = false;
 let leftBeforeJoinFlag = false;
 const baseUrl = 'https://y2ylvp.deta.dev/users';
-let timeoutFlagLocal = false; // if it takes me longer than 10s to join, abort
-let timeoutFlagRemote = false; // if the other person hasn't changed their flag from 1 to 2 in 10s, abort
-let timeoutLocal;
-let timeoutRemote;
 
 if (!firebase.apps.length) {
   firebase.initializeApp({
@@ -52,7 +51,7 @@ const auth = firebase.auth();
 let activeDisplayNav = 'flex';
 let activeDisplayHead = true;
 let friendId = '';
-let queueRes = '';
+
 const _size = 100;
 
 function JoinScreen(props) {
@@ -65,7 +64,6 @@ function JoinScreen(props) {
   const [profile, setProfile] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [uid, setUid] = useState(null)
-  const navigation = useNavigation();
 
   useEffect(() => {
     fetchData();
@@ -102,52 +100,18 @@ function JoinScreen(props) {
       console.error(error);
     }
   };
-
-  useEffect(() => {
-    async function doEffect(){
-      if(queueRes){
-        if (queueRes["status"] === 'matched') {
-          const matchId = queueRes["uid"]
-          const mId = await getMeeting({})
-          console.log('matched with ', matchId);
-          // props.setMeetingId(mId)
-          // props.setUserId(matchId)
-
-          await fetch(`https://y2ylvp.deta.dev/add_match`, {
-            method: 'POST',
-            headers: {
-              Authorization: 'Bearer ' + token,
-              'Content-Type': 'application/json',
-            },
-            body: {
-              'mId': mId,
-              'matchId': matchId
-            }
-          });
-        } else if (queueRes["status"] === 'added') {
-          const evtSource = new EventSource("https://y2ylvp.deta.dev/matched_event")
-          evtSource.addEventListener("match", function(event) {
-            // Logic to handle status updates
-            console.log('event received ', event.data)
-          });
-          //
-          // evtSource.addEventListener("end_event", function (event) {
-          //   console.log('event ended ', event.data)
-          //   evtSource.close();
-          // });
-
-          return () => {
-            evtSource.close();
-          };
-        }
-      }
-    }
-    doEffect()
-  }, [queueRes]);
-
-
+ const navigation = useNavigation()
   return (
-    <>
+    <><LinearGradient style={styles.upperContainer} colors={['#ec0f5d', '#b0234f', '#f18a55',]} start={{ x: 0, y: 0 }} end={{ x: 0.4, y: 0 }}>
+    <Svg style={{ top: 20 }}
+      width={500}
+      height={150}
+      viewBox="0 0 1440 320">
+      <Path
+        fill="#1b1b1b"
+        fill-opacity="1" d="M0,0L20,10.7C40,21,80,43,120,74.7C160,107,200,149,240,176C280,203,320,213,360,229.3C400,245,440,267,480,256C520,245,560,203,600,197.3C640,192,680,224,720,213.3C760,203,800,149,840,122.7C880,96,920,96,960,80C1000,64,1040,32,1080,16C1120,0,1160,0,1200,16C1240,32,1280,64,1320,112C1360,160,1400,224,1420,256L1440,288L1440,320L1420,320C1400,320,1360,320,1320,320C1280,320,1240,320,1200,320C1160,320,1120,320,1080,320C1040,320,1000,320,960,320C920,320,880,320,840,320C800,320,760,320,720,320C680,320,640,320,600,320C560,320,520,320,480,320C440,320,400,320,360,320C320,320,280,320,240,320C200,320,160,320,120,320C80,320,40,320,20,320L0,320Z"></Path>
+    </Svg>
+  </LinearGradient>
       <View
         style={{
           flexDirection: 'row',
@@ -155,14 +119,17 @@ function JoinScreen(props) {
           flexWrap: 'wrap',
           justifyContent: 'space-between',
           alignItems: 'flex-start',
-          padding: 20,
+          paddingEnd: 20,
+          paddingStart: 20,
         }}>
         <View>
           <Text style={styles.title}>Tingle</Text>
         </View>
 
         <View style={styles.circle}>
+          <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
           <Image style={styles.image} source={{uri: profile}} />
+          </TouchableOpacity>
         </View>
       </View>
       <View
@@ -173,63 +140,36 @@ function JoinScreen(props) {
           paddingHorizontal: 6 * 10,
           backgroundColor: '#1b1b1b',
         }}>
+         
         <TouchableOpacity
           disabled={disabled}
           style={styles.cirlce}
           onPress={async () => {
+            activeDisplayNav = 'none';
+            activeDisplayHead = false;
 
-            // activeDisplayNav = 'none';
-            // activeDisplayHead = false;
 
             setDisabled(true);
-            setIsLoading(false)
+            setIsLoading(true);
 
-            //sets joining flag to 1 (1 - pressed join; 2 - actually joined)
-            // const pool = await props.readPool().catch(err => console.log(err));
-
-            // timeoutLocal = setTimeout(async function(){
-            //   activeDisplayNav = 'flex';
-            //   activeDisplayHead = true;
-            //   props.setMeetingId("")
-            //   const token = await EncryptedStorage.getItem('id_token');
-            //   await fetch(`https://y2ylvp.deta.dev/delete_from_pool`, {
-            //     method: 'POST',
-            //     headers: {
-            //       Authorization: 'Bearer ' + token,
-            //       'Content-Type': 'application/json',
-            //     },
-            //     body: JSON.stringify({
-            //       uId: props.userId,
-            //       mId: props.meetingId,
-            //     }),
-            //   });
-            //   console.log("timed out locally in join screen")
-            // }, 10000)
-
-            // console.log('pool after homescreen ' + pool['mId'] + ' ' + pool['uId'])
-            // const mid = pool['mId'];
-            // const uid = pool['uId'];
-            // if (mid) {
-            //   props.setMeetingId(mid);
-            //   props.setUserId(uid);
-            //   friendId = uid;
-            //   console.log('HomeScreen: ' + uid);
-            // }
-            const token = await EncryptedStorage.getItem('id_token');
-
-            const res = await fetch(`https://y2ylvp.deta.dev/add_user_to_queue`, {
-              method: 'POST',
-              headers: {
-                Authorization: 'Bearer ' + token,
-                'Content-Type': 'application/json',
-              },
-            });
-            queueRes = await res.json();
-            console.log('queue res is ', queueRes)
-
+                setIsLoading(false)
+                const pool = await props.readPool().catch(err => console.log(err));
+                console.log('pool after homescren ' + pool['mId'] + ' ' + pool['uId'])
+                const mid = pool['mId'];
+               const uid = pool['uId'];
+            if (mid) {
+              props.setMeetingId(mid);
+              props.setUserId(uid);
+              friendId = uid;
+              console.log('HomeScreen: ' + uid);
+            }
           }}>
 
-          {disabled !== false ? (
+
+
+
+
+          {disabled != false ? (
             <View style={{alignItems: 'center', justifyContent: 'center'}}>
               <View style={[styles.cirlce]}>
                 {[...Array(3).keys()].map(index => {
@@ -394,14 +334,11 @@ function MeetingView(props) {
     friendId = props.userId;
   }
   console.log('meeting id at the beg of meetingview ', props.meetingId)
-
   const {join, end, leave, changeWebcam, toggleMic, participants} =
     useMeeting({
       onParticipantLeft: async () => {
         console.log('Participant left ');
         activeDisplayNav = 'flex';
-        activeDisplayHead = true;
-
         leave();
         const res = await fetch(
           `https://y2ylvp.deta.dev/users/${friendId}`,
@@ -430,12 +367,8 @@ function MeetingView(props) {
             mId: props.meetingId,
           }),
         });
-        if(!timeoutFlagRemote) {
-          navigation.navigate('Match');
-        }
-        else{
-          timeoutFlagRemote = false;
-        }
+
+        navigation.navigate('Match');
       },
       onParticipantJoined: async()=>{
         const token = await EncryptedStorage.getItem('id_token');
@@ -456,26 +389,18 @@ function MeetingView(props) {
         }
       },
       onMeetingJoined: async() => {
-        // end_join_time = performance.now()
-        // console.log('time to join: ', end_join_time-start_join_time)
-        clearTimeout(timeoutLocal);
+        // console.log('left before? '+ leftBeforeJoinFlag)
+        // if(!leftBeforeJoinFlag){
+        //   console.log('joined')
+        //   joinedFlag = true
+        // }
+        // else{
+        //   joinedFlag = false;
+        //   leftBeforeJoinFlag = false;
+        //   leave();
+        // }
         console.log('joined')
-        joinedFlag = true
-        const token = await EncryptedStorage.getItem('id_token');
-
-        const res = await fetch(`https://y2ylvp.deta.dev/mark_joined`, {
-          method: 'POST',
-          headers: {
-            Authorization: 'Bearer ' + token,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            mId: props.meetingId,
-          }),
-        });
-        const res_json = await res.json();
-        console.log('video pool after marking joined: ', res_json);
-      }
+        joinedFlag = true}
     });
 
   BackHandler.addEventListener('hardwareBackPress', async function () {
@@ -515,61 +440,6 @@ function MeetingView(props) {
     join();
   }, []);
   console.log('participants: ' + participants.size);
-
-  let remoteJoinStatus = 0;
-  useEffect(() => {
-    async function doEffect() {
-      try {
-        const token = await EncryptedStorage.getItem('id_token');
-        const stat = await fetch(`https://y2ylvp.deta.dev/get_remote_join_status`, {
-          method: 'POST',
-          headers: {
-            Authorization: 'Bearer ' + token,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            mId: props.meetingId,
-          }),
-        });
-        const stat_json = await stat.json();
-        console.log('status in use effect: ', stat_json, ' caller ', stat_json["content"][0]["caller"],
-          ' answerer ', stat_json["content"][0]["answerer"])
-        remoteJoinStatus = stat_json["status"]
-
-        if (remoteJoinStatus === 1) {
-          timeoutRemote = setTimeout(function() {
-            remoteJoinStatus = 0;
-            timeoutFlagRemote = true;
-            try{
-              leave();
-            }catch (error){
-              console.log('error when leaving - ', error)
-            }
-            console.log("timed out remotely in meeting view")
-          }, 10000)
-        }
-        if (remoteJoinStatus === -1) {
-          remoteJoinStatus = 0;
-          timeoutFlagRemote = true;
-          clearTimeout(timeoutRemote);
-          try{
-            leave();
-          }
-          catch (error){
-            console.log('Error when leaiving - ', error);
-            activeDisplayNav = 'flex';
-            activeDisplayHead = true;
-            props.setMeetingId('')
-          }
-          console.log("didnt find the meeting - aborted (status -1)")
-        }
-      } catch (error) {
-        console.log('Error occurred while fetching remote join status:', error);
-      }
-    }
-    doEffect();
-  } )
-  clearTimeout(timeoutRemote);
 
   return joinedFlag ? (
     <View style={{flex: 1}}>
@@ -764,7 +634,7 @@ const styles = StyleSheet.create({
 
   title: {
     fontSize: 30,
-
+    
     letterSpacing: 1,
     color: '#C73866',
     fontFamily: 'Archivo-VariableFont_wdth,wght',
@@ -810,8 +680,7 @@ const styles = StyleSheet.create({
   smallText: {
     color: 'black',
     fontSize: 20,
-    marginTop: 100,
-    marginBottom: 20,
+    marginBottom: 40,
     justifyContent: 'center',
   },
   inputView: {
@@ -823,6 +692,16 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     justifyContent: 'center',
   },
+  upperContainer: {
+    bottom: 20,
+    height: 130,
+    width: 1000,
+    right: 50,
+    
+    
+    //transform: [{skewY: '-10deg'}],
+  
+},
 
   altTitle: {
     fontFamily: 'Roboto',

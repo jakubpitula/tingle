@@ -6,6 +6,8 @@ import {SegmentedButtons, Button, Switch} from 'react-native-paper';
 import React, {useState} from 'react';
 import EncryptedStorage from "react-native-encrypted-storage";
 import axios from 'axios';
+import LinearGradient from 'react-native-linear-gradient';
+import { Svg, Path } from 'react-native-svg';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 
@@ -154,6 +156,16 @@ const PreferenceScreen = ({navigation}) => {
   return (
     <SafeAreaView>
       <ScrollView>
+      <LinearGradient style={styles.upperContainer} colors={['#ec0f5d', '#b0234f', '#f18a55',]} start={{ x: 0, y: 0 }} end={{ x: 0.8, y: -0.5 }}>
+              <Svg style={{ top: 20 }}
+                width={500}
+                height={150}
+                viewBox="0 0 1440 320">
+                <Path
+                  fill="#1b1b1b"
+                  fill-opacity="1" d="M0,320L26.7,314.7C53.3,309,107,299,160,250.7C213.3,203,267,117,320,101.3C373.3,85,427,139,480,133.3C533.3,128,587,64,640,74.7C693.3,85,747,171,800,213.3C853.3,256,907,256,960,218.7C1013.3,181,1067,107,1120,74.7C1173.3,43,1227,53,1280,69.3C1333.3,85,1387,107,1413,117.3L1440,128L1440,320L1413.3,320C1386.7,320,1333,320,1280,320C1226.7,320,1173,320,1120,320C1066.7,320,1013,320,960,320C906.7,320,853,320,800,320C746.7,320,693,320,640,320C586.7,320,533,320,480,320C426.7,320,373,320,320,320C266.7,320,213,320,160,320C106.7,320,53,320,27,320L0,320Z"></Path>
+              </Svg>
+              </LinearGradient>
       <View style={styles.container}>
       <View>
             <Text style={styles.title}>Preferences</Text>
@@ -235,7 +247,7 @@ const PreferenceScreen = ({navigation}) => {
             Only show people in this range{' '}
             <Switch value={isSwitchOn} onValueChange={onToggleSwitch} />
           </Text> */}
-          <View style={{paddingTop: 100, paddingLeft: 150}}>
+          <View style={{ paddingLeft: 150}}>
             <ButtonWithBackground
               text="Next"
               onPress={onSubmitFormHandler}
@@ -254,7 +266,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     backgroundColor: '#1b1b1b',
     paddingTop: 15,
-    paddingBottom: 100
+    height: 630,
   },
   TextInput: {
     color: 'white',

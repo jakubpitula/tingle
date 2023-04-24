@@ -18,11 +18,13 @@ if (!firebase.apps.length) {
 const auth = firebase.auth();
 
 let chatRoomID = '';
-
-const AddChatRoomButton = ({route}) => {
-  const {friendUid} = route.params 
+let friendId = '-NT9RSeOg3xWgjySVwxU';
+const AddChatRoomButton = () => {
+  
   const [isLoading, setIsLoading] = useState(false);
   const [uid, setUid] = useState(null);
+  
+  
 
 
 
@@ -61,14 +63,14 @@ const AddChatRoomButton = ({route}) => {
     firebase
       .database()
       .ref(
-        `users/${uid}/friends/${'-NQWxMouS1LHImt9Xs9t'}`,
+        `users/${uid}/friends/${friendId}`,
       )
       .update({
         chatRoom: chatRoomID,
       })
       .then(() => {
         console.log(
-          `Added chatRoomID ${chatRoomID} to friend ${'-NQWxMouS1LHImt9Xs9t'}`,
+          `Added chatRoomID ${chatRoomID} to friend ${friendId}`,
         );
       })
       .catch(error => {

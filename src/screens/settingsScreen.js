@@ -10,7 +10,7 @@ import { Modal, Portal, Provider } from 'react-native-paper';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import ButtonWithBackground3 from '../components/buttonWithBackground3';
 import { useNavigation } from '@react-navigation/native';
-
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 
 
@@ -86,19 +86,23 @@ export default function SettingsScreen () {
     return (
         <SafeAreaView>
             <ScrollView>
-                <Appbar.Header>
-                <Appbar.Action
-                    icon="arrow-left-thick"
-                    onPress={() => navigation.goBack()}
-                />
-                <Appbar.Content
-                    title="Settings"
-                    color="#FF356B"
-                    titleStyle={{fontWeight: 'bold'}}
-                />
-                </Appbar.Header>
+            <View style={styles.container}>
+            <View style={{alignItems: 'center'}}>
+            <TouchableOpacity
+              onPress={() => navigation.goBack()}
+              style={{
+                alignSelf: 'flex-start',
+                left: 5,
+                paddingTop: 20,
+              }}>
+              <Icon name={'arrow-left'} size={30} color={'#C73866'}/>
+            </TouchableOpacity>
+          </View>
+      <View>
+            <Text style={styles.title}>Settings</Text>
+          </View>
 
-                <View style={styles.container}>
+             
                 <Text style={styles.bigText}>Account Settings</Text>
                 
                
@@ -115,18 +119,7 @@ export default function SettingsScreen () {
                     placeholderTextColor="black"
                     editable={false}/>
 
-                
-
-
-
-
-                
-
-
-
-
-
-
+              
                 <Text style={styles.bigText}>Contact us</Text>
                 <TextInput
                     style={styles.inputView}
@@ -153,7 +146,8 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
     paddingLeft: 10,
-    backgroundColor: '#FFF1ED',
+    height: 800,
+    backgroundColor: '#1b1b1b',
     paddingTop: 15,
     flex: 1,
   },
@@ -173,19 +167,17 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF1ED',
   },
 
-    
-    title: {
-      color: 'black',
-      fontFamily: 'Roboto',
-      fontSize: 50,
-      fontWeight: 'bold',
-      letterSpacing: 1,
-      marginBottom: 50,
-      marginTop: 100,
-    },
-
+  title: {
+    color: '#C73866',
+    fontFamily: 'Roboto-Italic',
+    fontSize: 30,
+    constterSpacing: 1,
+    marginBottom: 20,
+    marginTop: 30,
+    paddingLeft: 10,
+  },
     bigText: {
-      color: 'black',
+      color: '#b1b1b1',
       fontFamily: 'Roboto',
       fontWeight: 'bold',
       fontSize: 20,

@@ -9,17 +9,19 @@ import {
   } from 'react-native';
   import React, {useState} from 'react';
   import firebase from 'firebase';
-
+  
   // import AsyncStorage from '@react-native-async-storage/async-storage';
   import EncryptedStorage from 'react-native-encrypted-storage';
   import {SafeAreaView, ScrollView, TouchableOpacity, Image} from 'react-native';
   import {useEffect} from 'react';
   import {Avatar} from 'react-native-paper';
-
+  import Icon from 'react-native-vector-icons/FontAwesome';
   import ChatRoomItem from '../components/chatRoomItem';
   import { useNavigation } from "@react-navigation/native";
   import LinearGradient from 'react-native-linear-gradient';
-
+  import AddChatRoomButton from '../components/addChatRoom';
+  import { Svg, Path } from 'react-native-svg';
+ 
   if (!firebase.apps.length) {
     firebase.initializeApp({
       apiKey: "AIzaSyAH5m-W1aWKQpC9zwXXOX4C7tWQR3WAdUU",
@@ -37,19 +39,20 @@ import {
   export default function MessegesScreen () {
 
     let friend_keys = []
-
+    const [friends, setFriends] = useState([])
+    const [hasFriends, setHasFriends] = useState(false)
 
     useEffect(()=> {
       fetchFriendData();
     }, [])
 
 
-    const [friends, setFriends] = useState([])
+    
 
     const fetchFriendData = async () => {
-
+    
       const token = await EncryptedStorage.getItem('id_token');
-
+      
       try {
         const response = await fetch('https://y2ylvp.deta.dev/users/friends', {
           method: 'GET',
@@ -57,70 +60,114 @@ import {
             Authorization: 'Bearer ' + token,
             'Content-Type': 'application/json',
           },
-
+          
         });
+        
         const res = await response.json();
-        if(res) {
-          let obj_1 = JSON.parse(JSON.stringify(res))
-          let values = Object.values(obj_1)
-
-          values.forEach(function(item) {
-            Object.keys(item).forEach(function(key) {
-
-
-              friend_keys.push(item[key])
-
-            });
-
-            setFriends(friend_keys)
-          });
-        }
+        
+        const friendIds = Object.values(res);
+        const friendUids = friendIds.map(friendId => friendId.uid);
+        console.log(friendUids)
+        setHasFriends(true)
+        setFriends(friendUids)
+          
+        
+    
+        
+       
       } catch (error) {
-        console.error(error);
+        setHasFriends(false)
       }
     };
 
 
-
+   
 
       return (
-        <View style={styles.container}>
-            <LinearGradient style={styles.upperContainer} colors={['#ec0f5d', '#C73866', '#FE676E',]} start={{ x: 0, y: 0 }} end={{ x: 0.4, y: 0 }} />
+<View style={styles.container}>
+        {hasFriends == true ? (
+          
+        <><LinearGradient style={styles.upperContainer} colors={['#ec0f5d', '#b0234f', '#f18a55',]} start={{ x: 0, y: 0 }} end={{ x: 0.4, y: 0 }}>
+              <Svg style={{ top: 20 }}
+                width={500}
+                height={150}
+                viewBox="0 0 1440 320">
+                <Path
+                  fill="#1b1b1b"
+                  fill-opacity="1" d="M0,320L26.7,314.7C53.3,309,107,299,160,250.7C213.3,203,267,117,320,101.3C373.3,85,427,139,480,133.3C533.3,128,587,64,640,74.7C693.3,85,747,171,800,213.3C853.3,256,907,256,960,218.7C1013.3,181,1067,107,1120,74.7C1173.3,43,1227,53,1280,69.3C1333.3,85,1387,107,1413,117.3L1440,128L1440,320L1413.3,320C1386.7,320,1333,320,1280,320C1226.7,320,1173,320,1120,320C1066.7,320,1013,320,960,320C906.7,320,853,320,800,320C746.7,320,693,320,640,320C586.7,320,533,320,480,320C426.7,320,373,320,320,320C266.7,320,213,320,160,320C106.7,320,53,320,27,320L0,320Z"></Path>
+              </Svg>
+            </LinearGradient><View style={{ bottom: 30 }}>
+                <Text style={styles.title}>Chats</Text>
 
-            <View style={{ bottom: 50 }}>
-              <Text style={styles.title}>Chats</Text>
+              </View><FlatList
+                style={{ bottom: 40 }}
+                data={friends}
+                renderItem={({ item }) => <ChatRoomItem userUid={item} />} /></>     
 
-            </View>
 
-            <FlatList
-              style={{ bottom: 40 }}
-              data={friends}
-              renderItem={({ item }) => <ChatRoomItem userUid={item} />} />
-          </View>
 
-       )}
+
+        ) : (
+
+              <><LinearGradient style={styles.upperContainer} colors={['#ec0f5d', '#b0234f', '#f18a55',]} start={{ x: 0, y: 0 }} end={{ x: 0.4, y: 0 }}>
+                <Svg style={{ top: 20 }}
+                  width={500}
+                  height={150}
+                  viewBox="0 0 1440 320">
+                  <Path
+                    fill="#1b1b1b"
+                    fill-opacity="1" d="M0,320L26.7,314.7C53.3,309,107,299,160,250.7C213.3,203,267,117,320,101.3C373.3,85,427,139,480,133.3C533.3,128,587,64,640,74.7C693.3,85,747,171,800,213.3C853.3,256,907,256,960,218.7C1013.3,181,1067,107,1120,74.7C1173.3,43,1227,53,1280,69.3C1333.3,85,1387,107,1413,117.3L1440,128L1440,320L1413.3,320C1386.7,320,1333,320,1280,320C1226.7,320,1173,320,1120,320C1066.7,320,1013,320,960,320C906.7,320,853,320,800,320C746.7,320,693,320,640,320C586.7,320,533,320,480,320C426.7,320,373,320,320,320C266.7,320,213,320,160,320C106.7,320,53,320,27,320L0,320Z"></Path>
+                </Svg>
+              </LinearGradient><View style={{ bottom: 30 }}>
+                  <Text style={styles.title}>Chats</Text>
+
+              <View style={{justifyContent: 'center',}}>
+                <Text style={styles.noFriendText}> You have no matches yet  </Text>
+              </View>
+                </View></>
+
+        )}
+       </View>
+        
+        
+           
+              
+
+       )
+        };
 
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    
     backgroundColor: '#1b1b1b',
-
+   
     width: '100%',
-    padding: 10,
-
-
+    
+    
+  },
+  noFriendText: {
+    alignSelf: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    top: 200,
+    fontSize: 15,
+    fontFamily: 'Roboto-Italic',
+    color: 'white',
+    
+    
   },
 
   upperContainer: {
-    height: 140,
-    width: 1000,
-    bottom: 100,
-    right: 50,
-    transform: [{skewY: '-5deg'}],
-
-
+   
+      height: 150,
+      width: 1000,
+      right: 50,
+      
+      
+      //transform: [{skewY: '-10deg'}],
+    
   },
   list: {
     padding: 10,
@@ -129,15 +176,23 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     marginHorizontal: 5,
   },
+
+  friendText: {
+    fontSize: 25,
+    fontFamily: "Roboto-Black",
+    color: '#b1b1b1',
+    top: 50
+    
+  },  
   item: {
     backgroundColor: 'grey',
     color: 'white',
     padding: 30,
     margin: 2,
     borderRadius: 9,
+    
 
-
-
+    
 
   },
   circle: {
@@ -152,7 +207,7 @@ const styles = StyleSheet.create({
   container1: {
     backgroundColor: 'white',
     flex: 1,
-
+    
   },
 
   TextInput: {
@@ -173,11 +228,11 @@ const styles = StyleSheet.create({
   title: {
     color: '#C73866',
     fontSize: 45,
-    fontFamily: "Roboto-Black",
+    fontFamily: "Roboto-Black",   
     alignItems: 'center',
     paddingLeft: 15,
-
-
+    
+    
   },
   button: {
     backgroundColor: '#fff',

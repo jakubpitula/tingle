@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
         
     },
     text:{
-        color: 'white',
+        color: '#EEEEEE',
         fontSize: 20,
         fontFamily: 'Roboto-Black'
         

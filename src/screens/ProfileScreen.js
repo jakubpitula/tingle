@@ -19,6 +19,7 @@ import storage from '@react-native-firebase/storage';
 import DocumentPicker from 'react-native-document-picker';
 import firebase from 'firebase';
 import { format } from 'date-fns'
+import LinearGradient from 'react-native-linear-gradient';
 
 
 if (!firebase.apps.length) {
@@ -133,10 +134,10 @@ const ProfileScreen = () => {
       <ScrollView>
         <SafeAreaView>
           <View style={styles.topContainer}></View>
-          <View style={{alignItems: 'center'}}>
-            <View style={styles.circle}>
-              <Image style={styles.image} source={{uri: profile}} />
-            </View>
+          <View style={{alignItems: 'center', }}>
+          <LinearGradient style={styles.circle}colors={['#ec0f5d', '#b0234f', '#f18a55',]} start={{ x: 0, y: 0 }} end={{ x: 0.7, y: 0 }}>
+              <Image style={{alignSelf: 'center',  width: 175,height: 175,borderRadius: 175 / 2}} source={{uri: profile}} />
+            </LinearGradient>
           </View>
           {isLoading ? (
             <View style={styles.loaderContainer}>
@@ -268,14 +269,12 @@ const styles = StyleSheet.create({
     height: 200,
   },
   circle: {
-    width: 150,
-    height: 150,
-    borderRadius: 150 / 2,
+    width: 182,
+    height: 182,
+    borderRadius: 182 / 2,
     backgroundColor: 'white',
     bottom: 100,
-    elevation: 15,
-    shadowOpacity: 80,
-    borderRadius: 100, // half of the width and height to make it circular
+    justifyContent: 'center',
     overflow: 'hidden',
   },
 
@@ -310,6 +309,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: '700',
     alignItems: 'center',
+    fontFamily: 'Archivo-VariableFont_wdth,wght',
     bottom: 70,
   },
   button: {
@@ -334,6 +334,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: '800',
     letterSpacing: 0.5,
+    fontFamily: 'Archivo-VariableFont_wdth,wght',
   },
   textFailed: {
     alignSelf: 'center',

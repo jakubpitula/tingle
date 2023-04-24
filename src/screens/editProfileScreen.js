@@ -1,4 +1,4 @@
-import { StyleSheet, View, TextInput  } from 'react-native';
+import { StyleSheet, View, TextInput, TouchableOpacity } from 'react-native';
 import ButtonWithBackground from '../components/buttonWithBackground';
 import {SafeAreaView, ScrollView} from 'react-native';
 import {Text, Appbar} from 'react-native-paper';
@@ -6,6 +6,7 @@ import {SegmentedButtons, Button, Switch} from 'react-native-paper';
 import React, {useState} from 'react';
 import { MultipleSelectList } from 'react-native-dropdown-select-list'
 import { useNavigation } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 
 
@@ -68,19 +69,21 @@ const data_smoking = [
     return (
         <SafeAreaView>
             <ScrollView>
-                <Appbar.Header>
-                <Appbar.Action
-                    icon="arrow-left-thick"video
-                    onPress={() => navigation.navigate('Home')}
-                />
-                <Appbar.Content
-                    title="Settings"
-                    color="#FF356B"
-                    titleStyle={{fontWeight: 'bold'}}
-                />
-                </Appbar.Header>
-
-                <View style={styles.container}>
+            <View style={styles.container}>
+            <View style={{alignItems: 'center'}}>
+            <TouchableOpacity
+              onPress={() => navigation.goBack()}
+              style={{
+                alignSelf: 'flex-start',
+                left: 5,
+                paddingTop: 20,
+              }}>
+              <Icon name={'arrow-left'} size={30} color={'#C73866'}/>
+            </TouchableOpacity>
+          </View>
+      <View>
+            <Text style={styles.title}>Settings</Text>
+          </View>
                 <Text style={styles.smallText}>Account Info</Text>
 
 
@@ -89,6 +92,8 @@ const data_smoking = [
             <Text style={styles.smallerText}> Zodiac Sign </Text>
             <MultipleSelectList
             setSelected={(val) => setSelected(val)}
+            boxStyles={{backgroundColor:'#6d6d6d'}}
+          dropdownItemStyles={{backgroundColor:'#6d6d6d'}}
             data={data_zodiac}
             save="value"
             label="Selected"
@@ -98,6 +103,8 @@ const data_smoking = [
           <MultipleSelectList
           setSelected={(val) => setSelected(val)}
           data={data_communication}
+          boxStyles={{backgroundColor:'#6d6d6d'}}
+          dropdownItemStyles={{backgroundColor:'#6d6d6d'}}
           save="value"
           label="Selected"
           />
@@ -105,6 +112,8 @@ const data_smoking = [
           <Text style={styles.smallerText}> Workout</Text>
           <MultipleSelectList
           setSelected={(val) => setSelected(val)}
+          boxStyles={{backgroundColor:'#6d6d6d'}}
+          dropdownItemStyles={{backgroundColor:'#6d6d6d'}}
           data={data_workout}
           save="value"
           label="Selected"
@@ -114,18 +123,24 @@ const data_smoking = [
           <MultipleSelectList
           setSelected={(val) => setSelected(val)}
           data={data_drinking}
+          boxStyles={{backgroundColor:'#6d6d6d'}}
+          dropdownItemStyles={{backgroundColor:'#6d6d6d'}}
           save="value"
           label="Selected"
           />
 
           <Text style={styles.smallerText}> Smoking</Text>
+          <View style={{paddingBottom: 30}}>
           <MultipleSelectList
           setSelected={(val) => setSelected(val)}
           data={data_smoking}
+          boxStyles={{backgroundColor:'#6d6d6d',}}
+          dropdownItemStyles={{backgroundColor:'#6d6d6d'}}
           save="value"
           label="Selected"
+          
           />
-
+</View>
                 </View>
 
             </ScrollView>
@@ -136,7 +151,7 @@ const data_smoking = [
 const styles = StyleSheet.create({
     container: {
       flexDirection: 'column',
-      backgroundColor: 'white',
+      backgroundColor: '#1b1b1b',
       paddingLeft: 30,
       paddingRight: 50,
       paddingTop: 30,
@@ -151,17 +166,17 @@ const styles = StyleSheet.create({
     },
 
     title: {
-      color: 'black',
-      fontFamily: 'Roboto',
-      fontSize: 50,
-      fontWeight: 'bold',
-      letterSpacing: 1,
-      marginBottom: 50,
-      marginTop: 100,
+      color: '#C73866',
+      fontFamily: 'Roboto-Italic',
+      fontSize: 30,
+      constterSpacing: 1,
+      marginBottom: 20,
+      marginTop: 30,
+      paddingLeft: 10,
     },
 
     smallText: {
-      color: 'black',
+      color: '#b1b1b1',
       fontFamily: 'Roboto',
       fontSize: 20,
       marginTop: 0,
@@ -171,7 +186,7 @@ const styles = StyleSheet.create({
     },
 
     smallerText: {
-      color: 'black',
+      color: '#b1b1b1',
       fontFamily: 'Roboto',
       fontSize: 15,
       marginTop: 0,

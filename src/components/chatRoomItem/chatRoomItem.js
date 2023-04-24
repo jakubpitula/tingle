@@ -69,11 +69,9 @@ export default function ChatRoomItem ({ userUid }) {
     <Pressable onPress={onPress} style={styles.container}>
         <Image source={{uri: profilePic}} style={styles.image}/> 
         {/* <Image source={{uri: "https://firebasestorage.googleapis.com/v0/b/dating-app-3e0f5.appspot.com/o/IMG_20230313_145342.jpg?alt=media&token=885ad7ed-b21a-4f46-b7b9-86820a66e91b"}} style={styles.image}/>  */}
-        <View style={styles.badgeContainer}>
-            <Text style={styles.badgeText}>69</Text>
-        </View>
+        
         <Text style={styles.name}>{name}</Text>
-        <Text style={styles.text}> 12:00 PM</Text>
+        <Text style={styles.text}></Text>
     </Pressable>
 
   )

@@ -7,6 +7,8 @@ import { List } from 'react-native-paper';
 import { MultipleSelectList, SelectList } from 'react-native-dropdown-select-list'
 import EncryptedStorage from "react-native-encrypted-storage";
 import axios from "axios";
+import LinearGradient from 'react-native-linear-gradient';
+import { Svg, Path } from 'react-native-svg';
 
 const baseUrl = 'https://y2ylvp.deta.dev';
 
@@ -30,13 +32,13 @@ const InterestScreen = ({navigation}) => {
 
 
   const hobbies_fields = [
-      {key:'1', value:'Mobiles'},
-      {key:'2', value:'Appliances'},
-      {key:'3', value:'Cameras'},
+      {key:'1', value:'Sports'},
+      {key:'2', value:'Music'},
+      {key:'3', value:'Photography'},
       {key:'4', value:'Computers'},
-      {key:'5', value:'Vegetables'},
-      {key:'6', value:'Diary Products'},
-      {key:'7', value:'Drinks'},
+      {key:'5', value:'Gaming'},
+      {key:'6', value:'Nature'},
+      {key:'7', value:'Socializing'},
   ]
 
   const zodiac_fields = [
@@ -58,12 +60,6 @@ const communication_fields = [
   {key:'3', value:'Phone caller'},
   {key:'4', value:'Bad texter'},
   {key:'5', value:'Better in person'},
-]
-
-const workout_fields = [
-  {key:'1', value:'Gym rat'},
-  {key:'2', value:'Occasionally'},
-  {key:'3', value:'Never'},
 ]
 
 const drinking_fields = [
@@ -127,7 +123,16 @@ const [expanded, setExpanded] = React.useState(true);
 
         <SafeAreaView>
             <ScrollView>
-
+            <LinearGradient style={styles.upperContainer} colors={['#ec0f5d', '#b0234f', '#f18a55',]} start={{ x: 0, y: 0 }} end={{ x: 0.9, y: -0.6 }}>
+    <Svg style={{ top: 20}}
+      width={500}
+      height={130}
+      viewBox="0 0 1440 320">
+      <Path
+        fill="#1b1b1b"
+        fill-opacity="1" d="M0,64L12.6,101.3C25.3,139,51,213,76,213.3C101.1,213,126,139,152,112C176.8,85,202,107,227,128C252.6,149,278,171,303,176C328.4,181,354,171,379,154.7C404.2,139,429,117,455,96C480,75,505,53,531,48C555.8,43,581,53,606,90.7C631.6,128,657,192,682,208C707.4,224,733,192,758,197.3C783.2,203,808,245,834,250.7C858.9,256,884,224,909,208C934.7,192,960,192,985,208C1010.5,224,1036,256,1061,272C1086.3,288,1112,288,1137,272C1162.1,256,1187,224,1213,192C1237.9,160,1263,128,1288,122.7C1313.7,117,1339,139,1364,133.3C1389.5,128,1415,96,1427,80L1440,64L1440,320L1427.4,320C1414.7,320,1389,320,1364,320C1338.9,320,1314,320,1288,320C1263.2,320,1238,320,1213,320C1187.4,320,1162,320,1137,320C1111.6,320,1086,320,1061,320C1035.8,320,1011,320,985,320C960,320,935,320,909,320C884.2,320,859,320,834,320C808.4,320,783,320,758,320C732.6,320,707,320,682,320C656.8,320,632,320,606,320C581.1,320,556,320,531,320C505.3,320,480,320,455,320C429.5,320,404,320,379,320C353.7,320,328,320,303,320C277.9,320,253,320,227,320C202.1,320,177,320,152,320C126.3,320,101,320,76,320C50.5,320,25,320,13,320L0,320Z"></Path>
+    </Svg>
+  </LinearGradient>
            
 
 
@@ -151,7 +156,7 @@ const [expanded, setExpanded] = React.useState(true);
               <TextInput
               style={styles.TextInputAboutMe}
               placeholder="50000"
-              placeholderTextColor='white'
+              placeholderTextColor='#b1b1b1'
               value={about}
               onChangeText={handleCheckAbout}
               />
@@ -179,7 +184,7 @@ const [expanded, setExpanded] = React.useState(true);
           label="Selected"
           />
         
-        <View>
+        {/* <View>
           <Text style={styles.smallerText}> Workout</Text>
           <MultipleSelectList
           setSelected={(val) => setWorkout(val)}
@@ -189,7 +194,7 @@ const [expanded, setExpanded] = React.useState(true);
           save="value"
           label="Selected"
           />
-          </View>
+          </View> */}
 
           <Text style={styles.smallerText}> Drinking</Text>
           <MultipleSelectList
@@ -233,7 +238,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     paddingLeft: 10,
     backgroundColor: '#1b1b1b',
-    paddingTop: 15,
+    
   },
 
   smallerText: {
@@ -259,7 +264,6 @@ const styles = StyleSheet.create({
     
     constterSpacing: 1,
     marginBottom: 20,
-    marginTop: 30,
     paddingLeft: 10,
   },
 

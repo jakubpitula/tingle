@@ -1,3 +1,4 @@
+
 import {
   StyleSheet,
   View,
@@ -14,7 +15,7 @@ import EncryptedStorage from 'react-native-encrypted-storage';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import firebase from 'firebase';
-
+import { Svg, Path } from 'react-native-svg';
 const baseUrl = 'https://y2ylvp.deta.dev';
 
 if (!firebase.apps.length) {
@@ -39,10 +40,11 @@ let matchedFlag = false;
 
 export default function MatchScreen() {
   const [name, setName] = useState('');
-  const [profile, setProfilePic] = useState('');
+  const [friendProfile, setFriendProfilePic] = useState('');
   const [friendUid, setFriendUid] = useState(friendId);
 
   const [myUid, setMyUid] = useState(null);
+  const [myProfile, setMyProfilePic] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const navigation = useNavigation();
@@ -97,10 +99,11 @@ export default function MatchScreen() {
   };
 
   useEffect(() => {
-    fetchData();
-  }, [profile]);
+    fetchFriendData();
+    fetchMyData();
+  }, [friendProfile]);
 
-  const fetchData = async () => {
+  const fetchFriendData = async () => {
     try {
       console.log('Token friend ' + friendUid);
       const token = await EncryptedStorage.getItem('id_token');
@@ -118,8 +121,29 @@ export default function MatchScreen() {
       const res = await response.json();
 
       setName(res['name']);
-      setProfilePic(res['profilePicUrl']);
-      console.log('My pic ' + profile);
+      setFriendProfilePic(res['profilePicUrl']);
+     
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const fetchMyData = async () => {
+    try {
+      const token = await EncryptedStorage.getItem('id_token');
+
+      const response = await fetch(`${baseUrl}/me`, {
+        method: 'GET',
+        headers: {
+          Authorization: 'Bearer ' + token,
+          'Content-Type': 'application/json',
+        },
+      });
+      const res = await response.json();
+
+      
+      setMyProfilePic(res['profilePicUrl']);
+
+    
     } catch (error) {
       console.error(error);
     }
@@ -222,8 +246,14 @@ export default function MatchScreen() {
     await onSubmitFormHandler();
     console.log('Matched flag: ', matchedFlag);
     if(matchedFlag) {
-      await handlecreateChatRoom();
-      await handleAddChatRoom();
+      
+          handlecreateChatRoom();
+   
+      
+      setTimeout(() => {
+      handleAddChatRoom();
+    }, 2000);
+      
     }
     else{
       navigation.navigate('Home');
@@ -233,43 +263,58 @@ export default function MatchScreen() {
   
 
   return (
-    <LinearGradient
-      style={styles.topContainer}
-      colors={['#fa2f77', '#fe8196', '#f9d0de', '#FFFFFF']}
-      start={{x: 0, y: 0}}
-      end={{x: 0.1, y: 1.25}}>
+
       <ScrollView>
-        <SafeAreaView>
+        <SafeAreaView style={styles.topContainer}>
+        <LinearGradient style={styles.upperContainer} colors={['#ec0f5d', '#b0234f', '#f18a55',]} start={{ x: 0, y: 0 }} end={{ x: 0.9, y: -0.6 }}>
+    <Svg style={{ top: 30, marginBottom: 20 }}
+      width={500}
+      height={130}
+      viewBox="0 0 1440 320">
+      <Path
+        fill="#1b1b1b"
+        fill-opacity="1" d="M0,64L12.6,101.3C25.3,139,51,213,76,213.3C101.1,213,126,139,152,112C176.8,85,202,107,227,128C252.6,149,278,171,303,176C328.4,181,354,171,379,154.7C404.2,139,429,117,455,96C480,75,505,53,531,48C555.8,43,581,53,606,90.7C631.6,128,657,192,682,208C707.4,224,733,192,758,197.3C783.2,203,808,245,834,250.7C858.9,256,884,224,909,208C934.7,192,960,192,985,208C1010.5,224,1036,256,1061,272C1086.3,288,1112,288,1137,272C1162.1,256,1187,224,1213,192C1237.9,160,1263,128,1288,122.7C1313.7,117,1339,139,1364,133.3C1389.5,128,1415,96,1427,80L1440,64L1440,320L1427.4,320C1414.7,320,1389,320,1364,320C1338.9,320,1314,320,1288,320C1263.2,320,1238,320,1213,320C1187.4,320,1162,320,1137,320C1111.6,320,1086,320,1061,320C1035.8,320,1011,320,985,320C960,320,935,320,909,320C884.2,320,859,320,834,320C808.4,320,783,320,758,320C732.6,320,707,320,682,320C656.8,320,632,320,606,320C581.1,320,556,320,531,320C505.3,320,480,320,455,320C429.5,320,404,320,379,320C353.7,320,328,320,303,320C277.9,320,253,320,227,320C202.1,320,177,320,152,320C126.3,320,101,320,76,320C50.5,320,25,320,13,320L0,320Z"></Path>
+    </Svg>
+  </LinearGradient>
           <View style={styles.title}>
             <Text style={styles.largeText}>Do you want to</Text>
             <Text style={styles.largeText}>match with</Text>
             <Text style={styles.nameText}>{name}</Text>
           </View>
 
-          <View style={{alignItems: 'center'}}>
-            <View style={styles.LargeCircle}>
-              <Image style={styles.image} source={{uri: profile}} />
+          <View style={{alignItems: 'center', flexDirection: 'row', justifyContent: 'center'}}>
+            <View style={{left:30}}>
+            <LinearGradient style={styles.LargeCircle}colors={['#ec0f5d', '#b0234f', '#f18a55',]} start={{ x: 0, y: 0 }} end={{ x: 1.5, y: 0 }}>
+              <Image style={{alignSelf: 'center',  width: 175,height: 175,borderRadius: 175 / 2, }} source={{uri: myProfile}} />
+            </LinearGradient>
+            </View>
+            <View style={{right:30}}>
+            <LinearGradient style={styles.LargeCircle}colors={['#ec0f5d', '#b0234f', '#f18a55',]} start={{ x: 0, y: 0 }} end={{ x: 0.7, y: 0 }}>
+              <Image style={{alignSelf: 'center',  width: 175,height: 175,borderRadius: 175 / 2, }} source={{uri: friendProfile }} />
+            </LinearGradient>
             </View>
           </View>
           <View style={{flexDirection: 'row'}}>
-            <View style={{paddingLeft: 60, paddingTop: 70}}>
+            <View style={{paddingLeft: 60, paddingTop: 70, bottom: 20}}>
               <TouchableOpacity
                 style={styles.smallCirlceNo}
                 onPress={() => navigation.navigate('Home')}>
                 <Icon name={'times'} size={65} style={{top: 15, left: 24}} />
               </TouchableOpacity>
             </View>
-            <View style={{paddingTop: 70, paddingLeft: 60}}>
+            <View style={{paddingTop: 70, paddingLeft: 60, bottom: 20}}>
               <TouchableOpacity
                 style={styles.smallCirlceYes}
                 onPress={runAsyncFunctions}>
-                <Icon name={'check'} size={65} style={{top: 17, left: 19}} />
+                   <LinearGradient style={{height: 100}} colors={['#FE676E', '#C73866']}>
+                <Icon name={'heart'} size={65} style={{top: 19, left: 19}} />
+                </LinearGradient>
               </TouchableOpacity>
             </View>
           </View>
         </SafeAreaView>
       </ScrollView>
-    </LinearGradient>
+    
   );
 }
 
@@ -277,10 +322,9 @@ const styles = StyleSheet.create({
   topContainer: {
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: '#fe8196',
-    height: '100%',
-    width: '100%',
-    padding: 10,
+    backgroundColor: '#1b1b1b',
+    height: 800,
+    
   },
   imageContainer: {
     width: 200,
@@ -288,31 +332,23 @@ const styles = StyleSheet.create({
     borderRadius: 100, // half of the width and height to make it circular
     overflow: 'hidden', // clip the image to the container
   },
-  image: {
-    width: 200,
-    height: 200,
-  },
+  
   LargeCircle: {
     width: 180,
     height: 180,
     borderRadius: 180 / 2,
-    backgroundColor: 'white',
-    bottom: 80,
-    elevation: 15,
-    shadowOpacity: 80,
-    borderRadius: 100, // half of the width and height to make it circular
+    backgroundColor: 'white', // half of the width and height to make it circular
     overflow: 'hidden',
     bottom: 120,
-  },
-  image: {
-    width: 200,
-    height: 200,
+    justifyContent: 'center'
+     
+    
   },
   smallCirlceNo: {
     width: 100,
     height: 100,
     borderRadius: 100 / 2,
-    backgroundColor: 'red',
+    backgroundColor: 'rgba(60,60,60,0.8)',
     bottom: 80,
     elevation: 15,
     shadowOpacity: 80,
@@ -353,16 +389,19 @@ const styles = StyleSheet.create({
   title: {
     paddingBottom: 150,
     alignItems: 'center',
-    paddingTop: 70,
+    color: 'white',
+   paddingTop: 10
   },
   largeText: {
     fontSize: 28,
+    color: 'white',
     fontFamily: 'Roboto-Black',
   },
   nameText: {
     fontSize: 34,
     paddingTop:20,
     fontFamily: 'Roboto-Italic',
+    color: 'white',
 
   },
   button: {
@@ -395,3 +434,4 @@ const styles = StyleSheet.create({
     right: 70,
   },
 });
+

@@ -90,6 +90,7 @@ friendsRef.on('child_added', snapshot => {
           chatMessages.push({
             _id: message._id,
             text: message.text,
+            
             createdAt: new Date(),
             user: {
               _id: message.user._id === myUid
