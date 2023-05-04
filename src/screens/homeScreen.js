@@ -580,7 +580,6 @@ export default function HomeScreen() {
           tabBarIcon: ({color, size}) => (
             <Icon name="comment" color={color} size={30} style={{top: 5}} />
           ),
-          tabBarBadge: 69,
         }}
       />
 
