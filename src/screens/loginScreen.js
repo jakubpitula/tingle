@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View, TextInput, Dimensions} from 'react-native';
+import {StyleSheet, Text, View, TextInput, Image, Animated, Easing, Dimensions} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import ButtonWithBackground from '../components/buttonWithBackground';
 import SmallButton from '../components/smallButton';
@@ -11,6 +11,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import LinearGradient from "react-native-linear-gradient";
 import firebase from 'firebase';
 import { Svg, Path } from 'react-native-svg';
+import { faD } from '@fortawesome/free-solid-svg-icons';
 
 
 const baseUrl = 'https://y2ylvp.deta.dev';
@@ -97,6 +98,95 @@ export default function LoginScreen({navigation}) {
     }
   };
 
+  const images = [
+    require('../assets/person1.jpg'),
+    require('../assets/person2.jpg'),
+    // require('../assets/person3.jpg'),
+    // require('../assets/person4.jpg'),
+    // require('../assets/person5.jpg'),
+  ];
+  
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const opacityValue = new Animated.Value(0);
+  const scaleValue = new Animated.Value(1);
+
+
+  
+  useEffect(() => {
+  
+
+    const fadeOut = () => {
+      Animated.parallel([
+      Animated.timing(opacityValue, {
+        toValue: 0,
+        duration: 1000,
+        easing: Easing.linear,
+        useNativeDriver: true,
+      }),
+      Animated.timing(scaleValue, {
+        toValue: 1.09,
+        duration: 1000,
+        
+        easing: Easing.linear,
+        useNativeDriver: true,
+      }),
+    ]).start(() => {
+      
+      
+      
+        fadeIn();
+      });
+    };
+
+    const fadeIn = () => {
+      
+      opacityValue.setValue(0);
+      scaleValue.setValue(1);
+
+      Animated.parallel([
+        Animated.timing(opacityValue, {
+          toValue: 0.3,
+          duration: 3000,
+          easing: Easing.linear,
+          useNativeDriver: true,
+        }),
+        Animated.timing(scaleValue, {
+          toValue: 1.1,
+          duration: 3000,
+          easing: Easing.linear,
+          useNativeDriver: true,
+        }),
+      ]).start(() => {
+        
+        setTimeout(fadeOut, 2000) // Transition delay between images (2 seconds)
+        
+      });
+    };
+    
+    fadeIn();
+
+    
+
+    
+  }, []);
+
+  
+
+  const currentImage = images[currentImageIndex];
+
+ 
+  const windowDimensions = Dimensions.get('window');
+  const imageStyles = [
+    {
+      opacity: opacityValue,
+      transform: [{ scale: scaleValue }],
+      width: windowDimensions.width,
+      height: windowDimensions.height,
+      position: "absolute"
+    },
+  ];
+  
+
   return (
 
 
@@ -110,7 +200,7 @@ export default function LoginScreen({navigation}) {
         ):(
 
          <View style={styles.container}>
-          <LinearGradient style={styles.topContainer} colors={['#ec0f5d','#b0234f','#f18a55',]} start={{ x: 0, y: 0}} end={{ x: 0.4, y: -0.5 }}>
+          {/* <LinearGradient style={styles.topContainer} colors={['#ec0f5d','#b0234f','#f18a55',]} start={{ x: 0, y: 0}} end={{ x: 0.4, y: -0.5 }}>
              <Svg style={{top: 110}}
               width={500}
               height={220}
@@ -119,7 +209,12 @@ export default function LoginScreen({navigation}) {
               fill="#1b1b1b"
               fill-opacity="1" d="M0,224L20,192C40,160,80,96,120,90.7C160,85,200,139,240,181.3C280,224,320,256,360,261.3C400,267,440,245,480,245.3C520,245,560,267,600,250.7C640,235,680,181,720,165.3C760,149,800,171,840,186.7C880,203,920,213,960,181.3C1000,149,1040,75,1080,42.7C1120,11,1160,21,1200,53.3C1240,85,1280,139,1320,133.3C1360,128,1400,64,1420,32L1440,0L1440,320L1420,320C1400,320,1360,320,1320,320C1280,320,1240,320,1200,320C1160,320,1120,320,1080,320C1040,320,1000,320,960,320C920,320,880,320,840,320C800,320,760,320,720,320C680,320,640,320,600,320C560,320,520,320,480,320C440,320,400,320,360,320C320,320,280,320,240,320C200,320,160,320,120,320C80,320,40,320,20,320L0,320Z"></Path>
           </Svg>
-          </LinearGradient>
+          </LinearGradient> */}
+          <Animated.Image
+          source={currentImage}
+          style={imageStyles}
+          resizeMode="cover"
+        />
          
           <Text style={styles.title}>Tingle</Text>
 
@@ -182,6 +277,12 @@ export default function LoginScreen({navigation}) {
         )}
       </ScrollView>
     </SafeAreaView>
+
+    
+      
+        
+   
+    
   );
 }
 
@@ -189,7 +290,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'flex-end',
-    backgroundColor: '#1b1b1b',
+    backgroundColor:'#1b1b1b' ,
     elevation: 25,
     shadowOpacity: 100,
     
@@ -243,7 +344,7 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
     paddingBottom: 50,
     paddingLeft: 20,
-
+    paddingTop: 180,
     fontFamily: "Archivo-VariableFont_wdth,wght",
     alignSelf: 'flex-start',
 
